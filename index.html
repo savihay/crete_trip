@@ -49,6 +49,10 @@
     }
   </script>
   
+  <!-- Leaflet Map CSS & JS for multi-pin interactive exploration -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
   <!-- Google Fonts: Heebo & Rubik for clean modern Hebrew typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -77,17 +81,90 @@
       transform: translateY(-4px);
     }
 
-    /* Embedded Google Map Container */
-    #gmap-frame-container {
+    /* Map Container */
+    #map-wrapper {
       width: 100%;
-      height: 400px;
+      height: 440px;
       position: relative;
-      background-color: #e2e8f0;
+      border-radius: 1.25rem;
+      overflow: hidden;
+      z-index: 1;
     }
     @media (min-width: 768px) {
-      #gmap-frame-container {
-        height: 460px;
+      #map-wrapper {
+        height: 520px;
       }
+    }
+    #leaflet-map {
+      width: 100%;
+      height: 100%;
+      border-radius: 1.25rem;
+    }
+
+    /* Custom Map Pin Marker styling */
+    .map-pin-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      color: #ffffff;
+      font-weight: 800;
+      font-size: 11px;
+      padding: 4px 8px;
+      border-radius: 9999px;
+      white-space: nowrap;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.28);
+      border: 2px solid #ffffff;
+      transform: translate(-50%, -100%);
+      transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      cursor: pointer;
+      line-height: 1.2;
+    }
+    .map-pin-badge:hover {
+      transform: translate(-50%, -112%) scale(1.1);
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.35);
+      z-index: 1000 !important;
+    }
+    .map-pin-badge::after {
+      content: '';
+      position: absolute;
+      bottom: -6px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-width: 6px 5px 0 5px;
+      border-style: solid;
+      border-color: inherit transparent transparent transparent;
+    }
+
+    /* Leaflet popup customization */
+    .leaflet-popup-content-wrapper {
+      border-radius: 1.25rem !important;
+      padding: 0 !important;
+      overflow: hidden !important;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
+      direction: rtl;
+      text-align: right;
+    }
+    .leaflet-popup-content {
+      margin: 0 !important;
+      width: 270px !important;
+      font-family: 'Heebo', sans-serif;
+    }
+    .leaflet-container a.leaflet-popup-close-button {
+      color: #ffffff !important;
+      background: rgba(15, 23, 42, 0.65) !important;
+      border-radius: 50% !important;
+      width: 24px !important;
+      height: 24px !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      top: 8px !important;
+      left: 8px !important;
+      right: auto !important;
+      backdrop-filter: blur(4px);
+      padding: 0 !important;
+      font-size: 14px !important;
     }
 
     /* Map Chip Buttons */
@@ -242,11 +319,15 @@
             🗺️
           </div>
           <div>
+            <div class="flex items-center gap-2 mb-0.5">
+              <span class="text-[10px] sm:text-xs bg-sky-100 text-sky-800 font-extrabold px-2 py-0.5 rounded-full">מפה חיה מרובת סיכות</span>
+              <span class="text-[10px] sm:text-xs bg-emerald-100 text-emerald-800 font-extrabold px-2 py-0.5 rounded-full">13 מוקדים בבת אחת</span>
+            </div>
             <h2 class="heading-font text-lg sm:text-xl font-bold text-slate-900 leading-tight">
-              מפת Google Maps המובנית של היעדים
+              מפת כל היעדים בכרתים (כל הסיכות בתצוגה אחת)
             </h2>
             <p class="text-xs text-slate-500">
-              לחצו או עברו עם העכבר על היעדים כדי לראות את המיקום המדויק ישירות ב-Google Maps
+              כל 11 האטרקציות, מלון הבסיס בגאורגיופוליס ושדה הרקליון מסומנים יחד בסיכות. לחצו על כל סיכה לפרטים וניווט.
             </p>
           </div>
         </div>
@@ -254,12 +335,13 @@
         <div class="flex items-center gap-2">
           <!-- Reset Map View Button -->
           <button 
-            onclick="resetGoogleMap()" 
-            class="text-xs font-semibold px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition flex items-center gap-1.5 shadow-sm"
-            title="איפוס מבט המפה לכל כרתים"
+            type="button"
+            onclick="resetMapView()" 
+            class="text-xs font-bold px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition flex items-center gap-1.5 shadow-sm cursor-pointer"
+            title="הצגת כל כרתים עם כל 13 הסיכות ביחד"
           >
             <span>🔄</span>
-            <span>מבט כללי על כרתים</span>
+            <span>הצג את כל הסיכות (כל כרתים)</span>
           </button>
           
           <!-- Direct Google Maps App Route link -->
@@ -281,56 +363,46 @@
           🏨 גאורגיופוליס (הבסיס)
         </button>
         <button onclick="selectDestinationMap(0)" id="chip-0" class="map-chip px-3 py-1.5 rounded-xl whitespace-nowrap bg-slate-100 text-slate-700 border border-slate-200">
-          🏝️ באלוס וגרמבוסה
+          🏝️ 1. באלוס וגרמבוסה
         </button>
         <button onclick="selectDestinationMap(1)" id="chip-1" class="map-chip px-3 py-1.5 rounded-xl whitespace-nowrap bg-slate-100 text-slate-700 border border-slate-200">
-          ⛵ חאניה העתיקה
+          ⛵ 2. חאניה העתיקה
         </button>
         <button onclick="selectDestinationMap(2)" id="chip-2" class="map-chip px-3 py-1.5 rounded-xl whitespace-nowrap bg-slate-100 text-slate-700 border border-slate-200">
-          🌊 סייטן לימני
+          🌊 3. סייטן לימני
         </button>
         <button onclick="selectDestinationMap(3)" id="chip-3" class="map-chip px-3 py-1.5 rounded-xl whitespace-nowrap bg-slate-100 text-slate-700 border border-slate-200">
-          🪸 אלפוניסי
+          🪸 4. אלפוניסי
         </button>
         <button onclick="selectDestinationMap(4)" id="chip-4" class="map-chip px-3 py-1.5 rounded-xl whitespace-nowrap bg-slate-100 text-slate-700 border border-slate-200">
-          🥾 קניון אימברוס
+          🥾 5. קניון אימברוס
         </button>
         <button onclick="selectDestinationMap(5)" id="chip-5" class="map-chip px-3 py-1.5 rounded-xl whitespace-nowrap bg-slate-100 text-slate-700 border border-slate-200">
-          💦 קניון קורטליוטיקו
+          💦 6. קניון קורטליוטיקו
         </button>
         <button onclick="selectDestinationMap(6)" id="chip-6" class="map-chip px-3 py-1.5 rounded-xl whitespace-nowrap bg-slate-100 text-slate-700 border border-slate-200">
-          🌴 יער הדקלים פרבלי
+          🌴 7. יער הדקלים פרבלי
         </button>
         <button onclick="selectDestinationMap(7)" id="chip-7" class="map-chip px-3 py-1.5 rounded-xl whitespace-nowrap bg-slate-100 text-slate-700 border border-slate-200">
-          🤿 חוף קליפסו (פיורד)
+          🤿 8. חוף קליפסו (פיורד)
         </button>
         <button onclick="selectDestinationMap(8)" id="chip-8" class="map-chip px-3 py-1.5 rounded-xl whitespace-nowrap bg-slate-100 text-slate-700 border border-slate-200">
-          🐢 אגם קורנאס
+          🐢 9. אגם קורנאס
         </button>
         <button onclick="selectDestinationMap(9)" id="chip-9" class="map-chip px-3 py-1.5 rounded-xl whitespace-nowrap bg-slate-100 text-slate-700 border border-slate-200">
-          🧗 קניון פאטסוס
+          🧗 10. קניון פאטסוס
         </button>
         <button onclick="selectDestinationMap(10)" id="chip-10" class="map-chip px-3 py-1.5 rounded-xl whitespace-nowrap bg-slate-100 text-slate-700 border border-slate-200">
-          🏛️ רתימנו העתיקה
+          🏛️ 11. רתימנו העתיקה
         </button>
         <button onclick="selectDestinationMap(-2)" id="chip-airport" class="map-chip px-3 py-1.5 rounded-xl whitespace-nowrap bg-slate-100 text-slate-700 border border-slate-200">
           ✈️ שדה הרקליון
         </button>
       </div>
 
-      <!-- Embedded Google Map iFrame Container -->
-      <div id="gmap-frame-container" class="rounded-2xl overflow-hidden shadow-inner border border-slate-200">
-        <iframe 
-          id="gmap-frame" 
-          src="https://maps.google.com/maps?q=Georgioupoli+Crete&t=&z=11&ie=UTF8&iwloc=&output=embed" 
-          width="100%" 
-          height="100%" 
-          style="border:0;" 
-          allowfullscreen="" 
-          loading="lazy" 
-          referrerpolicy="no-referrer-when-downgrade"
-          class="w-full h-full"
-        ></iframe>
+      <!-- Multi-Pin Interactive Leaflet Map Container -->
+      <div id="map-wrapper" class="rounded-2xl overflow-hidden shadow-inner border border-slate-200">
+        <div id="leaflet-map"></div>
       </div>
 
       <!-- Live Interactive Info Bar -->
@@ -1449,14 +1521,15 @@
   </footer>
 
   <script>
-    // 11 Selected Destinations with Google Maps embed queries
+    // 11 Selected Destinations with Coordinates & Details
     const destinationsData = [
       {
         id: 'balos',
         title: 'לגונת באלוס והאי גרמבוסה',
         region: 'northwest',
         regionName: 'צפון-מערב',
-        gmapQuery: 'Balos+Lagoon+Crete',
+        lat: 35.5836,
+        lng: 23.5888,
         zoom: 12,
         duration: '5–6 שעות (כולל שייט)',
         tip: 'להגיע רק בשייט מנמל קיסאמוס (לא ברכב)',
@@ -1468,7 +1541,8 @@
         title: 'העיר העתיקה והנמל הוונציאני בחאניה',
         region: 'northwest',
         regionName: 'צפון-מערב',
-        gmapQuery: 'Old+Venetian+Harbour+Chania',
+        lat: 35.5173,
+        lng: 24.0179,
         zoom: 14,
         duration: '3–4 שעות (מושלם לערב)',
         tip: 'לחנות בחניון Talos המוסדר מחוץ לחומות',
@@ -1480,7 +1554,8 @@
         title: 'חוף סייטן לימני (זיג-זג)',
         region: 'northwest',
         regionName: 'צפון-מערב',
-        gmapQuery: 'Seitan+Limania+Beach+Crete',
+        lat: 35.5519,
+        lng: 24.1934,
         zoom: 14,
         duration: '2–3 שעות',
         tip: 'ירידה רגלית תלולה (15 דק), חובה נעלי ספורט סגורות',
@@ -1492,7 +1567,8 @@
         title: 'חוף אלפוניסי (החול הוורוד)',
         region: 'southwest',
         regionName: 'דרום-מערב',
-        gmapQuery: 'Elafonisi+Beach+Crete',
+        lat: 35.2713,
+        lng: 23.5413,
         zoom: 13,
         duration: '4–5 שעות',
         tip: 'להגיע לפני 10:30 בבוקר לתפיסת חניה נוחה ושמשיות',
@@ -1504,7 +1580,8 @@
         title: 'קניון אימברוס וחורה ספאקיון',
         region: 'southwest',
         regionName: 'דרום-מערב',
-        gmapQuery: 'Imbros+Gorge+Crete',
+        lat: 35.2536,
+        lng: 24.1678,
         zoom: 13,
         duration: '3 שעות מסלול + שעתיים טברנה',
         tip: 'טנדרים מקומיים בסוף המסלול מחזירים את הנהג לרכב',
@@ -1516,7 +1593,8 @@
         title: 'קניון קורטליוטיקו והמפל הנסתר',
         region: 'south',
         regionName: 'דרום ומפלים',
-        gmapQuery: 'Kourtaliotiko+Gorge+Waterfall+Crete',
+        lat: 35.2078,
+        lng: 24.4719,
         zoom: 13,
         duration: '2–3 שעות',
         tip: 'חובה סנדלי מים ושקית אטומה למים לטלפונים',
@@ -1528,7 +1606,8 @@
         title: 'חוף ויער הדקלים פרבלי',
         region: 'south',
         regionName: 'דרום ומפלים',
-        gmapQuery: 'Preveli+Beach+Crete',
+        lat: 35.1526,
+        lng: 24.4735,
         zoom: 13,
         duration: '3–4 שעות',
         tip: 'שילוב מדהים של מי נהר מתוקים עם מי ים פתוח',
@@ -1540,7 +1619,8 @@
         title: 'חוף קליפסו (פיורד הפיראטים)',
         region: 'south',
         regionName: 'דרום ומפלים',
-        gmapQuery: 'Kalypso+Beach+Plakias+Crete',
+        lat: 35.1764,
+        lng: 24.3934,
         zoom: 14,
         duration: '2–3 שעות',
         tip: 'מושלם לשנירקול וקפיצות למים עמוקים וצלולים',
@@ -1552,7 +1632,8 @@
         title: 'אגם קורנאס (צבי מים ופדלים)',
         region: 'center',
         regionName: 'מרכז (ליד גאורגיופוליס)',
-        gmapQuery: 'Lake+Kournas+Crete',
+        lat: 35.3328,
+        lng: 24.2783,
         zoom: 14,
         duration: '2–3 שעות',
         tip: 'נמצא 5 דקות מהמלון! מעולה גם לבוקר יום ההמראה',
@@ -1564,7 +1645,8 @@
         title: 'קניון פאטסוס (חבלים וסולמות)',
         region: 'center',
         regionName: 'מרכז (דרומית לרתימנו)',
-        gmapQuery: 'Patsos+Gorge+Crete',
+        lat: 35.2472,
+        lng: 24.5714,
         zoom: 13,
         duration: '2.5–3 שעות',
         tip: 'בכניסה יש טברנה משפחתית מעולה (Drys) עם פינת חי',
@@ -1576,7 +1658,8 @@
         title: 'העיר העתיקה של רתימנו',
         region: 'center',
         regionName: 'מרכז',
-        gmapQuery: 'Old+Town+Rethymno+Crete',
+        lat: 35.3692,
+        lng: 24.4738,
         zoom: 14,
         duration: '2–3 שעות',
         tip: 'עצירה מושלמת ביום הראשון בדרך משדה התעופה למלון',
@@ -1585,13 +1668,141 @@
       }
     ];
 
+    let map = null;
+    let markersGroup = null;
+    const mapMarkers = {};
     let currentMapIndex = -1;
     let hoverDebounceTimer = null;
 
-    // Change Google Maps embedded view dynamically
+    function initLeafletMap() {
+      const mapEl = document.getElementById('leaflet-map');
+      if (!mapEl || map) return;
+
+      // Create map centered on Western & Central Crete
+      map = L.map('leaflet-map', {
+        scrollWheelZoom: false,
+        zoomControl: true
+      }).setView([35.33, 24.3], 9);
+
+      // Enable scroll zoom on focus/click
+      map.on('focus', () => { map.scrollWheelZoom.enable(); });
+      mapEl.addEventListener('click', () => { if (map) map.scrollWheelZoom.enable(); });
+
+      // Clean, modern, high-res tile layer with transliterated English + Greek labels
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+        attribution: '&copy; <a href="https://carto.com/">CARTO</a> &copy; OpenStreetMap contributors',
+        subdomains: 'abcd',
+        maxZoom: 19
+      }).addTo(map);
+
+      markersGroup = L.featureGroup().addTo(map);
+
+      // 1. Hotel Base Marker (Georgioupoli)
+      const hotelIcon = L.divIcon({
+        className: 'custom-div-icon',
+        html: `<div class="map-pin-badge bg-purple-700 hover:bg-purple-800"><span>🏨</span><span>בסיס: גאורגיופוליס</span></div>`,
+        iconSize: [0, 0],
+        popupAnchor: [0, -26]
+      });
+      const hotelMarker = L.marker([35.3628, 24.2588], { icon: hotelIcon, title: 'גאורגיופוליס - מלון הבסיס' })
+        .bindPopup(`
+          <div class="p-3.5 text-right">
+            <div class="text-[10px] font-bold text-purple-800 bg-purple-100 px-2 py-0.5 rounded-md inline-block mb-1.5">🏨 מלון הבסיס לחופשה</div>
+            <h4 class="font-extrabold text-slate-900 text-sm">גאורגיופוליס (Georgioupoli)</h4>
+            <p class="text-xs text-slate-600 mt-1 leading-relaxed">בסיס כוכב אסטרטגי על הים! 5 דק' בלבד מאגם קורנאס, 20 דק' מרתימנו וחיבור ישיר לכביש 90 ולירידות לקניוני הדרום.</p>
+            <div class="mt-2.5 pt-2 border-t border-slate-100 flex items-center justify-between gap-2">
+              <a href="https://www.google.com/maps/dir/?api=1&destination=35.3628,24.2588" target="_blank" class="w-full text-center text-xs font-bold text-white bg-purple-700 hover:bg-purple-800 py-1.5 px-3 rounded-lg shadow-sm transition">
+                🚗 נווט ב-Google Maps
+              </a>
+            </div>
+          </div>
+        `);
+      hotelMarker.on('click', () => { selectDestinationMap(-1); });
+      hotelMarker.addTo(markersGroup);
+      mapMarkers[-1] = hotelMarker;
+
+      // 2. Heraklion Airport Marker
+      const airportIcon = L.divIcon({
+        className: 'custom-div-icon',
+        html: `<div class="map-pin-badge bg-blue-700 hover:bg-blue-800"><span>✈️</span><span>שדה הרקליון (HER)</span></div>`,
+        iconSize: [0, 0],
+        popupAnchor: [0, -26]
+      });
+      const airportMarker = L.marker([35.3397, 25.1803], { icon: airportIcon, title: 'שדה התעופה הרקליון' })
+        .bindPopup(`
+          <div class="p-3.5 text-right">
+            <div class="text-[10px] font-bold text-blue-800 bg-blue-100 px-2 py-0.5 rounded-md inline-block mb-1.5">✈️ נחיתה והמראה</div>
+            <h4 class="font-extrabold text-slate-900 text-sm">שדה התעופה הרקליון (HER)</h4>
+            <p class="text-xs text-slate-600 mt-1 leading-relaxed">נחיתה ב-17/9 ב-10:10 (טיסה BZ752), איסוף Jeep Compass מחברת The Best Cars (11:00) והחזרת הרכב ב-21/9 ב-19:00 לקראת טיסה BZ751 ב-21:30.</p>
+            <div class="mt-2.5 pt-2 border-t border-slate-100 flex items-center justify-between gap-2">
+              <a href="https://www.google.com/maps/dir/?api=1&destination=35.3397,25.1803" target="_blank" class="w-full text-center text-xs font-bold text-white bg-blue-700 hover:bg-blue-800 py-1.5 px-3 rounded-lg shadow-sm transition">
+                🚗 נווט ב-Google Maps
+              </a>
+            </div>
+          </div>
+        `);
+      airportMarker.on('click', () => { selectDestinationMap(-2); });
+      airportMarker.addTo(markersGroup);
+      mapMarkers[-2] = airportMarker;
+
+      // 3. Add All 11 Destination Markers with distinct numbers & category colors
+      destinationsData.forEach((dest, idx) => {
+        let pinBg = 'bg-sky-600';
+        if (dest.region === 'south') pinBg = 'bg-emerald-600';
+        else if (dest.region === 'southwest') pinBg = 'bg-rose-600';
+        else if (dest.region === 'center') pinBg = 'bg-amber-600';
+
+        const customIcon = L.divIcon({
+          className: 'custom-div-icon',
+          html: `<div class="map-pin-badge ${pinBg}"><span>${dest.icon}</span><span>${idx + 1}. ${dest.title.split('(')[0].trim()}</span></div>`,
+          iconSize: [0, 0],
+          popupAnchor: [0, -26]
+        });
+
+        const marker = L.marker([dest.lat, dest.lng], { icon: customIcon, title: dest.title })
+          .bindPopup(`
+            <div class="overflow-hidden">
+              <div class="relative h-28 w-full bg-slate-100">
+                <img src="${dest.img}" alt="${dest.title}" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/400x200/0284c7/ffffff?text=${encodeURIComponent(dest.title)}'"/>
+                <div class="absolute top-2 right-2 bg-slate-900/80 backdrop-blur text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full">
+                  יעד #${idx + 1} • ${dest.regionName}
+                </div>
+              </div>
+              <div class="p-3 text-right">
+                <h4 class="font-extrabold text-slate-900 text-sm mb-0.5">${dest.icon} ${dest.title}</h4>
+                <div class="text-xs text-sky-700 font-semibold mb-2">⏳ ${dest.duration}</div>
+                <div class="bg-amber-50 border border-amber-200/80 p-2 rounded-xl text-[11px] text-amber-950 mb-3">
+                  💡 ${dest.tip}
+                </div>
+                <div class="flex items-center gap-1.5">
+                  <a href="https://www.google.com/maps/dir/?api=1&destination=${dest.lat},${dest.lng}" target="_blank" class="flex-1 text-center text-xs font-bold text-white bg-sky-600 hover:bg-sky-500 py-1.5 px-2 rounded-xl transition shadow-sm">
+                    🚗 נווט ליעד
+                  </a>
+                  <button type="button" onclick="scrollToDestinationCard(${idx})" class="text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 py-1.5 px-3 rounded-xl transition cursor-pointer">
+                    פרטים
+                  </button>
+                </div>
+              </div>
+            </div>
+          `);
+
+        marker.on('click', () => { selectDestinationMap(idx); });
+        marker.addTo(markersGroup);
+        mapMarkers[idx] = marker;
+      });
+
+      // Fit bounds to show ALL 13 markers simultaneously across Crete!
+      map.fitBounds(markersGroup.getBounds(), { padding: [35, 35] });
+      setTimeout(() => {
+        if (map && markersGroup) {
+          map.invalidateSize();
+          map.fitBounds(markersGroup.getBounds(), { padding: [35, 35] });
+        }
+      }, 250);
+    }
+
     function selectDestinationMap(index) {
       currentMapIndex = index;
-      const gframe = document.getElementById('gmap-frame');
       const infoBox = document.getElementById('map-hover-info');
 
       // Update active chip classes
@@ -1599,12 +1810,20 @@
         chip.classList.remove('active-chip');
       });
 
-      if (index === -1) {
-        // Hotel Base: Georgioupoli
-        const chip = document.getElementById('chip-base');
-        if (chip) chip.classList.add('active-chip');
-        if (gframe) gframe.src = "https://maps.google.com/maps?q=Georgioupoli+Crete&t=&z=12&ie=UTF8&iwloc=&output=embed";
-        if (infoBox) {
+      const targetChip = (index === -1) ? document.getElementById('chip-base') :
+                         (index === -2) ? document.getElementById('chip-airport') :
+                         document.getElementById(`chip-${index}`);
+      if (targetChip) targetChip.classList.add('active-chip');
+
+      const marker = mapMarkers[index];
+      if (marker && map) {
+        map.flyTo(marker.getLatLng(), Math.max(map.getZoom(), 12), { duration: 0.8 });
+        marker.openPopup();
+      }
+
+      // Update info box
+      if (infoBox) {
+        if (index === -1) {
           infoBox.innerHTML = `
             <div class="flex items-center gap-2">
               <span class="text-base">🏨</span>
@@ -1612,53 +1831,37 @@
               <span class="text-slate-500">— נקודת כוכב אסטרטגית על הים במרחק 5 דק' מאגם קורנאס וגישה ישירה לכביש 90.</span>
             </div>
           `;
-        }
-      } else if (index === -2) {
-        // Heraklion Airport
-        const chip = document.getElementById('chip-airport');
-        if (chip) chip.classList.add('active-chip');
-        if (gframe) gframe.src = "https://maps.google.com/maps?q=Heraklion+International+Airport+Nikos+Kazantzakis&t=&z=13&ie=UTF8&iwloc=&output=embed";
-        if (infoBox) {
+        } else if (index === -2) {
           infoBox.innerHTML = `
             <div class="flex items-center gap-2">
               <span class="text-base">✈️</span>
               <span class="font-bold text-slate-900">שדה התעופה הרקליון (HER)</span>
-              <span class="text-slate-500">— נקודת הנחיתה (17/9 ב-10:10), איסוף הרכב (11:00) והחזרה (21/9 ב-18:30-19:00).</span>
+              <span class="text-slate-500">— נקודת הנחיתה (17/9 ב-10:10), איסוף הרכב (11:00) והחזרה (21/9 ב-19:00).</span>
             </div>
           `;
-        }
-      } else {
-        const dest = destinationsData[index];
-        if (!dest) return;
-
-        const chip = document.getElementById(`chip-${index}`);
-        if (chip) chip.classList.add('active-chip');
-
-        if (gframe) {
-          gframe.src = `https://maps.google.com/maps?q=${dest.gmapQuery}&t=&z=${dest.zoom}&ie=UTF8&iwloc=&output=embed`;
-        }
-
-        if (infoBox) {
-          infoBox.innerHTML = `
-            <div class="flex items-center gap-3 w-full">
-              <img src="${dest.img}" class="w-11 h-11 rounded-xl object-cover border border-slate-200 shadow-sm" onerror="this.src='https://placehold.co/100x100/0284c7/ffffff?text=${encodeURIComponent(dest.title)}'"/>
-              <div class="flex-1 min-w-0">
-                <div class="flex items-center justify-between gap-1">
-                  <h4 class="font-bold text-slate-900 text-xs sm:text-sm truncate">${dest.icon} ${dest.title}</h4>
-                  <span class="text-[10px] sm:text-xs bg-sky-100 text-sky-800 font-bold px-2 py-0.5 rounded-md whitespace-nowrap">⏳ ${dest.duration}</span>
+        } else {
+          const dest = destinationsData[index];
+          if (dest) {
+            infoBox.innerHTML = `
+              <div class="flex items-center gap-3 w-full">
+                <img src="${dest.img}" class="w-11 h-11 rounded-xl object-cover border border-slate-200 shadow-sm" onerror="this.src='https://placehold.co/100x100/0284c7/ffffff?text=${encodeURIComponent(dest.title)}'"/>
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center justify-between gap-1">
+                    <h4 class="font-bold text-slate-900 text-xs sm:text-sm truncate">${dest.icon} ${dest.title}</h4>
+                    <span class="text-[10px] sm:text-xs bg-sky-100 text-sky-800 font-bold px-2 py-0.5 rounded-md whitespace-nowrap">⏳ ${dest.duration}</span>
+                  </div>
+                  <p class="text-[11px] sm:text-xs text-slate-600 truncate mt-0.5">💡 ${dest.tip}</p>
                 </div>
-                <p class="text-[11px] sm:text-xs text-slate-600 truncate mt-0.5">💡 ${dest.tip}</p>
               </div>
-            </div>
-          `;
+            `;
+          }
         }
       }
     }
 
-    function resetGoogleMap() {
-      const gframe = document.getElementById('gmap-frame');
-      if (gframe) {
-        gframe.src = "https://maps.google.com/maps?q=Crete+Greece&t=&z=9&ie=UTF8&iwloc=&output=embed";
+    function resetMapView() {
+      if (map && markersGroup) {
+        map.fitBounds(markersGroup.getBounds(), { padding: [35, 35] });
       }
       document.querySelectorAll('.map-chip').forEach(chip => {
         chip.classList.remove('active-chip');
@@ -1668,10 +1871,26 @@
         infoBox.innerHTML = `
           <div class="flex items-center gap-2">
             <span class="text-base">🇬🇷</span>
-            <span class="font-bold text-slate-900">מבט כולל על מערב ומרכז כרתים</span>
-            <span class="text-slate-500">— כל היעדים ממוקמים בין חאניה, חופי הדרום ורתימנו סביב בסיס גאורגיופוליס.</span>
+            <span class="font-bold text-slate-900">תצוגת כל 13 המוקדים והסיכות בכרתים</span>
+            <span class="text-slate-500">— כל 11 האטרקציות, מלון הבסיס ושדה התעופה מסומנים יחד בו-זמנית.</span>
           </div>
         `;
+      }
+    }
+
+    // Alias for backwards compatibility
+    function resetGoogleMap() {
+      resetMapView();
+    }
+
+    function scrollToDestinationCard(index) {
+      const card = document.querySelector(`.destination-card[data-index="${index}"]`);
+      if (card) {
+        card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        card.classList.add('active-card');
+        setTimeout(() => {
+          card.classList.remove('active-card');
+        }, 2500);
       }
     }
 
@@ -1868,10 +2087,15 @@
       if (e.target.id === 'travel-modal') closeTravelDetailsModal();
     });
 
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', setupCardInteractions);
-    } else {
+    function initAll() {
+      initLeafletMap();
       setupCardInteractions();
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initAll);
+    } else {
+      initAll();
     }
   </script>
 </body>
