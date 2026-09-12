@@ -1,0 +1,1510 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="referrer" content="no-referrer">
+  <title>כרתים 2026 - מדריך האטרקציות והטבע למשפחה</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Google Fonts: Heebo & Rubik for clean modern Hebrew typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800&family=Rubik:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Heebo', sans-serif;
+    }
+    .heading-font {
+      font-family: 'Rubik', sans-serif;
+    }
+    
+    /* Interactive Card Hover & Lift */
+    .destination-card {
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease, border-color 0.25s ease;
+    }
+    .destination-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 16px 32px -8px rgba(14, 165, 233, 0.2);
+      border-color: #0284c7 !important;
+    }
+    .destination-card.active-card {
+      border-color: #0284c7 !important;
+      box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.35), 0 20px 25px -5px rgba(0, 0, 0, 0.1) !important;
+      transform: translateY(-4px);
+    }
+
+    /* Embedded Google Map Container */
+    #gmap-frame-container {
+      width: 100%;
+      height: 400px;
+      position: relative;
+      background-color: #e2e8f0;
+    }
+    @media (min-width: 768px) {
+      #gmap-frame-container {
+        height: 460px;
+      }
+    }
+
+    /* Map Chip Buttons */
+    .map-chip {
+      transition: all 0.2s ease;
+      cursor: pointer;
+      user-select: none;
+    }
+    .map-chip.active-chip {
+      background-color: #0284c7 !important;
+      color: #ffffff !important;
+      font-weight: 700 !important;
+      box-shadow: 0 4px 10px -1px rgba(2, 132, 199, 0.35);
+      border-color: #0284c7 !important;
+    }
+
+    /* Hide scrollbar for category tabs */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen antialiased flex flex-col">
+
+  <!-- Top Navigation / Hero Header -->
+  <header class="relative bg-gradient-to-br from-cyan-900 via-sky-800 to-blue-900 text-white pb-14 pt-8 px-4 sm:px-8 shadow-xl">
+    <div class="max-w-6xl mx-auto">
+      
+      <!-- Top badges bar -->
+      <div class="flex flex-wrap items-center justify-between gap-3 mb-6">
+        <div class="inline-flex items-center gap-2 bg-white/15 backdrop-blur-md px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-medium border border-white/20">
+          <span>🇬🇷</span>
+          <span>חופשה משפחתית בכרתים • 17–21 בספטמבר 2026</span>
+        </div>
+        
+        <div class="flex flex-wrap items-center gap-2">
+          <!-- Base Hotel Badge -->
+          <div class="inline-flex items-center gap-2 bg-purple-500/25 text-purple-100 border border-purple-300/30 px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-medium backdrop-blur">
+            <span>🏨</span>
+            <span>בסיס כוכב: גאורגיופוליס (Georgioupoli)</span>
+          </div>
+
+          <!-- Flights & Car Rental Modal Button -->
+          <button 
+            onclick="openTravelDetailsModal()" 
+            class="inline-flex items-center gap-2 bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold px-4 py-1.5 rounded-full text-xs sm:text-sm shadow-md transition transform active:scale-95"
+            title="הצגת כל פרטי הטיסה והשכרת הרכב"
+          >
+            <span>✈️🚗</span>
+            <span>פרטי טיסה ורכב</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Main Title & Subtitle -->
+      <div class="text-right max-w-3xl">
+        <h1 class="heading-font text-3xl sm:text-5xl font-black tracking-tight leading-tight text-white mb-3">
+          האטרקציות ומוקדי הטבע המובילים
+        </h1>
+        <p class="text-sky-100 text-base sm:text-lg leading-relaxed font-light">
+          11 מוקדי הטבע והנופים הנבחרים לחופשה: לגונות טורקיז מפורסמות, קניוני מים זורמים ומפלים, פיורד לשנירקול, עיירות ונציאניות ואגם פסטורלי.
+        </p>
+      </div>
+
+      <!-- Key Trip Stats -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-8 pt-6 border-t border-white/15 text-center">
+        <div class="bg-white/10 backdrop-blur rounded-2xl p-3 border border-white/10">
+          <div class="text-2xl font-bold text-cyan-300">11</div>
+          <div class="text-xs text-sky-200">מוקדי עניין נבחרים</div>
+        </div>
+        <div class="bg-white/10 backdrop-blur rounded-2xl p-3 border border-white/10">
+          <div class="text-2xl font-bold text-cyan-300">4</div>
+          <div class="text-xs text-sky-200">אזורים גיאוגרפיים</div>
+        </div>
+        <div class="bg-white/10 backdrop-blur rounded-2xl p-3 border border-white/10">
+          <div class="text-2xl font-bold text-cyan-300">4</div>
+          <div class="text-xs text-sky-200">קניוני טבע ומים</div>
+        </div>
+        <div class="bg-white/10 backdrop-blur rounded-2xl p-3 border border-white/10">
+          <div class="text-2xl font-bold text-cyan-300">5</div>
+          <div class="text-xs text-sky-200">ימי חופשה מלאים (בוקר עד לילה)</div>
+        </div>
+      </div>
+
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 sm:px-8 -mt-6 flex-1 w-full pb-16">
+    
+    <!-- Filter Pills & Search Section -->
+    <div class="bg-white rounded-2xl shadow-lg border border-slate-200/80 p-4 sm:p-5 mb-8">
+      <div class="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
+        
+        <!-- Region Filter Pills -->
+        <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1 text-sm font-medium">
+          <button onclick="filterRegion('all')" id="btn-all" class="filter-btn active-filter px-4 py-2 rounded-xl whitespace-nowrap transition bg-sky-600 text-white shadow-sm font-semibold">
+            הכל (11)
+          </button>
+          <button onclick="filterRegion('northwest')" id="btn-northwest" class="filter-btn px-4 py-2 rounded-xl whitespace-nowrap transition bg-slate-100 text-slate-700 hover:bg-slate-200">
+            צפון-מערב (חאניה)
+          </button>
+          <button onclick="filterRegion('southwest')" id="btn-southwest" class="filter-btn px-4 py-2 rounded-xl whitespace-nowrap transition bg-slate-100 text-slate-700 hover:bg-slate-200">
+            דרום-מערב (אלפוניסי)
+          </button>
+          <button onclick="filterRegion('south')" id="btn-south" class="filter-btn px-4 py-2 rounded-xl whitespace-nowrap transition bg-slate-100 text-slate-700 hover:bg-slate-200">
+            דרום ומפלים (קורטליוטיקו)
+          </button>
+          <button onclick="filterRegion('center')" id="btn-center" class="filter-btn px-4 py-2 rounded-xl whitespace-nowrap transition bg-slate-100 text-slate-700 hover:bg-slate-200">
+            מרכז, אגם ורתימנו
+          </button>
+        </div>
+
+        <!-- Search input & Share Action -->
+        <div class="flex items-center gap-2">
+          <div class="relative flex-1 sm:w-64">
+            <input 
+              type="text" 
+              id="search-input" 
+              oninput="handleSearch()"
+              placeholder="חיפוש אטרקציה (שם, מים, מסלול...)" 
+              class="w-full pl-3 pr-9 py-2 rounded-xl text-sm bg-slate-50 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:bg-white transition"
+            />
+            <span class="absolute right-3 top-2.5 text-slate-400 text-sm">🔍</span>
+          </div>
+          
+          <button 
+            onclick="sharePlan()" 
+            class="inline-flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold px-4 py-2 rounded-xl transition shadow-sm whitespace-nowrap"
+            title="שיתוף הרשימה בוואטסאפ"
+          >
+            <span>📲</span>
+            <span>שתף למשפחה</span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Full-Width Interactive Map Explorer Section -->
+    <section id="map-section" class="bg-white rounded-3xl p-4 sm:p-6 shadow-md border border-slate-200/90 mb-10 overflow-hidden">
+      <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-2xl bg-sky-100 text-sky-800 flex items-center justify-center text-xl">
+            🗺️
+          </div>
+          <div>
+            <h2 class="heading-font text-lg sm:text-xl font-bold text-slate-900 leading-tight">
+              מפת Google Maps המובנית של היעדים
+            </h2>
+            <p class="text-xs text-slate-500">
+              לחצו או עברו עם העכבר על היעדים כדי לראות את המיקום המדויק ישירות ב-Google Maps
+            </p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <!-- Reset Map View Button -->
+          <button 
+            onclick="resetGoogleMap()" 
+            class="text-xs font-semibold px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition flex items-center gap-1.5 shadow-sm"
+            title="איפוס מבט המפה לכל כרתים"
+          >
+            <span>🔄</span>
+            <span>מבט כללי על כרתים</span>
+          </button>
+          
+          <!-- Direct Google Maps App Route link -->
+          <a 
+            href="https://www.google.com/maps/dir/Heraklion+International+Airport/Rethymno/Georgioupoli/Lake+Kournas/Patsos+Gorge/Kourtaliotiko+Gorge/Kalypso+Beach/Preveli+Beach/Imbros+Gorge/Chania/Balos+Beach/Elafonisi+Beach" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            class="text-xs font-bold px-3.5 py-2 rounded-xl bg-sky-600 hover:bg-sky-500 text-white transition flex items-center gap-1.5 shadow-sm"
+          >
+            <span>🚀</span>
+            <span>פתח מסלול מלא ב-App</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Quick Destination Chips Navigation Bar -->
+      <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-2 text-xs font-medium border-b border-slate-100 mb-3" id="map-chips-bar">
+        <button onclick="selectDestinationMap(-1)" id="chip-base" class="map-chip active-chip px-3 py-1.5 rounded-xl whitespace-nowrap bg-purple-100 text-purple-900 border border-purple-200">
+          🏨 גאורגיופוליס (הבסיס)
+        </button>
+        <button onclick="selectDestinationMap(0)" id="chip-0" class="map-chip px-3 py-1.5 rounded-xl whitespace-nowrap bg-slate-100 text-slate-700 border border-slate-200">
+          🏝️ באלוס וגרמבוסה
+        </button>
+        <button onclick="selectDestinationMap(1)" id="chip-1" class="map-chip px-3 py-1.5 rounded-xl whitespace-nowrap bg-slate-100 text-slate-700 border border-slate-200">
+          ⛵ חאניה העתיקה
+        </button>
+        <button onclick="selectDestinationMap(2)" id="chip-2" class="map-chip px-3 py-1.5 rounded-xl whitespace-nowrap bg-slate-100 text-slate-700 border border-slate-200">
+          🌊 סייטן לימני
+        </button>
+        <button onclick="selectDestinationMap(3)" id="chip-3" class="map-chip px-3 py-1.5 rounded-xl whitespace-nowrap bg-slate-100 text-slate-700 border border-slate-200">
+          🪸 אלפוניסי
+        </button>
+        <button onclick="selectDestinationMap(4)" id="chip-4" class="map-chip px-3 py-1.5 rounded-xl whitespace-nowrap bg-slate-100 text-slate-700 border border-slate-200">
+          🥾 קניון אימברוס
+        </button>
+        <button onclick="selectDestinationMap(5)" id="chip-5" class="map-chip px-3 py-1.5 rounded-xl whitespace-nowrap bg-slate-100 text-slate-700 border border-slate-200">
+          💦 קניון קורטליוטיקו
+        </button>
+        <button onclick="selectDestinationMap(6)" id="chip-6" class="map-chip px-3 py-1.5 rounded-xl whitespace-nowrap bg-slate-100 text-slate-700 border border-slate-200">
+          🌴 יער הדקלים פרבלי
+        </button>
+        <button onclick="selectDestinationMap(7)" id="chip-7" class="map-chip px-3 py-1.5 rounded-xl whitespace-nowrap bg-slate-100 text-slate-700 border border-slate-200">
+          🤿 חוף קליפסו (פיורד)
+        </button>
+        <button onclick="selectDestinationMap(8)" id="chip-8" class="map-chip px-3 py-1.5 rounded-xl whitespace-nowrap bg-slate-100 text-slate-700 border border-slate-200">
+          🐢 אגם קורנאס
+        </button>
+        <button onclick="selectDestinationMap(9)" id="chip-9" class="map-chip px-3 py-1.5 rounded-xl whitespace-nowrap bg-slate-100 text-slate-700 border border-slate-200">
+          🧗 קניון פאטסוס
+        </button>
+        <button onclick="selectDestinationMap(10)" id="chip-10" class="map-chip px-3 py-1.5 rounded-xl whitespace-nowrap bg-slate-100 text-slate-700 border border-slate-200">
+          🏛️ רתימנו העתיקה
+        </button>
+        <button onclick="selectDestinationMap(-2)" id="chip-airport" class="map-chip px-3 py-1.5 rounded-xl whitespace-nowrap bg-slate-100 text-slate-700 border border-slate-200">
+          ✈️ שדה הרקליון
+        </button>
+      </div>
+
+      <!-- Embedded Google Map iFrame Container -->
+      <div id="gmap-frame-container" class="rounded-2xl overflow-hidden shadow-inner border border-slate-200">
+        <iframe 
+          id="gmap-frame" 
+          src="https://maps.google.com/maps?q=Georgioupoli+Crete&t=&z=11&ie=UTF8&iwloc=&output=embed" 
+          width="100%" 
+          height="100%" 
+          style="border:0;" 
+          allowfullscreen="" 
+          loading="lazy" 
+          referrerpolicy="no-referrer-when-downgrade"
+          class="w-full h-full"
+        ></iframe>
+      </div>
+
+      <!-- Live Interactive Info Bar -->
+      <div id="map-hover-info" class="mt-3 p-3 bg-sky-50/80 border border-sky-100 rounded-2xl min-h-[56px] flex items-center justify-between text-xs text-slate-700 transition">
+        <div class="flex items-center gap-2">
+          <span class="text-base">🏨</span>
+          <span class="font-bold text-slate-900">מלון הבסיס: גאורגיופוליס (Georgioupoli)</span>
+          <span class="text-slate-500">— נקודת כוכב אסטרטגית על הים במרחק 5 דק' מאגם קורנאס וגישה ישירה לכביש 90.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section Heading & Counter -->
+    <div class="flex items-center justify-between mb-6 px-1">
+      <h2 id="section-heading" class="heading-font text-xl sm:text-2xl font-bold text-slate-900 flex items-center gap-2">
+        <span>📍</span>
+        <span>כל המקומות המומלצים</span>
+      </h2>
+      <span id="items-counter" class="text-xs text-slate-600 font-semibold bg-slate-200/80 px-3 py-1 rounded-full">
+        מציג 11 מתוך 11 יעדים
+      </span>
+    </div>
+
+    <!-- 2 CARDS PER ROW GRID (Spacious and responsive) -->
+    <div id="cards-container" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+      <!-- 1. לגונת באלוס והאי גרמבוסה -->
+      <div class="destination-card bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl border border-slate-200 flex flex-col justify-between" data-region="northwest" data-index="0">
+        <div>
+          <div class="relative h-60 w-full overflow-hidden bg-slate-100">
+            <img 
+              src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80" 
+              alt="לגונת באלוס והאי גרמבוסה" 
+              loading="lazy"
+              onerror="this.onerror=null;this.src='https://placehold.co/800x500/0284c7/ffffff?text=Balos+Lagoon';"
+              class="w-full h-full object-cover"
+            />
+            <div class="absolute top-3 right-3 bg-sky-900/85 backdrop-blur-md text-white text-xs font-bold px-3 py-1 rounded-full shadow">
+              צפון-מערב
+            </div>
+            <div class="absolute bottom-3 right-3 bg-white/95 backdrop-blur-md text-slate-900 text-xs font-bold px-3 py-1.5 rounded-xl shadow flex items-center gap-1.5">
+              <span>⏳</span>
+              <span>5–6 שעות (כולל שייט)</span>
+            </div>
+          </div>
+
+          <div class="p-5">
+            <h3 class="heading-font text-lg font-bold text-slate-900 mb-0.5">
+              לגונת באלוס והאי גרמבוסה
+            </h3>
+            <p class="text-xs text-slate-500 font-medium mb-3">Balos Lagoon & Gramvousa Island</p>
+            
+            <p class="text-sm text-slate-600 leading-relaxed mb-4">
+              שייט במעבורת מנמל קיסאמוס אל לגונת טורקיז מפורסמת עם מים רדודים, צלולים וחמימים, וחול לבן-ורדרד. בדרך עולים למבצר הוונציאני ההיסטורי המשקיף ממעוף הציפור על כל המפרץ. חוויה טרופית בלתי נשכחת לכל המשפחה.
+            </p>
+
+            <div class="bg-amber-50 border border-amber-200/70 rounded-2xl p-3 text-xs text-amber-900 flex items-start gap-2 mb-4">
+              <span>💡</span>
+              <span><strong>טיפ משפחתי:</strong> להגיע רק בשייט מנמל Kissamos (לא ברכב עקב דרך עפר משובשת שאינה מכוסה בביטוח).</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-5 pt-0 grid grid-cols-2 gap-2">
+          <button 
+            onclick="focusAndShowMap(0)" 
+            class="inline-flex items-center justify-center gap-1.5 bg-sky-50 hover:bg-sky-100 text-sky-700 font-bold text-xs py-2.5 px-3 rounded-xl transition border border-sky-200"
+          >
+            <span>📍</span>
+            <span>הצג על המפה</span>
+          </button>
+          <a 
+            href="https://www.google.com/maps/search/?api=1&query=Balos+Lagoon+Crete" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            class="inline-flex items-center justify-center gap-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs py-2.5 px-3 rounded-xl transition border border-slate-200"
+          >
+            <span>🗺️</span>
+            <span>Google Maps</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- 2. העיר העתיקה והנמל הוונציאני בחאניה -->
+      <div class="destination-card bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl border border-slate-200 flex flex-col justify-between" data-region="northwest" data-index="1">
+        <div>
+          <div class="relative h-60 w-full overflow-hidden bg-slate-100">
+            <img 
+              src="https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=800&q=80" 
+              alt="העיר העתיקה והנמל הוונציאני בחאניה" 
+              loading="lazy"
+              onerror="this.onerror=null;this.src='https://placehold.co/800x500/0369a1/ffffff?text=Chania+Old+Town';"
+              class="w-full h-full object-cover"
+            />
+            <div class="absolute top-3 right-3 bg-sky-900/85 backdrop-blur-md text-white text-xs font-bold px-3 py-1 rounded-full shadow">
+              צפון-מערב
+            </div>
+            <div class="absolute bottom-3 right-3 bg-white/95 backdrop-blur-md text-slate-900 text-xs font-bold px-3 py-1.5 rounded-xl shadow flex items-center gap-1.5">
+              <span>⏳</span>
+              <span>3–4 שעות (מושלם לערב)</span>
+            </div>
+          </div>
+
+          <div class="p-5">
+            <h3 class="heading-font text-lg font-bold text-slate-900 mb-0.5">
+              העיר העתיקה והנמל הוונציאני בחאניה
+            </h3>
+            <p class="text-xs text-slate-500 font-medium mb-3">Old Venetian Harbor & Town of Chania</p>
+            
+            <p class="text-sm text-slate-600 leading-relaxed mb-4">
+              שיטוט בין סמטאות אבן ציוריות וצבעוניות, עמוסות בחנויות בוטיק מקומיות, סדנאות עבודת יד ומבנים היסטוריים. צועדים על שובר הגלים עד למגדלור המצרי המפורסם, וחותמים בארוחת ערב בטברנה מול מי הנמל הנוצצים.
+            </p>
+
+            <div class="bg-sky-50 border border-sky-200/70 rounded-2xl p-3 text-xs text-sky-900 flex items-start gap-2 mb-4">
+              <span>💡</span>
+              <span><strong>טיפ משפחתי:</strong> מומלץ לחנות בחניון Talos המוסדר מחוץ לחומות ולהיכנס ברגל כדי להימנע מפקקים בסמטאות.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-5 pt-0 grid grid-cols-2 gap-2">
+          <button 
+            onclick="focusAndShowMap(1)" 
+            class="inline-flex items-center justify-center gap-1.5 bg-sky-50 hover:bg-sky-100 text-sky-700 font-bold text-xs py-2.5 px-3 rounded-xl transition border border-sky-200"
+          >
+            <span>📍</span>
+            <span>הצג על המפה</span>
+          </button>
+          <a 
+            href="https://www.google.com/maps/search/?api=1&query=Old+Venetian+Port+Chania" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            class="inline-flex items-center justify-center gap-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs py-2.5 px-3 rounded-xl transition border border-slate-200"
+          >
+            <span>🗺️</span>
+            <span>Google Maps</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- 3. חוף סייטן לימני -->
+      <div class="destination-card bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl border border-slate-200 flex flex-col justify-between" data-region="northwest" data-index="2">
+        <div>
+          <div class="relative h-60 w-full overflow-hidden bg-slate-100">
+            <img 
+              src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80" 
+              alt="חוף סייטן לימני" 
+              loading="lazy"
+              onerror="this.onerror=null;this.src='https://placehold.co/800x500/0e7490/ffffff?text=Seitan+Limania';"
+              class="w-full h-full object-cover"
+            />
+            <div class="absolute top-3 right-3 bg-sky-900/85 backdrop-blur-md text-white text-xs font-bold px-3 py-1 rounded-full shadow">
+              צפון-מערב
+            </div>
+            <div class="absolute bottom-3 right-3 bg-white/95 backdrop-blur-md text-slate-900 text-xs font-bold px-3 py-1.5 rounded-xl shadow flex items-center gap-1.5">
+              <span>⏳</span>
+              <span>2–3 שעות</span>
+            </div>
+          </div>
+
+          <div class="p-5">
+            <h3 class="heading-font text-lg font-bold text-slate-900 mb-0.5">
+              חוף סייטן לימני (זיג-זג)
+            </h3>
+            <p class="text-xs text-slate-500 font-medium mb-3">Seitan Limania Beach (Stefanou)</p>
+            
+            <p class="text-sm text-slate-600 leading-relaxed mb-4">
+              מפרץ צר ופראי שנחרץ בין מצוקי סלע אנכיים דמויי זיג-זג, עם גוון מים טורקיז-ניאון עוצר נשימה. שוחים במים מוגנים מגלים ונהנים מתצפיות מרהיבות על אחד החופים הפוטוגניים והייחודיים ביותר ביוון.
+            </p>
+
+            <div class="bg-rose-50 border border-rose-200/70 rounded-2xl p-3 text-xs text-rose-900 flex items-start gap-2 mb-4">
+              <span>⚠️</span>
+              <span><strong>שימו לב:</strong> הירידה הרגלית מהחניה תלולה (כ-15 דק'). חובה לנעול נעלי ספורט סגורות ולהצטייד במים וצל.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-5 pt-0 grid grid-cols-2 gap-2">
+          <button 
+            onclick="focusAndShowMap(2)" 
+            class="inline-flex items-center justify-center gap-1.5 bg-sky-50 hover:bg-sky-100 text-sky-700 font-bold text-xs py-2.5 px-3 rounded-xl transition border border-sky-200"
+          >
+            <span>📍</span>
+            <span>הצג על המפה</span>
+          </button>
+          <a 
+            href="https://www.google.com/maps/search/?api=1&query=Seitan+Limania+Beach+Crete" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            class="inline-flex items-center justify-center gap-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs py-2.5 px-3 rounded-xl transition border border-slate-200"
+          >
+            <span>🗺️</span>
+            <span>Google Maps</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- 4. חוף אלפוניסי -->
+      <div class="destination-card bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl border border-slate-200 flex flex-col justify-between" data-region="southwest" data-index="3">
+        <div>
+          <div class="relative h-60 w-full overflow-hidden bg-slate-100">
+            <img 
+              src="https://images.unsplash.com/photo-1506929562872-bb421503ef21?auto=format&fit=crop&w=800&q=80" 
+              alt="חוף אלפוניסי" 
+              loading="lazy"
+              onerror="this.onerror=null;this.src='https://placehold.co/800x500/ec4899/ffffff?text=Elafonisi+Pink+Beach';"
+              class="w-full h-full object-cover"
+            />
+            <div class="absolute top-3 right-3 bg-pink-700/85 backdrop-blur-md text-white text-xs font-bold px-3 py-1 rounded-full shadow">
+              דרום-מערב
+            </div>
+            <div class="absolute bottom-3 right-3 bg-white/95 backdrop-blur-md text-slate-900 text-xs font-bold px-3 py-1.5 rounded-xl shadow flex items-center gap-1.5">
+              <span>⏳</span>
+              <span>4–5 שעות</span>
+            </div>
+          </div>
+
+          <div class="p-5">
+            <h3 class="heading-font text-lg font-bold text-slate-900 mb-0.5">
+              חוף אלפוניסי (החול הוורוד)
+            </h3>
+            <p class="text-xs text-slate-500 font-medium mb-3">Elafonisi Beach</p>
+            
+            <p class="text-sm text-slate-600 leading-relaxed mb-4">
+              לגונה חלומית המפורסמת ברחבי העולם בגוון הוורוד של גרגרי החול ובמים רדודים, צלולים וחמימים שנעים ללכת בהם למרחקים. הולכים ברגל בתוך המים הרדודים אל האיון הסמוך ומוצאים פינות מבודדות ושלוליות חול מרהיבות.
+            </p>
+
+            <div class="bg-amber-50 border border-amber-200/70 rounded-2xl p-3 text-xs text-amber-900 flex items-start gap-2 mb-4">
+              <span>💡</span>
+              <span><strong>טיפ משפחתי:</strong> מומלץ להגיע לפני 10:30 בבוקר כדי לתפוס חניה נוחה ושמשיות פנויות לפני שמתמלא.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-5 pt-0 grid grid-cols-2 gap-2">
+          <button 
+            onclick="focusAndShowMap(3)" 
+            class="inline-flex items-center justify-center gap-1.5 bg-sky-50 hover:bg-sky-100 text-sky-700 font-bold text-xs py-2.5 px-3 rounded-xl transition border border-sky-200"
+          >
+            <span>📍</span>
+            <span>הצג על המפה</span>
+          </button>
+          <a 
+            href="https://www.google.com/maps/search/?api=1&query=Elafonisi+Beach+Crete" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            class="inline-flex items-center justify-center gap-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs py-2.5 px-3 rounded-xl transition border border-slate-200"
+          >
+            <span>🗺️</span>
+            <span>Google Maps</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- 5. קניון אימברוס וחורה ספאקיון -->
+      <div class="destination-card bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl border border-slate-200 flex flex-col justify-between" data-region="southwest" data-index="4">
+        <div>
+          <div class="relative h-60 w-full overflow-hidden bg-slate-100">
+            <img 
+              src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=800&q=80" 
+              alt="קניון אימברוס" 
+              loading="lazy"
+              onerror="this.onerror=null;this.src='https://placehold.co/800x500/059669/ffffff?text=Imbros+Gorge';"
+              class="w-full h-full object-cover"
+            />
+            <div class="absolute top-3 right-3 bg-emerald-800/85 backdrop-blur-md text-white text-xs font-bold px-3 py-1 rounded-full shadow">
+              דרום-מערב
+            </div>
+            <div class="absolute bottom-3 right-3 bg-white/95 backdrop-blur-md text-slate-900 text-xs font-bold px-3 py-1.5 rounded-xl shadow flex items-center gap-1.5">
+              <span>⏳</span>
+              <span>3 שעות מסלול + שעתיים טברנה</span>
+            </div>
+          </div>
+
+          <div class="p-5">
+            <h3 class="heading-font text-lg font-bold text-slate-900 mb-0.5">
+              קניון אימברוס וחורה ספאקיון
+            </h3>
+            <p class="text-xs text-slate-500 font-medium mb-3">Imbros Gorge & Chora Sfakion</p>
+            
+            <p class="text-sm text-slate-600 leading-relaxed mb-4">
+              מסלול הליכה משפחתי מוצל ונוח (8 ק"מ, כשעתיים וחצי בירידה מתונה) בתוך ערוץ דרמטי שנסגר עד לרוחב 1.6 מטרים בלבד בין צוקי ענק. בסיום המסלול יורדים לעיירת הדייגים חורה ספאקיון לטבילה בים הלובי וארוחת דגים טריים.
+            </p>
+
+            <div class="bg-emerald-50 border border-emerald-200/70 rounded-2xl p-3 text-xs text-emerald-900 flex items-start gap-2 mb-4">
+              <span>💡</span>
+              <span><strong>טיפ משפחתי:</strong> בסוף המסלול יש טנדרים מקומיים שלוקחים את הנהג בחזרה במחיר סמלי לאסוף את הרכב.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-5 pt-0 grid grid-cols-2 gap-2">
+          <button 
+            onclick="focusAndShowMap(4)" 
+            class="inline-flex items-center justify-center gap-1.5 bg-sky-50 hover:bg-sky-100 text-sky-700 font-bold text-xs py-2.5 px-3 rounded-xl transition border border-sky-200"
+          >
+            <span>📍</span>
+            <span>הצג על המפה</span>
+          </button>
+          <a 
+            href="https://www.google.com/maps/search/?api=1&query=Imbros+Gorge+Crete" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            class="inline-flex items-center justify-center gap-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs py-2.5 px-3 rounded-xl transition border border-slate-200"
+          >
+            <span>🗺️</span>
+            <span>Google Maps</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- 6. קניון קורטליוטיקו והמפל הנסתר -->
+      <div class="destination-card bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl border border-slate-200 flex flex-col justify-between" data-region="south" data-index="5">
+        <div>
+          <div class="relative h-60 w-full overflow-hidden bg-slate-100">
+            <img 
+              src="https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?auto=format&fit=crop&w=800&q=80" 
+              alt="קניון קורטליוטיקו" 
+              loading="lazy"
+              onerror="this.onerror=null;this.src='https://placehold.co/800x500/0284c7/ffffff?text=Kourtaliotiko+Gorge';"
+              class="w-full h-full object-cover"
+            />
+            <div class="absolute top-3 right-3 bg-blue-800/85 backdrop-blur-md text-white text-xs font-bold px-3 py-1 rounded-full shadow">
+              דרום ומפלים
+            </div>
+            <div class="absolute bottom-3 right-3 bg-white/95 backdrop-blur-md text-slate-900 text-xs font-bold px-3 py-1.5 rounded-xl shadow flex items-center gap-1.5">
+              <span>⏳</span>
+              <span>2–3 שעות</span>
+            </div>
+          </div>
+
+          <div class="p-5">
+            <h3 class="heading-font text-lg font-bold text-slate-900 mb-0.5">
+              קניון קורטליוטיקו והמפל הנסתר
+            </h3>
+            <p class="text-xs text-slate-500 font-medium mb-3">Kourtaliotiko Gorge & Waterfalls</p>
+            
+            <p class="text-sm text-slate-600 leading-relaxed mb-4">
+              ירידה בכ-250 מדרגות מהכביש אל עומק נקיק פראי שבו זורם נהר קריר. הולכים במים עם סנדלים ושוחים בבריכה טבעית צלולה עד למפל שוצף ומרשים שמגיח מתוך חלל סלעי נסתר – חוויית טבע מרעננת והרפתקנית במיוחד.
+            </p>
+
+            <div class="bg-blue-50 border border-blue-200/70 rounded-2xl p-3 text-xs text-blue-900 flex items-start gap-2 mb-4">
+              <span>💡</span>
+              <span><strong>טיפ משפחתי:</strong> חובה להביא סנדלי שורש/נעלי מים ושקית אטומה למים לטלפונים. המים קרירים אך מרעננים מאוד!</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-5 pt-0 grid grid-cols-2 gap-2">
+          <button 
+            onclick="focusAndShowMap(5)" 
+            class="inline-flex items-center justify-center gap-1.5 bg-sky-50 hover:bg-sky-100 text-sky-700 font-bold text-xs py-2.5 px-3 rounded-xl transition border border-sky-200"
+          >
+            <span>📍</span>
+            <span>הצג על המפה</span>
+          </button>
+          <a 
+            href="https://www.google.com/maps/search/?api=1&query=Kourtaliotiko+Gorge+Waterfall" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            class="inline-flex items-center justify-center gap-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs py-2.5 px-3 rounded-xl transition border border-slate-200"
+          >
+            <span>🗺️</span>
+            <span>Google Maps</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- 7. חוף ויער הדקלים פרבלי -->
+      <div class="destination-card bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl border border-slate-200 flex flex-col justify-between" data-region="south" data-index="6">
+        <div>
+          <div class="relative h-60 w-full overflow-hidden bg-slate-100">
+            <img 
+              src="https://images.unsplash.com/photo-1510414842594-a61c69b5ae57?auto=format&fit=crop&w=800&q=80" 
+              alt="חוף ויער הדקלים פרבלי" 
+              loading="lazy"
+              onerror="this.onerror=null;this.src='https://placehold.co/800x500/15803d/ffffff?text=Preveli+Palm+Beach';"
+              class="w-full h-full object-cover"
+            />
+            <div class="absolute top-3 right-3 bg-emerald-800/85 backdrop-blur-md text-white text-xs font-bold px-3 py-1 rounded-full shadow">
+              דרום ומפלים
+            </div>
+            <div class="absolute bottom-3 right-3 bg-white/95 backdrop-blur-md text-slate-900 text-xs font-bold px-3 py-1.5 rounded-xl shadow flex items-center gap-1.5">
+              <span>⏳</span>
+              <span>3–4 שעות</span>
+            </div>
+          </div>
+
+          <div class="p-5">
+            <h3 class="heading-font text-lg font-bold text-slate-900 mb-0.5">
+              חוף ויער הדקלים פרבלי
+            </h3>
+            <p class="text-xs text-slate-500 font-medium mb-3">Preveli Palm Beach & River</p>
+            
+            <p class="text-sm text-slate-600 leading-relaxed mb-4">
+              המקום שבו נהר קורטליוטיקו נשפך אל הים הלובי, כשהוא חוצה יער דקלים טבעי ומוצל מהיפים בים התיכון. הולכים בשבילים מוצלים לצד הנחל ומשלבים טבילה מרעננת במי הנחל המתוקים יחד עם שחייה במי הים הפתוח.
+            </p>
+
+            <div class="bg-emerald-50 border border-emerald-200/70 rounded-2xl p-3 text-xs text-emerald-900 flex items-start gap-2 mb-4">
+              <span>💡</span>
+              <span><strong>טיפ משפחתי:</strong> ניתן לרדת מהמצוק ברגל (מדרגות עם נוף מהמם) או לקחת סירת מונית קצרה מנמל Plakias.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-5 pt-0 grid grid-cols-2 gap-2">
+          <button 
+            onclick="focusAndShowMap(6)" 
+            class="inline-flex items-center justify-center gap-1.5 bg-sky-50 hover:bg-sky-100 text-sky-700 font-bold text-xs py-2.5 px-3 rounded-xl transition border border-sky-200"
+          >
+            <span>📍</span>
+            <span>הצג על המפה</span>
+          </button>
+          <a 
+            href="https://www.google.com/maps/search/?api=1&query=Preveli+Beach+Crete" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            class="inline-flex items-center justify-center gap-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs py-2.5 px-3 rounded-xl transition border border-slate-200"
+          >
+            <span>🗺️</span>
+            <span>Google Maps</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- 8. חוף קליפסו / פיורד הפיראטים -->
+      <div class="destination-card bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl border border-slate-200 flex flex-col justify-between" data-region="south" data-index="7">
+        <div>
+          <div class="relative h-60 w-full overflow-hidden bg-slate-100">
+            <img 
+              src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=800&q=80" 
+              alt="חוף קליפסו - פיורד הפיראטים" 
+              loading="lazy"
+              onerror="this.onerror=null;this.src='https://placehold.co/800x500/0369a1/ffffff?text=Kalypso+Pirates+Fjord';"
+              class="w-full h-full object-cover"
+            />
+            <div class="absolute top-3 right-3 bg-blue-800/85 backdrop-blur-md text-white text-xs font-bold px-3 py-1 rounded-full shadow">
+              דרום ומפלים
+            </div>
+            <div class="absolute bottom-3 right-3 bg-white/95 backdrop-blur-md text-slate-900 text-xs font-bold px-3 py-1.5 rounded-xl shadow flex items-center gap-1.5">
+              <span>⏳</span>
+              <span>2–3 שעות</span>
+            </div>
+          </div>
+
+          <div class="p-5">
+            <h3 class="heading-font text-lg font-bold text-slate-900 mb-0.5">
+              חוף קליפסו (פיורד הפיראטים)
+            </h3>
+            <p class="text-xs text-slate-500 font-medium mb-3">Kalypso Beach / Pirates Fjord (Plakias)</p>
+            
+            <p class="text-sm text-slate-600 leading-relaxed mb-4">
+              פיורד צר ודרמטי שנחבא בין צוקי ענק זקופים, עם מי טורקיז עמוקים וצלולים הנחשבים לאתר השנירקול והצלילה הטוב ביותר באי. הירידה למים נעשית ממשטחי עץ וסולמות מובנים בין הסלעים, וגשר תלוי מעל המפרץ מספק תצפית עוצרת נשימה.
+            </p>
+
+            <div class="bg-blue-50 border border-blue-200/70 rounded-2xl p-3 text-xs text-blue-900 flex items-start gap-2 mb-4">
+              <span>💡</span>
+              <span><strong>טיפ משפחתי:</strong> מקום מושלם לשנירקול וקפיצות למים (כניסה למים עמוקים, מתאים למי שיודע לשחות).</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-5 pt-0 grid grid-cols-2 gap-2">
+          <button 
+            onclick="focusAndShowMap(7)" 
+            class="inline-flex items-center justify-center gap-1.5 bg-sky-50 hover:bg-sky-100 text-sky-700 font-bold text-xs py-2.5 px-3 rounded-xl transition border border-sky-200"
+          >
+            <span>📍</span>
+            <span>הצג על המפה</span>
+          </button>
+          <a 
+            href="https://www.google.com/maps/search/?api=1&query=Kalypso+Beach+Plakias+Crete" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            class="inline-flex items-center justify-center gap-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs py-2.5 px-3 rounded-xl transition border border-slate-200"
+          >
+            <span>🗺️</span>
+            <span>Google Maps</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- 9. אגם קורנאס -->
+      <div class="destination-card bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl border border-slate-200 flex flex-col justify-between" data-region="center" data-index="8">
+        <div>
+          <div class="relative h-60 w-full overflow-hidden bg-slate-100">
+            <img 
+              src="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=800&q=80" 
+              alt="אגם קורנאס" 
+              loading="lazy"
+              onerror="this.onerror=null;this.src='https://placehold.co/800x500/0d9488/ffffff?text=Lake+Kournas';"
+              class="w-full h-full object-cover"
+            />
+            <div class="absolute top-3 right-3 bg-teal-800/85 backdrop-blur-md text-white text-xs font-bold px-3 py-1 rounded-full shadow">
+              מרכז (ליד גאורגיופוליס)
+            </div>
+            <div class="absolute bottom-3 right-3 bg-white/95 backdrop-blur-md text-slate-900 text-xs font-bold px-3 py-1.5 rounded-xl shadow flex items-center gap-1.5">
+              <span>⏳</span>
+              <span>2–3 שעות</span>
+            </div>
+          </div>
+
+          <div class="p-5">
+            <h3 class="heading-font text-lg font-bold text-slate-900 mb-0.5">
+              אגם קורנאס (צבי מים ופדלים)
+            </h3>
+            <p class="text-xs text-slate-500 font-medium mb-3">Lake Kournas</p>
+            
+            <p class="text-sm text-slate-600 leading-relaxed mb-4">
+              אגם המים המתוקים היחיד בכרתים, מוקף בהרים ירוקים ומי טורקיז רוגעים. שוכרים סירת פדלים משפחתית (חלקן עם מגלשה לתוך המים), מנווטים לגדות הרחוקות כדי לצפות בצבי ביצות חמודים וברווזים, ונהנים מטבילה נעימה.
+            </p>
+
+            <div class="bg-teal-50 border border-teal-200/70 rounded-2xl p-3 text-xs text-teal-900 flex items-start gap-2 mb-4">
+              <span>💡</span>
+              <span><strong>טיפ משפחתי:</strong> נמצא 5 דקות נסיעה מגאורגיופוליס! אידיאלי גם לבוקר של יום ההמראה לפני הנסיעה לשדה.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-5 pt-0 grid grid-cols-2 gap-2">
+          <button 
+            onclick="focusAndShowMap(8)" 
+            class="inline-flex items-center justify-center gap-1.5 bg-sky-50 hover:bg-sky-100 text-sky-700 font-bold text-xs py-2.5 px-3 rounded-xl transition border border-sky-200"
+          >
+            <span>📍</span>
+            <span>הצג על המפה</span>
+          </button>
+          <a 
+            href="https://www.google.com/maps/search/?api=1&query=Lake+Kournas+Crete" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            class="inline-flex items-center justify-center gap-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs py-2.5 px-3 rounded-xl transition border border-slate-200"
+          >
+            <span>🗺️</span>
+            <span>Google Maps</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- 10. קניון פאטסוס (ערוץ אגיוס אנטוניוס) -->
+      <div class="destination-card bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl border border-slate-200 flex flex-col justify-between" data-region="center" data-index="9">
+        <div>
+          <div class="relative h-60 w-full overflow-hidden bg-slate-100">
+            <img 
+              src="https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=800&q=80" 
+              alt="קניון פאטסוס" 
+              loading="lazy"
+              onerror="this.onerror=null;this.src='https://placehold.co/800x500/16a34a/ffffff?text=Patsos+Gorge';"
+              class="w-full h-full object-cover"
+            />
+            <div class="absolute top-3 right-3 bg-emerald-800/85 backdrop-blur-md text-white text-xs font-bold px-3 py-1 rounded-full shadow">
+              מרכז (דרומית לרתימנו)
+            </div>
+            <div class="absolute bottom-3 right-3 bg-white/95 backdrop-blur-md text-slate-900 text-xs font-bold px-3 py-1.5 rounded-xl shadow flex items-center gap-1.5">
+              <span>⏳</span>
+              <span>2.5–3 שעות</span>
+            </div>
+          </div>
+
+          <div class="p-5">
+            <h3 class="heading-font text-lg font-bold text-slate-900 mb-0.5">
+              קניון פאטסוס (חבלים וסולמות)
+            </h3>
+            <p class="text-xs text-slate-500 font-medium mb-3">Patsos Gorge (St. Anthony Gorge)</p>
+            
+            <p class="text-sm text-slate-600 leading-relaxed mb-4">
+              מסלול הרפתקני מוצל ועשיר בצמחייה שנמשך לאורך נחל זורם, עם גשרוני עץ, סולמות וחבלים מובנים שמסייעים לעבור מעל סלעים ומפלים. בתחילת המסלול ניצבת קפלת סלע ייחודית, וההליכה בו מקררת ומהנה במיוחד לילדים.
+            </p>
+
+            <div class="bg-emerald-50 border border-emerald-200/70 rounded-2xl p-3 text-xs text-emerald-900 flex items-start gap-2 mb-4">
+              <span>💡</span>
+              <span><strong>טיפ משפחתי:</strong> בכניסה יש טברנה משפחתית מעולה (Drys) עם מנות כרתיות ופינת חי קטנה לילדים.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-5 pt-0 grid grid-cols-2 gap-2">
+          <button 
+            onclick="focusAndShowMap(9)" 
+            class="inline-flex items-center justify-center gap-1.5 bg-sky-50 hover:bg-sky-100 text-sky-700 font-bold text-xs py-2.5 px-3 rounded-xl transition border border-sky-200"
+          >
+            <span>📍</span>
+            <span>הצג על המפה</span>
+          </button>
+          <a 
+            href="https://www.google.com/maps/search/?api=1&query=Patsos+Gorge+Crete" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            class="inline-flex items-center justify-center gap-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs py-2.5 px-3 rounded-xl transition border border-slate-200"
+          >
+            <span>🗺️</span>
+            <span>Google Maps</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- 11. העיר העתיקה של רתימנו -->
+      <div class="destination-card bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl border border-slate-200 flex flex-col justify-between" data-region="center" data-index="10">
+        <div>
+          <div class="relative h-60 w-full overflow-hidden bg-slate-100">
+            <img 
+              src="https://images.unsplash.com/photo-1516483638261-f4dbaf036963?auto=format&fit=crop&w=800&q=80" 
+              alt="העיר העתיקה של רתימנו" 
+              loading="lazy"
+              onerror="this.onerror=null;this.src='https://placehold.co/800x500/0284c7/ffffff?text=Rethymno+Old+Town';"
+              class="w-full h-full object-cover"
+            />
+            <div class="absolute top-3 right-3 bg-cyan-900/85 backdrop-blur-md text-white text-xs font-bold px-3 py-1 rounded-full shadow">
+              מרכז
+            </div>
+            <div class="absolute bottom-3 right-3 bg-white/95 backdrop-blur-md text-slate-900 text-xs font-bold px-3 py-1.5 rounded-xl shadow flex items-center gap-1.5">
+              <span>⏳</span>
+              <span>2–3 שעות</span>
+            </div>
+          </div>
+
+          <div class="p-5">
+            <h3 class="heading-font text-lg font-bold text-slate-900 mb-0.5">
+              העיר העתיקה של רתימנו
+            </h3>
+            <p class="text-xs text-slate-500 font-medium mb-3">Old Town & Venetian Harbor of Rethymno</p>
+            
+            <p class="text-sm text-slate-600 leading-relaxed mb-4">
+              עיירת נמל רומנטית המשלבת סמטאות ציוריות מרוצפות אבן, שערים ונציאניים עתיקים ומצודת פורטצה (Fortezza) החולשת על הים. מקום אידיאלי לעצירת צהריים או ערב עם גלידריות איכותיות, מאפיות מקומיות וטיילת שוקקת חיים.
+            </p>
+
+            <div class="bg-sky-50 border border-sky-200/70 rounded-2xl p-3 text-xs text-sky-900 flex items-start gap-2 mb-4">
+              <span>💡</span>
+              <span><strong>טיפ משפחתי:</strong> עצירה טבעית ומושלמת ביום הראשון בדרך משדה התעופה הרקליון למלון בגאורגיופוליס.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-5 pt-0 grid grid-cols-2 gap-2">
+          <button 
+            onclick="focusAndShowMap(10)" 
+            class="inline-flex items-center justify-center gap-1.5 bg-sky-50 hover:bg-sky-100 text-sky-700 font-bold text-xs py-2.5 px-3 rounded-xl transition border border-sky-200"
+          >
+            <span>📍</span>
+            <span>הצג על המפה</span>
+          </button>
+          <a 
+            href="https://www.google.com/maps/search/?api=1&query=Rethymno+Old+Town+Crete" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            class="inline-flex items-center justify-center gap-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs py-2.5 px-3 rounded-xl transition border border-slate-200"
+          >
+            <span>🗺️</span>
+            <span>Google Maps</span>
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Full Route Navigation Banner -->
+    <section class="mt-12 bg-gradient-to-br from-slate-900 to-sky-950 text-white rounded-3xl p-6 sm:p-8 shadow-xl">
+      <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+        <div class="max-w-2xl">
+          <div class="inline-flex items-center gap-2 bg-cyan-500/20 text-cyan-300 text-xs font-semibold px-3.5 py-1 rounded-full mb-3">
+            <span>🗺️</span>
+            <span>מפת כל הנקודות מוכנה לנסיעה</span>
+          </div>
+          <h3 class="heading-font text-2xl font-bold mb-2">מוכנים לצאת לדרך? כל הנקודות במפה אחת</h3>
+          <p class="text-sm text-slate-300 leading-relaxed">
+            כל 11 הנקודות מוזנות ומחוברות במפת Google Maps מלאה, שתוכלו לפתוח ישירות באפליקציה בנייד ברכב כדי לנווט בקלות בין כל האטרקציות.
+          </p>
+        </div>
+
+        <div class="flex flex-wrap gap-3 w-full lg:w-auto">
+          <a 
+            href="https://www.google.com/maps/dir/Heraklion+International+Airport/Rethymno/Georgioupoli/Lake+Kournas/Patsos+Gorge/Kourtaliotiko+Gorge/Kalypso+Beach/Preveli+Beach/Imbros+Gorge/Chania/Balos+Beach/Elafonisi+Beach" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            class="flex-1 lg:flex-none inline-flex items-center justify-center gap-2 bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold px-6 py-3.5 rounded-2xl transition shadow-lg text-sm"
+          >
+            <span>🚀</span>
+            <span>פתיחת המפה המלאה של כרתים</span>
+          </a>
+          <button 
+            onclick="copyAllDetails()" 
+            class="flex-1 lg:flex-none inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 text-white font-medium px-5 py-3.5 rounded-2xl transition border border-white/20 text-sm"
+          >
+            <span>📋</span>
+            <span>העתקת תקציר היעדים</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Notification Toast Element (Non-blocking notification) -->
+    <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-sm font-medium px-6 py-3 rounded-full shadow-2xl opacity-0 pointer-events-none transition-all duration-300 z-50 flex items-center gap-2 border border-slate-700">
+      <span id="toast-icon">✅</span>
+      <span id="toast-message">ההודעה הועתקה בהצלחה!</span>
+    </div>
+
+  </main>
+
+  <!-- Flight & Car Details Modal Dialog -->
+  <div id="travel-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm opacity-0 pointer-events-none transition-all duration-300">
+    <div class="bg-white w-full max-w-2xl rounded-3xl shadow-2xl border border-slate-200 overflow-hidden flex flex-col max-h-[92vh]">
+      
+      <!-- Modal Header -->
+      <div class="bg-gradient-to-r from-sky-900 via-sky-800 to-blue-900 text-white p-5 sm:p-6 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-2xl bg-white/10 flex items-center justify-center text-xl backdrop-blur">
+            ✈️
+          </div>
+          <div>
+            <h3 class="heading-font text-lg sm:text-xl font-bold">פרטי טיסות והשכרת רכב</h3>
+            <p class="text-xs text-sky-200">חופשת משפחת ברזני בכרתים • 17–21 בספטמבר 2026</p>
+          </div>
+        </div>
+        <button 
+          onclick="closeTravelDetailsModal()" 
+          class="text-white/80 hover:text-white bg-white/10 hover:bg-white/20 w-8 h-8 rounded-full flex items-center justify-center text-sm transition"
+          title="סגירה"
+        >
+          ✕
+        </button>
+      </div>
+
+      <!-- Modal Tabs Switcher -->
+      <div class="flex border-b border-slate-200 bg-slate-50 px-4 pt-3 gap-2">
+        <button 
+          id="tab-btn-flights" 
+          onclick="switchTravelTab('flights')" 
+          class="flex-1 py-2.5 px-4 font-bold text-xs sm:text-sm rounded-t-2xl border-b-2 border-sky-600 text-sky-700 bg-white shadow-sm flex items-center justify-center gap-2 transition"
+        >
+          <span>✈️</span>
+          <span>פרטי טיסות (Blue Bird)</span>
+        </button>
+        <button 
+          id="tab-btn-car" 
+          onclick="switchTravelTab('car')" 
+          class="flex-1 py-2.5 px-4 font-bold text-xs sm:text-sm rounded-t-2xl border-b-2 border-transparent text-slate-600 hover:text-slate-900 flex items-center justify-center gap-2 transition"
+        >
+          <span>🚗</span>
+          <span>השכרת רכב (Jeep Compass)</span>
+        </button>
+      </div>
+
+      <!-- Modal Content Body -->
+      <div class="p-5 sm:p-6 overflow-y-auto space-y-4 flex-1 text-sm text-slate-700">
+        
+        <!-- Tab 1: Flights Content -->
+        <div id="tab-content-flights" class="space-y-4">
+          
+          <!-- Outbound Flight Card -->
+          <div class="bg-sky-50/70 border border-sky-200/80 rounded-2xl p-4">
+            <div class="flex items-center justify-between mb-2">
+              <span class="inline-flex items-center gap-1.5 text-xs font-bold bg-sky-600 text-white px-3 py-1 rounded-full">
+                <span>🛫</span>
+                <span>טיסת הלוך • BZ752</span>
+              </span>
+              <span class="text-xs font-semibold text-slate-600">יום חמישי, 17/09/2026</span>
+            </div>
+            <div class="grid grid-cols-2 gap-3 text-center sm:text-right mt-3 bg-white p-3 rounded-xl border border-sky-100">
+              <div>
+                <div class="text-xs text-slate-500">המראה (טרמינל 3)</div>
+                <div class="text-lg font-extrabold text-slate-900">08:20</div>
+                <div class="text-xs font-medium text-slate-700">תל אביב (TLV)</div>
+              </div>
+              <div class="border-r border-slate-200 pr-3">
+                <div class="text-xs text-slate-500">נחיתה בהרקליון</div>
+                <div class="text-lg font-extrabold text-emerald-600">10:10</div>
+                <div class="text-xs font-medium text-slate-700">כרתים הרקליון (HER)</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Inbound Flight Card -->
+          <div class="bg-indigo-50/70 border border-indigo-200/80 rounded-2xl p-4">
+            <div class="flex items-center justify-between mb-2">
+              <span class="inline-flex items-center gap-1.5 text-xs font-bold bg-indigo-700 text-white px-3 py-1 rounded-full">
+                <span>🛬</span>
+                <span>טיסת חזור • BZ751</span>
+              </span>
+              <span class="text-xs font-semibold text-slate-600">יום שני, 21/09/2026</span>
+            </div>
+            <div class="grid grid-cols-2 gap-3 text-center sm:text-right mt-3 bg-white p-3 rounded-xl border border-indigo-100">
+              <div>
+                <div class="text-xs text-slate-500">המראה מכרתים</div>
+                <div class="text-lg font-extrabold text-slate-900">21:30</div>
+                <div class="text-xs font-medium text-slate-700">כרתים הרקליון (HER)</div>
+              </div>
+              <div class="border-r border-slate-200 pr-3">
+                <div class="text-xs text-slate-500">נחיתה בנתב"ג</div>
+                <div class="text-lg font-extrabold text-emerald-600">23:10</div>
+                <div class="text-xs font-medium text-slate-700">תל אביב (TLV)</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Passengers & Baggage Info -->
+          <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 text-xs space-y-2.5">
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-slate-900">קוד הזמנה (PNR):</span>
+              <span class="font-mono bg-slate-200 px-2.5 py-0.5 rounded font-bold text-slate-800">305B7058</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-slate-900">הרכב נוסעים (4):</span>
+              <span class="font-medium">אביחי, רחל, שי, טל ברזני</span>
+            </div>
+            <div class="pt-2 border-t border-slate-200/80">
+              <div class="font-bold text-slate-900 mb-1 flex items-center gap-1.5">
+                <span>🧳</span>
+                <span>מדיניות כבודה מדויקת להזמנה:</span>
+              </div>
+              <div class="bg-amber-50/90 border border-amber-200/80 p-2.5 rounded-xl space-y-1.5 text-amber-950">
+                <div class="flex items-center gap-2 font-semibold">
+                  <span class="text-base">🧳</span>
+                  <span><strong>מזוודת בטן:</strong> מזוודה אחת בלבד עד 20 ק"ג (לכל המשפחה יחד)</span>
+                </div>
+                <div class="flex items-center gap-2 font-semibold">
+                  <span class="text-base">🎒</span>
+                  <span><strong>כבודת יד בתא הנוסעים:</strong> תיק גב אישי (Handbag) לכל אחד מ-4 הנוסעים (מתחת למושב)</span>
+                </div>
+                <div class="text-[11px] text-amber-800/90 pt-1">
+                  * שימו לב: אין כבודת טרולי נוספת מעבר לתיק הגב האישי ומזוודת ה-20 ק"ג המשותפת.
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="bg-slate-100 p-4 border-t border-slate-200 flex items-center justify-between gap-3">
+        <button 
+          onclick="copyFlightAndCarSummary()" 
+          class="inline-flex items-center gap-1.5 bg-sky-700 hover:bg-sky-800 text-white font-semibold text-xs px-4 py-2.5 rounded-xl transition shadow-sm"
+        >
+          <span>📋</span>
+          <span>העתק סיכום טיסות ורכב</span>
+        </button>
+        <button 
+          onclick="closeTravelDetailsModal()" 
+          class="text-xs font-semibold px-4 py-2.5 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-800 transition"
+        >
+          סגור
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-slate-900 text-slate-400 text-xs py-6 text-center border-t border-slate-800">
+    <div class="max-w-6xl mx-auto px-4">
+      <p>תוכנית חופשה משפחתית בכרתים • 17–21 בספטמבר 2026 • בסיס מומלץ: גאורגיופוליס</p>
+    </div>
+  </footer>
+
+  <script>
+    // 11 Selected Destinations with Google Maps embed queries
+    const destinationsData = [
+      {
+        id: 'balos',
+        title: 'לגונת באלוס והאי גרמבוסה',
+        region: 'northwest',
+        regionName: 'צפון-מערב',
+        gmapQuery: 'Balos+Lagoon+Crete',
+        zoom: 12,
+        duration: '5–6 שעות (כולל שייט)',
+        tip: 'להגיע רק בשייט מנמל קיסאמוס (לא ברכב)',
+        icon: '🏝️',
+        img: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80'
+      },
+      {
+        id: 'chania',
+        title: 'העיר העתיקה והנמל הוונציאני בחאניה',
+        region: 'northwest',
+        regionName: 'צפון-מערב',
+        gmapQuery: 'Old+Venetian+Harbour+Chania',
+        zoom: 14,
+        duration: '3–4 שעות (מושלם לערב)',
+        tip: 'לחנות בחניון Talos המוסדר מחוץ לחומות',
+        icon: '⛵',
+        img: 'https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=800&q=80'
+      },
+      {
+        id: 'seitan',
+        title: 'חוף סייטן לימני (זיג-זג)',
+        region: 'northwest',
+        regionName: 'צפון-מערב',
+        gmapQuery: 'Seitan+Limania+Beach+Crete',
+        zoom: 14,
+        duration: '2–3 שעות',
+        tip: 'ירידה רגלית תלולה (15 דק), חובה נעלי ספורט סגורות',
+        icon: '🌊',
+        img: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80'
+      },
+      {
+        id: 'elafonisi',
+        title: 'חוף אלפוניסי (החול הוורוד)',
+        region: 'southwest',
+        regionName: 'דרום-מערב',
+        gmapQuery: 'Elafonisi+Beach+Crete',
+        zoom: 13,
+        duration: '4–5 שעות',
+        tip: 'להגיע לפני 10:30 בבוקר לתפיסת חניה נוחה ושמשיות',
+        icon: '🪸',
+        img: 'https://images.unsplash.com/photo-1506929562872-bb421503ef21?auto=format&fit=crop&w=800&q=80'
+      },
+      {
+        id: 'imbros',
+        title: 'קניון אימברוס וחורה ספאקיון',
+        region: 'southwest',
+        regionName: 'דרום-מערב',
+        gmapQuery: 'Imbros+Gorge+Crete',
+        zoom: 13,
+        duration: '3 שעות מסלול + שעתיים טברנה',
+        tip: 'טנדרים מקומיים בסוף המסלול מחזירים את הנהג לרכב',
+        icon: '🥾',
+        img: 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=800&q=80'
+      },
+      {
+        id: 'kourtaliotiko',
+        title: 'קניון קורטליוטיקו והמפל הנסתר',
+        region: 'south',
+        regionName: 'דרום ומפלים',
+        gmapQuery: 'Kourtaliotiko+Gorge+Waterfall+Crete',
+        zoom: 13,
+        duration: '2–3 שעות',
+        tip: 'חובה סנדלי מים ושקית אטומה למים לטלפונים',
+        icon: '💦',
+        img: 'https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?auto=format&fit=crop&w=800&q=80'
+      },
+      {
+        id: 'preveli',
+        title: 'חוף ויער הדקלים פרבלי',
+        region: 'south',
+        regionName: 'דרום ומפלים',
+        gmapQuery: 'Preveli+Beach+Crete',
+        zoom: 13,
+        duration: '3–4 שעות',
+        tip: 'שילוב מדהים של מי נהר מתוקים עם מי ים פתוח',
+        icon: '🌴',
+        img: 'https://images.unsplash.com/photo-1510414842594-a61c69b5ae57?auto=format&fit=crop&w=800&q=80'
+      },
+      {
+        id: 'kalypso',
+        title: 'חוף קליפסו (פיורד הפיראטים)',
+        region: 'south',
+        regionName: 'דרום ומפלים',
+        gmapQuery: 'Kalypso+Beach+Plakias+Crete',
+        zoom: 14,
+        duration: '2–3 שעות',
+        tip: 'מושלם לשנירקול וקפיצות למים עמוקים וצלולים',
+        icon: '🤿',
+        img: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=800&q=80'
+      },
+      {
+        id: 'kournas',
+        title: 'אגם קורנאס (צבי מים ופדלים)',
+        region: 'center',
+        regionName: 'מרכז (ליד גאורגיופוליס)',
+        gmapQuery: 'Lake+Kournas+Crete',
+        zoom: 14,
+        duration: '2–3 שעות',
+        tip: 'נמצא 5 דקות מהמלון! מעולה גם לבוקר יום ההמראה',
+        icon: '🐢',
+        img: 'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=800&q=80'
+      },
+      {
+        id: 'patsos',
+        title: 'קניון פאטסוס (חבלים וסולמות)',
+        region: 'center',
+        regionName: 'מרכז (דרומית לרתימנו)',
+        gmapQuery: 'Patsos+Gorge+Crete',
+        zoom: 13,
+        duration: '2.5–3 שעות',
+        tip: 'בכניסה יש טברנה משפחתית מעולה (Drys) עם פינת חי',
+        icon: '🧗',
+        img: 'https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=800&q=80'
+      },
+      {
+        id: 'rethymno',
+        title: 'העיר העתיקה של רתימנו',
+        region: 'center',
+        regionName: 'מרכז',
+        gmapQuery: 'Old+Town+Rethymno+Crete',
+        zoom: 14,
+        duration: '2–3 שעות',
+        tip: 'עצירה מושלמת ביום הראשון בדרך משדה התעופה למלון',
+        icon: '🏛️',
+        img: 'https://images.unsplash.com/photo-1516483638261-f4dbaf036963?auto=format&fit=crop&w=800&q=80'
+      }
+    ];
+
+    let currentMapIndex = -1;
+    let hoverDebounceTimer = null;
+
+    // Change Google Maps embedded view dynamically
+    function selectDestinationMap(index) {
+      currentMapIndex = index;
+      const gframe = document.getElementById('gmap-frame');
+      const infoBox = document.getElementById('map-hover-info');
+
+      // Update active chip classes
+      document.querySelectorAll('.map-chip').forEach(chip => {
+        chip.classList.remove('active-chip');
+      });
+
+      if (index === -1) {
+        // Hotel Base: Georgioupoli
+        const chip = document.getElementById('chip-base');
+        if (chip) chip.classList.add('active-chip');
+        if (gframe) gframe.src = "https://maps.google.com/maps?q=Georgioupoli+Crete&t=&z=12&ie=UTF8&iwloc=&output=embed";
+        if (infoBox) {
+          infoBox.innerHTML = `
+            <div class="flex items-center gap-2">
+              <span class="text-base">🏨</span>
+              <span class="font-bold text-slate-900">מלון הבסיס: גאורגיופוליס (Georgioupoli)</span>
+              <span class="text-slate-500">— נקודת כוכב אסטרטגית על הים במרחק 5 דק' מאגם קורנאס וגישה ישירה לכביש 90.</span>
+            </div>
+          `;
+        }
+      } else if (index === -2) {
+        // Heraklion Airport
+        const chip = document.getElementById('chip-airport');
+        if (chip) chip.classList.add('active-chip');
+        if (gframe) gframe.src = "https://maps.google.com/maps?q=Heraklion+International+Airport+Nikos+Kazantzakis&t=&z=13&ie=UTF8&iwloc=&output=embed";
+        if (infoBox) {
+          infoBox.innerHTML = `
+            <div class="flex items-center gap-2">
+              <span class="text-base">✈️</span>
+              <span class="font-bold text-slate-900">שדה התעופה הרקליון (HER)</span>
+              <span class="text-slate-500">— נקודת הנחיתה (17/9 ב-10:10), איסוף הרכב (11:00) והחזרה (21/9 ב-18:30-19:00).</span>
+            </div>
+          `;
+        }
+      } else {
+        const dest = destinationsData[index];
+        if (!dest) return;
+
+        const chip = document.getElementById(`chip-${index}`);
+        if (chip) chip.classList.add('active-chip');
+
+        if (gframe) {
+          gframe.src = `https://maps.google.com/maps?q=${dest.gmapQuery}&t=&z=${dest.zoom}&ie=UTF8&iwloc=&output=embed`;
+        }
+
+        if (infoBox) {
+          infoBox.innerHTML = `
+            <div class="flex items-center gap-3 w-full">
+              <img src="${dest.img}" class="w-11 h-11 rounded-xl object-cover border border-slate-200 shadow-sm" onerror="this.src='https://placehold.co/100x100/0284c7/ffffff?text=${encodeURIComponent(dest.title)}'"/>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center justify-between gap-1">
+                  <h4 class="font-bold text-slate-900 text-xs sm:text-sm truncate">${dest.icon} ${dest.title}</h4>
+                  <span class="text-[10px] sm:text-xs bg-sky-100 text-sky-800 font-bold px-2 py-0.5 rounded-md whitespace-nowrap">⏳ ${dest.duration}</span>
+                </div>
+                <p class="text-[11px] sm:text-xs text-slate-600 truncate mt-0.5">💡 ${dest.tip}</p>
+              </div>
+            </div>
+          `;
+        }
+      }
+    }
+
+    function resetGoogleMap() {
+      const gframe = document.getElementById('gmap-frame');
+      if (gframe) {
+        gframe.src = "https://maps.google.com/maps?q=Crete+Greece&t=&z=9&ie=UTF8&iwloc=&output=embed";
+      }
+      document.querySelectorAll('.map-chip').forEach(chip => {
+        chip.classList.remove('active-chip');
+      });
+      const infoBox = document.getElementById('map-hover-info');
+      if (infoBox) {
+        infoBox.innerHTML = `
+          <div class="flex items-center gap-2">
+            <span class="text-base">🇬🇷</span>
+            <span class="font-bold text-slate-900">מבט כולל על מערב ומרכז כרתים</span>
+            <span class="text-slate-500">— כל היעדים ממוקמים בין חאניה, חופי הדרום ורתימנו סביב בסיס גאורגיופוליס.</span>
+          </div>
+        `;
+      }
+    }
+
+    // Connect cards hover and button clicks
+    function setupCardInteractions() {
+      const cards = document.querySelectorAll('.destination-card');
+      cards.forEach((card) => {
+        const index = parseInt(card.getAttribute('data-index'), 10);
+        if (isNaN(index)) return;
+
+        card.addEventListener('mouseenter', () => {
+          clearTimeout(hoverDebounceTimer);
+          hoverDebounceTimer = setTimeout(() => {
+            if (currentMapIndex !== index) {
+              selectDestinationMap(index);
+            }
+          }, 200);
+        });
+      });
+    }
+
+    function focusAndShowMap(index) {
+      selectDestinationMap(index);
+      const mapSection = document.getElementById('map-section');
+      if (mapSection) {
+        mapSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+
+    function copyFlightAndCarSummary() {
+      const text = `✈️ כרתים 2026 - פרטי טיסות ורכב (משפחת ברזני):
+
+🛫 הלוך (17/09/2026): טיסה BZ752 | המראה 08:20 מנתב"ג (טרמ' 3) | נחיתה בהרקליון 10:10
+🛬 חזור (21/09/2026): טיסה BZ751 | המראה 21:30 מהרקליון | נחיתה בנתב"ג 23:10
+🎫 PNR: 305B7058
+🧳 כבודה: מזוודה אחת בלבד של 20 ק"ג לבטן המטוס (לכל המשפחה יחד) + תיק גב אישי לכל נוסע.
+
+🚗 רכב: Jeep Compass 4WD אוטומט
+📍 איסוף בשדה הרקליון: 17/09 ב-11:00
+📍 החזרה בשדה הרקליון: 21/09 ב-18:30-19:00
+🛡️ ביטוח 0€ השתתפות עצמית, ללא פיקדון / ללא חסימת אשראי.`;
+
+      const textArea = document.createElement("textarea");
+      textArea.value = text;
+      textArea.style.position = "fixed";
+      textArea.style.left = "-999999px";
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      try {
+        document.execCommand('copy');
+        showToast("פרטי הטיסות והרכב הועתקו בהצלחה!");
+      } catch (err) {
+        showToast("לא ניתן היה להעתיק אוטומטית", "⚠️");
+      }
+      document.body.removeChild(textArea);
+    }
+
+    function showToast(message, icon = '✅') {
+      const toast = document.getElementById('toast');
+      const toastMsg = document.getElementById('toast-message');
+      const toastIcon = document.getElementById('toast-icon');
+
+      toastMsg.innerText = message;
+      toastIcon.innerText = icon;
+
+      toast.classList.remove('opacity-0', 'pointer-events-none');
+      toast.classList.add('opacity-100');
+
+      setTimeout(() => {
+        toast.classList.remove('opacity-100');
+        toast.classList.add('opacity-0', 'pointer-events-none');
+      }, 3000);
+    }
+
+    function copyAllDetails() {
+      const textToCopy = `🇬🇷 תוכנית היעדים והאטרקציות לכרתים (ספטמבר 2026):
+בסיס מומלץ: גאורגיופוליס (Georgioupoli)
+
+1. לגונת באלוס והאי גרמבוסה (שייט מנמל קיסאמוס)
+2. העיר העתיקה והנמל הוונציאני בחאניה
+3. חוף סייטן לימני (זיג-זג מרהיב)
+4. חוף אלפוניסי (החול הוורוד)
+5. קניון אימברוס והעיירה חורה ספאקיון
+6. קניון קורטליוטיקו והמפל הנסתר
+7. חוף ויער הדקלים פרבלי
+8. חוף קליפסו (פיורד הפיראטים לשנירקול)
+9. אגם קורנאס (שייט פדלים וצבי מים)
+10. קניון פאטסוס (ערוץ אגיוס אנטוניוס עם סולמות)
+11. העיר העתיקה של רתימנו`;
+
+      const textArea = document.createElement("textarea");
+      textArea.value = textToCopy;
+      textArea.style.position = "fixed";
+      textArea.style.left = "-999999px";
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      
+      try {
+        document.execCommand('copy');
+        showToast("תקציר כל היעדים הועתק ללוח!");
+      } catch (err) {
+        showToast("לא ניתן היה להעתיק באופן אוטומטי", "⚠️");
+      }
+      document.body.removeChild(textArea);
+    }
+
+    function sharePlan() {
+      const shareText = `הנה רשימת 11 האטרקציות ומוקדי הטבע הנבחרים לחופשה שלנו בכרתים! 🇬🇷
+כולל באלוס, אלפוניסי, קורטליוטיקו, אגם קורנאס, חוף קליפסו ועוד.`;
+
+      if (navigator.share) {
+        navigator.share({
+          title: 'תוכנית יעדים לכרתים 2026',
+          text: shareText,
+          url: window.location.href
+        }).catch(() => {});
+      } else {
+        copyAllDetails();
+      }
+    }
+
+    // Close modal on Escape key
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeTravelDetailsModal();
+    });
+
+    // Close modal on backdrop click
+    document.getElementById('travel-modal').addEventListener('click', (e) => {
+      if (e.target.id === 'travel-modal') closeTravelDetailsModal();
+    });
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', setupCardInteractions);
+    } else {
+      setupCardInteractions();
+    }
+  </script>
+</body>
+</html>
