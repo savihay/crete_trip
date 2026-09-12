@@ -9,6 +9,46 @@
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   
+  <script>
+    // Immediate modal handlers for instant response
+    function switchTravelTab(tabName) {
+      var tabs = ['flights', 'car', 'hotel'];
+      tabs.forEach(function(t) {
+        var btn = document.getElementById('tab-btn-' + t);
+        var content = document.getElementById('tab-content-' + t);
+        if (t === tabName) {
+          if (btn) {
+            btn.className = 'flex-1 py-2.5 px-3 font-bold text-xs sm:text-sm rounded-t-2xl border-b-2 border-sky-600 text-sky-700 bg-white shadow-sm flex items-center justify-center gap-1.5 transition cursor-pointer';
+          }
+          if (content) content.classList.remove('hidden');
+        } else {
+          if (btn) {
+            btn.className = 'flex-1 py-2.5 px-3 font-bold text-xs sm:text-sm rounded-t-2xl border-b-2 border-transparent text-slate-600 hover:text-slate-900 flex items-center justify-center gap-1.5 transition cursor-pointer';
+          }
+          if (content) content.classList.add('hidden');
+        }
+      });
+    }
+
+    function openTravelDetailsModal(defaultTab) {
+      if (!defaultTab) defaultTab = 'flights';
+      var modal = document.getElementById('travel-modal');
+      if (!modal) return;
+      switchTravelTab(defaultTab);
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeTravelDetailsModal() {
+      var modal = document.getElementById('travel-modal');
+      if (!modal) return;
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+      document.body.style.overflow = '';
+    }
+  </script>
+  
   <!-- Google Fonts: Heebo & Rubik for clean modern Hebrew typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -990,7 +1030,7 @@
   </main>
 
   <!-- Flight & Car Details Modal Dialog -->
-  <div id="travel-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm opacity-0 pointer-events-none transition-all duration-300">
+  <div id="travel-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-950/75 backdrop-blur-sm" onclick="if(event.target === this) closeTravelDetailsModal()">
     <div class="bg-white w-full max-w-2xl rounded-3xl shadow-2xl border border-slate-200 overflow-hidden flex flex-col max-h-[92vh]">
       
       <!-- Modal Header -->
@@ -1005,6 +1045,7 @@
           </div>
         </div>
         <button 
+          type="button"
           onclick="closeTravelDetailsModal()" 
           class="text-white/80 hover:text-white bg-white/10 hover:bg-white/20 w-8 h-8 rounded-full flex items-center justify-center text-sm transition cursor-pointer"
           title="סגירה"
@@ -1016,6 +1057,7 @@
       <!-- Modal Tabs Switcher -->
       <div class="flex border-b border-slate-200 bg-slate-50 px-4 pt-3 gap-2">
         <button 
+          type="button"
           id="tab-btn-flights" 
           onclick="switchTravelTab('flights')" 
           class="flex-1 py-2.5 px-3 font-bold text-xs sm:text-sm rounded-t-2xl border-b-2 border-sky-600 text-sky-700 bg-white shadow-sm flex items-center justify-center gap-1.5 transition cursor-pointer"
@@ -1024,14 +1066,16 @@
           <span>טיסות (Blue Bird)</span>
         </button>
         <button 
+          type="button"
           id="tab-btn-car" 
           onclick="switchTravelTab('car')" 
           class="flex-1 py-2.5 px-3 font-bold text-xs sm:text-sm rounded-t-2xl border-b-2 border-transparent text-slate-600 hover:text-slate-900 flex items-center justify-center gap-1.5 transition cursor-pointer"
         >
           <span>🚗</span>
-          <span>רכב (Jeep 4WD)</span>
+          <span>רכב (The Best Cars)</span>
         </button>
         <button 
+          type="button"
           id="tab-btn-hotel" 
           onclick="switchTravelTab('hotel')" 
           class="flex-1 py-2.5 px-3 font-bold text-xs sm:text-sm rounded-t-2xl border-b-2 border-transparent text-slate-600 hover:text-slate-900 flex items-center justify-center gap-1.5 transition cursor-pointer"
@@ -1047,81 +1091,134 @@
         <!-- Tab 1: Flights Content -->
         <div id="tab-content-flights" class="space-y-4">
           
+          <!-- Booking Header Card -->
+          <div class="bg-sky-50/90 border border-sky-200 rounded-2xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="text-base font-extrabold text-sky-950">Blue Bird Airways</span>
+                <span class="text-[11px] bg-sky-200 text-sky-900 font-bold px-2 py-0.5 rounded">כרטיס טיסה אלקטרוני (E-Ticket)</span>
+              </div>
+              <div class="text-xs text-slate-600 mt-1 flex flex-wrap items-center gap-3">
+                <span>מספר כרטיס: <strong class="font-mono text-slate-800">40430419851</strong></span>
+                <span>•</span>
+                <span>קוד הזמנה (PNR): <strong class="font-mono bg-white px-2 py-0.5 rounded border border-sky-200 text-sky-900 text-sm">305B7058</strong></span>
+              </div>
+            </div>
+            
+            <a 
+              href="http://booking.bluebirdair.com/booking/B7058614-F4F6-4B47-A4A5-0D1FFA0C7EC6" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-1.5 bg-sky-600 hover:bg-sky-700 text-white font-bold text-xs px-3.5 py-2 rounded-xl transition shadow-sm whitespace-nowrap"
+            >
+              <span>🌐</span>
+              <span>ניהול הזמנה וצ'ק-אין ↗</span>
+            </a>
+          </div>
+
           <!-- Outbound Flight Card -->
-          <div class="bg-sky-50/70 border border-sky-200/80 rounded-2xl p-4">
+          <div class="bg-white border-2 border-sky-100 rounded-2xl p-4 shadow-sm">
             <div class="flex items-center justify-between mb-2">
               <span class="inline-flex items-center gap-1.5 text-xs font-bold bg-sky-600 text-white px-3 py-1 rounded-full">
                 <span>🛫</span>
                 <span>טיסת הלוך • BZ752</span>
               </span>
-              <span class="text-xs font-semibold text-slate-600">יום חמישי, 17/09/2026</span>
+              <span class="text-xs font-bold text-slate-700 bg-slate-100 px-2.5 py-0.5 rounded-md">יום חמישי, 17/09/2026</span>
             </div>
-            <div class="grid grid-cols-2 gap-3 text-center sm:text-right mt-3 bg-white p-3 rounded-xl border border-sky-100">
+            <div class="grid grid-cols-2 gap-3 text-center sm:text-right mt-3 bg-sky-50/50 p-3 rounded-xl border border-sky-100">
               <div>
-                <div class="text-xs text-slate-500">המראה (טרמינל 3)</div>
-                <div class="text-lg font-extrabold text-slate-900">08:20</div>
-                <div class="text-xs font-medium text-slate-700">תל אביב (TLV)</div>
+                <div class="text-[11px] text-slate-500 font-medium">המראה מתל אביב (טרמינל 3)</div>
+                <div class="text-2xl font-black text-slate-900">08:20</div>
+                <div class="text-xs font-semibold text-slate-700">נתב"ג • TLV</div>
               </div>
-              <div class="border-r border-slate-200 pr-3">
-                <div class="text-xs text-slate-500">נחיתה בהרקליון</div>
-                <div class="text-lg font-extrabold text-emerald-600">10:10</div>
-                <div class="text-xs font-medium text-slate-700">כרתים הרקליון (HER)</div>
+              <div class="border-r border-sky-200 pr-3">
+                <div class="text-[11px] text-slate-500 font-medium">נחיתה בכרתים (הרקליון)</div>
+                <div class="text-2xl font-black text-emerald-600">10:10</div>
+                <div class="text-xs font-semibold text-slate-700">נמל קזנצאקיס • HER</div>
               </div>
+            </div>
+            <div class="text-[11px] text-slate-500 mt-2 flex items-center justify-between">
+              <span>מחלקה: CD • משך טיסה: כ-1:50 שעות</span>
+              <span class="text-emerald-700 font-semibold">✓ סטטוס: Confirmed (מאושר)</span>
             </div>
           </div>
 
           <!-- Inbound Flight Card -->
-          <div class="bg-indigo-50/70 border border-indigo-200/80 rounded-2xl p-4">
+          <div class="bg-white border-2 border-indigo-100 rounded-2xl p-4 shadow-sm">
             <div class="flex items-center justify-between mb-2">
               <span class="inline-flex items-center gap-1.5 text-xs font-bold bg-indigo-700 text-white px-3 py-1 rounded-full">
                 <span>🛬</span>
                 <span>טיסת חזור • BZ751</span>
               </span>
-              <span class="text-xs font-semibold text-slate-600">יום שני, 21/09/2026</span>
+              <span class="text-xs font-bold text-slate-700 bg-slate-100 px-2.5 py-0.5 rounded-md">יום שני, 21/09/2026</span>
             </div>
-            <div class="grid grid-cols-2 gap-3 text-center sm:text-right mt-3 bg-white p-3 rounded-xl border border-indigo-100">
+            <div class="grid grid-cols-2 gap-3 text-center sm:text-right mt-3 bg-indigo-50/50 p-3 rounded-xl border border-indigo-100">
               <div>
-                <div class="text-xs text-slate-500">המראה מכרתים</div>
-                <div class="text-lg font-extrabold text-slate-900">21:30</div>
-                <div class="text-xs font-medium text-slate-700">כרתים הרקליון (HER)</div>
+                <div class="text-[11px] text-slate-500 font-medium">המראה מהרקליון</div>
+                <div class="text-2xl font-black text-slate-900">21:30</div>
+                <div class="text-xs font-semibold text-slate-700">נמל קזנצאקיס • HER</div>
               </div>
-              <div class="border-r border-slate-200 pr-3">
-                <div class="text-xs text-slate-500">נחיתה בנתב"ג</div>
-                <div class="text-lg font-extrabold text-emerald-600">23:10</div>
-                <div class="text-xs font-medium text-slate-700">תל אביב (TLV)</div>
+              <div class="border-r border-indigo-200 pr-3">
+                <div class="text-[11px] text-slate-500 font-medium">נחיתה בתל אביב</div>
+                <div class="text-2xl font-black text-emerald-600">23:10</div>
+                <div class="text-xs font-semibold text-slate-700">נתב"ג • TLV</div>
+              </div>
+            </div>
+            <div class="text-[11px] text-slate-500 mt-2 flex items-center justify-between">
+              <span>מחלקה: CF • יום שלם מלא לטיולים עד הערב!</span>
+              <span class="text-emerald-700 font-semibold">✓ סטטוס: Confirmed (מאושר)</span>
+            </div>
+          </div>
+
+          <!-- Passengers & Contacts -->
+          <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 text-xs space-y-2">
+            <div class="font-bold text-slate-900 flex items-center justify-between">
+              <span>👥 הרכב הנוסעים בהזמנה (4):</span>
+              <span class="text-[11px] text-slate-500">3 מבוגרים + ילד 1</span>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-slate-700 pt-1">
+              <div class="bg-white p-2 rounded-lg border border-slate-200 flex items-center justify-between">
+                <span><strong>אביחי ברזני</strong> (MR. AVIHAY)</span>
+                <a href="tel:0523408868" class="text-sky-700 hover:underline">052-3408868</a>
+              </div>
+              <div class="bg-white p-2 rounded-lg border border-slate-200 flex items-center justify-between">
+                <span><strong>רחל ברזני</strong> (MRS. RACHEL)</span>
+                <a href="tel:0503655255" class="text-sky-700 hover:underline">050-3655255</a>
+              </div>
+              <div class="bg-white p-2 rounded-lg border border-slate-200">
+                <span><strong>שי ברזני</strong> (MISS. SHAI)</span>
+              </div>
+              <div class="bg-white p-2 rounded-lg border border-slate-200">
+                <span><strong>טל ברזני</strong> (CHILD TAL)</span>
               </div>
             </div>
           </div>
 
-          <!-- Passengers & Baggage Info -->
-          <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 text-xs space-y-2.5">
-            <div class="flex items-center justify-between">
-              <span class="font-bold text-slate-900">קוד הזמנה (PNR):</span>
-              <span class="font-mono bg-slate-200 px-2.5 py-0.5 rounded font-bold text-slate-800">305B7058</span>
+          <!-- Baggage Policy -->
+          <div class="bg-amber-50/90 border border-amber-200 rounded-2xl p-4 text-xs space-y-2 text-amber-950">
+            <div class="font-bold flex items-center gap-1.5 text-sm text-amber-900">
+              <span>🧳</span>
+              <span>מדיניות כבודה מאושרת בכרטיס:</span>
             </div>
-            <div class="flex items-center justify-between">
-              <span class="font-bold text-slate-900">הרכב נוסעים (4):</span>
-              <span class="font-medium">אביחי, רחל, שי, טל ברזני</span>
-            </div>
-            <div class="pt-2 border-t border-slate-200/80">
-              <div class="font-bold text-slate-900 mb-1 flex items-center gap-1.5">
-                <span>🧳</span>
-                <span>מדיניות כבודה מדויקת להזמנה:</span>
+            <div class="space-y-1.5 pt-1">
+              <div class="flex items-center gap-2 font-semibold">
+                <span>✓</span>
+                <span><strong>מזוודת בטן משותפת:</strong> מזוודה אחת בלבד עד 20 ק"ג (Checked Baggage - רשומה ומאושרת לשני הכיוונים תחת אביחי ברזני).</span>
               </div>
-              <div class="bg-amber-50/90 border border-amber-200/80 p-2.5 rounded-xl space-y-1.5 text-amber-950">
-                <div class="flex items-center gap-2 font-semibold">
-                  <span class="text-base">🧳</span>
-                  <span><strong>מזוודת בטן:</strong> מזוודה אחת בלבד עד 20 ק"ג (לכל המשפחה יחד)</span>
-                </div>
-                <div class="flex items-center gap-2 font-semibold">
-                  <span class="text-base">🎒</span>
-                  <span><strong>כבודת יד בתא הנוסעים:</strong> תיק גב אישי (Handbag) לכל אחד מ-4 הנוסעים (מתחת למושב)</span>
-                </div>
-                <div class="text-[11px] text-amber-800/90 pt-1">
-                  * שימו לב: אין כבודת טרולי נוספת מעבר לתיק הגב האישי ומזוודת ה-20 ק"ג המשותפת.
-                </div>
+              <div class="flex items-center gap-2 font-semibold">
+                <span>✓</span>
+                <span><strong>כבודת יד בתא הנוסעים:</strong> תיק גב אישי (Handbag) לכל נוסע מתחת למושב.</span>
+              </div>
+              <div class="text-[11px] text-amber-800 pt-1">
+                ⚠️ שימו לב: אין כבודת טרולי נוספת מעבר למזוודת ה-20 ק"ג ותיקי הגב.
               </div>
             </div>
+          </div>
+
+          <!-- Check-in Reminder -->
+          <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-3 text-xs text-emerald-900 flex items-start gap-2">
+            <span>ℹ️</span>
+            <span><strong>צ'ק-אין מקוון:</strong> נפתח באתר Blue Bird 24 שעות לפני הטיסה ונסגר 5 שעות לפני ההמראה. מומלץ לבצע צ'ק-אין מראש בטלפון ב-16/09 בבוקר.</span>
           </div>
 
         </div>
@@ -1129,78 +1226,142 @@
         <!-- Tab 2: Car Rental Content -->
         <div id="tab-content-car" class="space-y-4 hidden">
           
+          <!-- Car Supplier & Reservation Code -->
+          <div class="bg-emerald-50/90 border border-emerald-200 rounded-2xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="text-base font-extrabold text-emerald-950">The Best Cars</span>
+                <span class="text-[11px] bg-emerald-200 text-emerald-900 font-bold px-2 py-0.5 rounded">⭐ 5.0 ביקורות גוגל</span>
+              </div>
+              <div class="text-xs text-slate-600 mt-1 flex flex-wrap items-center gap-2">
+                <span>מספר הזמנה: <strong class="font-mono bg-white px-2 py-0.5 rounded border border-emerald-200 text-emerald-900 text-sm">C5-J0FE-3624</strong></span>
+                <span>•</span>
+                <span>סטטוס: <strong class="text-emerald-700">מאושר ושולם מקדמה ✓</strong></span>
+              </div>
+            </div>
+
+            <!-- Contact Buttons -->
+            <div class="flex items-center gap-2">
+              <a 
+                href="tel:+302897042800" 
+                class="inline-flex items-center gap-1 bg-white hover:bg-slate-100 text-slate-800 border border-slate-200 text-xs font-bold px-3 py-2 rounded-xl transition shadow-sm"
+                title="חיוג לשירות הלקוחות"
+              >
+                <span>📞</span>
+                <span>+30 28970 42800</span>
+              </a>
+              <a 
+                href="mailto:information@thebestcars.gr" 
+                class="inline-flex items-center gap-1 bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold px-3 py-2 rounded-xl transition shadow-sm"
+                title="שליחת אימייל"
+              >
+                <span>✉️</span>
+                <span>אימייל ספק</span>
+              </a>
+            </div>
+          </div>
+
           <!-- Car Main Info Card -->
-          <div class="bg-emerald-50/70 border border-emerald-200/80 rounded-2xl p-4">
-            <div class="flex items-center justify-between mb-3">
+          <div class="bg-white border-2 border-emerald-100 rounded-2xl p-4 shadow-sm">
+            <div class="flex items-center justify-between mb-2">
               <span class="inline-flex items-center gap-1.5 text-xs font-bold bg-emerald-600 text-white px-3 py-1 rounded-full">
                 <span>🚙</span>
-                <span>רכב שטח SUV • 4WD</span>
+                <span>רכב שטח SUV יוקרתי • 4WD</span>
               </span>
-              <span class="text-xs font-semibold text-emerald-800 bg-emerald-100/90 px-2.5 py-0.5 rounded-md">גיר אוטומט</span>
+              <span class="text-xs font-bold text-emerald-800 bg-emerald-50 px-2.5 py-0.5 rounded-md border border-emerald-200">2025 • אוטומט • 240HP</span>
             </div>
             
-            <div class="bg-white p-3.5 rounded-xl border border-emerald-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-              <div>
-                <h4 class="text-base font-extrabold text-slate-900">Jeep Compass 4x4 (או מקביל)</h4>
-                <p class="text-xs text-slate-500 mt-0.5">רכב פנאי-שטח מוגבה בעל הנעה כפולה, אידיאלי לעליות, כבישים הרריים מפותלים וחופים בכרתים.</p>
-              </div>
-              <div class="flex items-center gap-2 text-xs font-semibold text-slate-700 bg-slate-100 px-3 py-1.5 rounded-lg whitespace-nowrap">
-                <span>👥 5 מקומות</span>
-                <span>•</span>
-                <span>❄️ מזגן</span>
-              </div>
-            </div>
+            <h4 class="text-base font-extrabold text-slate-900 mt-2">Jeep Compass 4WD Northstar 240HP (2025)</h4>
+            <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+              קטגוריה C4W Luxury / SUV-Jeep Family. רכב שטח מוגבה עם הנעה כפולה (4x4), מנוע 240 כ"ס חזק, מרווח ל-5 נוסעים, מזגן מעולה ותא מטען מרווח – מושלם לכבישים ההרריים והמפותלים של כרתים.
+            </p>
           </div>
 
           <!-- Pickup & Drop-off Timetable -->
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <!-- Pickup -->
             <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3.5">
-              <div class="flex items-center gap-2 text-xs font-bold text-sky-800 mb-2">
+              <div class="flex items-center gap-2 text-xs font-bold text-sky-800 mb-1.5">
                 <span>📍</span>
-                <span>איסוף הרכב בשדה</span>
+                <span>איסוף הרכב</span>
               </div>
-              <div class="text-base font-extrabold text-slate-900">17/09/2026 • 11:00</div>
-              <div class="text-xs text-slate-600 mt-1">שדה התעופה הרקליון (HER)</div>
+              <div class="text-base font-extrabold text-slate-900">חמישי, 17/09/2026 • 11:00</div>
+              <div class="text-xs font-medium text-slate-700 mt-1">שדה התעופה הרקליון (HER)</div>
               <div class="text-[11px] text-slate-500 mt-0.5">כ-50 דק' לאחר נחיתת טיסה BZ752 (10:10)</div>
             </div>
 
             <!-- Return -->
             <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3.5">
-              <div class="flex items-center gap-2 text-xs font-bold text-indigo-800 mb-2">
+              <div class="flex items-center gap-2 text-xs font-bold text-indigo-800 mb-1.5">
                 <span>🔄</span>
-                <span>החזרת הרכב בשדה</span>
+                <span>החזרת הרכב</span>
               </div>
-              <div class="text-base font-extrabold text-slate-900">21/09/2026 • 18:30–19:00</div>
-              <div class="text-xs text-slate-600 mt-1">שדה התעופה הרקליון (HER)</div>
+              <div class="text-base font-extrabold text-slate-900">שני, 21/09/2026 • 19:00</div>
+              <div class="text-xs font-medium text-slate-700 mt-1">שדה התעופה הרקליון (HER)</div>
               <div class="text-[11px] text-slate-500 mt-0.5">כ-2.5 שעות לפני המראת טיסה BZ751 (21:30)</div>
             </div>
           </div>
 
-          <!-- Insurance & Deposit Conditions (Peace of Mind) -->
-          <div class="bg-amber-50/90 border border-amber-200/80 rounded-2xl p-4 text-xs space-y-2.5">
-            <div class="font-bold text-amber-950 flex items-center gap-1.5 text-sm">
+          <!-- Payment Summary Card -->
+          <div class="bg-white border border-slate-200 rounded-2xl p-4 text-xs shadow-sm">
+            <div class="font-bold text-slate-900 text-sm mb-2 flex items-center justify-between">
+              <span>💳 פירוט תשלום ועלות השכרה:</span>
+              <span class="text-xs bg-slate-100 px-2 py-0.5 rounded font-mono">5 ימי השכרה</span>
+            </div>
+            <div class="space-y-1.5 text-slate-700">
+              <div class="flex justify-between items-center py-1 border-b border-slate-100">
+                <span>סה"כ מחיר ההשכרה:</span>
+                <strong class="text-slate-900 font-mono text-sm">515.00 €</strong>
+              </div>
+              <div class="flex justify-between items-center py-1 border-b border-slate-100 text-emerald-700">
+                <span>מקדמה ששולמה מראש (Advanced payment):</span>
+                <strong class="font-mono text-sm">-257.50 €</strong>
+              </div>
+              <div class="flex justify-between items-center pt-2 text-base font-black text-slate-900 bg-amber-50 p-2.5 rounded-xl border border-amber-200">
+                <span>יתרה לתשלום בעת קבלת הרכב:</span>
+                <span class="text-amber-800 font-mono font-bold">257.50 €</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Full Insurance (Zero Excess) Highlights -->
+          <div class="bg-amber-50/90 border border-amber-200 rounded-2xl p-4 text-xs space-y-2.5 text-amber-950">
+            <div class="font-bold flex items-center gap-1.5 text-sm text-amber-900">
               <span>🛡️</span>
-              <span>תנאי ביטוח וראש שקט:</span>
+              <span>כיסוי ביטוחי מלא תמיד כלול (Always Included - Without Excess):</span>
             </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-amber-950">
-              <div class="flex items-start gap-2 bg-white/80 p-2.5 rounded-xl border border-amber-200/60">
-                <span class="text-emerald-600 font-bold text-sm">✓</span>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              <div class="bg-white/80 p-2.5 rounded-xl border border-amber-200/80 flex items-start gap-1.5">
+                <span class="text-emerald-600 font-bold">✓</span>
                 <div>
-                  <span class="font-bold">0€ השתתפות עצמית:</span>
-                  <p class="text-[11px] text-slate-600">ביטוח מקיף מלא (CDW / Full Coverage) ללא דמי השתתפות במקרה של שריטה או תאונה.</p>
+                  <strong>0€ השתתפות עצמית (CDW + FDW):</strong>
+                  <div class="text-[11px] text-slate-600">ביטוח תאונות מלא ללא דמי השתתפות עצמית.</div>
                 </div>
               </div>
-              <div class="flex items-start gap-2 bg-white/80 p-2.5 rounded-xl border border-amber-200/60">
-                <span class="text-emerald-600 font-bold text-sm">✓</span>
+              <div class="bg-white/80 p-2.5 rounded-xl border border-amber-200/80 flex items-start gap-1.5">
+                <span class="text-emerald-600 font-bold">✓</span>
                 <div>
-                  <span class="font-bold">ללא פיקדון / ללא חסימת אשראי:</span>
-                  <p class="text-[11px] text-slate-600">אין צורך בהפקדת פיקדון כספי או חסימת מסגרת בכרטיס האשראי בעת קבלת הרכב.</p>
+                  <strong>Special FDW (גחון, שמשות ושריטות):</strong>
+                  <div class="text-[11px] text-slate-600">כיסוי מלא לחלק תחתון, שמשות וצמיגים ללא עודף.</div>
+                </div>
+              </div>
+              <div class="bg-white/80 p-2.5 rounded-xl border border-amber-200/80 flex items-start gap-1.5">
+                <span class="text-emerald-600 font-bold">✓</span>
+                <div>
+                  <strong>PAI + TPI (תאונות אישיות וצד ג'):</strong>
+                  <div class="text-[11px] text-slate-600">כיסוי לכל נוסעי הרכב וכיסוי צד שלישי מלא.</div>
+                </div>
+              </div>
+              <div class="bg-white/80 p-2.5 rounded-xl border border-amber-200/80 flex items-start gap-1.5">
+                <span class="text-emerald-600 font-bold">✓</span>
+                <div>
+                  <strong>ללא פיקדון / ללא חסימת כרטיס אשראי:</strong>
+                  <div class="text-[11px] text-slate-600">ראש שקט מלא ללא חסימת מסגרת וללא הפקדת כספים.</div>
                 </div>
               </div>
             </div>
-            <div class="text-[11px] text-amber-800/90 pt-1">
-              💡 <strong>טיפ נהיגה בכרתים:</strong> בכביש 90 (הכביש המהיר הצפוני) נהוג לרדת מעט לשול הימני כדי לאפשר לרכב מהיר יותר לעקוף. בדרכים הרריות סעו בזהירות ושימו לב לעיזים לצד הדרך.
+            <div class="text-[11px] text-amber-800 pt-1">
+              📍 <strong>כתובת הספק:</strong> Heraclion Airport "Kazantzakis", Nea Alikarnasos 71601, Crete.
             </div>
           </div>
 
@@ -1209,7 +1370,7 @@
         <!-- Tab 3: Accommodation Content -->
         <div id="tab-content-hotel" class="space-y-4 hidden">
           
-          <div class="bg-purple-50/80 border border-purple-200/90 rounded-2xl p-4">
+          <div class="bg-purple-50/80 border border-purple-200 rounded-2xl p-4">
             <div class="flex items-center justify-between mb-2">
               <span class="inline-flex items-center gap-1.5 text-xs font-bold bg-purple-700 text-white px-3 py-1 rounded-full">
                 <span>🏨</span>
@@ -1261,15 +1422,17 @@
       <!-- Modal Footer -->
       <div class="bg-slate-100 p-4 border-t border-slate-200 flex items-center justify-between gap-3">
         <button 
+          type="button"
           onclick="copyFlightAndCarSummary()" 
-          class="inline-flex items-center gap-1.5 bg-sky-700 hover:bg-sky-800 text-white font-semibold text-xs px-4 py-2.5 rounded-xl transition shadow-sm"
+          class="inline-flex items-center gap-1.5 bg-sky-700 hover:bg-sky-800 text-white font-semibold text-xs px-4 py-2.5 rounded-xl transition shadow-sm cursor-pointer"
         >
           <span>📋</span>
-          <span>העתק סיכום טיסות ורכב</span>
+          <span>העתק סיכום טיסות ורכב לוואטסאפ</span>
         </button>
         <button 
+          type="button"
           onclick="closeTravelDetailsModal()" 
-          class="text-xs font-semibold px-4 py-2.5 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-800 transition"
+          class="text-xs font-semibold px-4 py-2.5 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-800 transition cursor-pointer"
         >
           סגור
         </button>
@@ -1538,45 +1701,44 @@
       }
     }
 
-    // Modal management functions
-    function openTravelDetailsModal(defaultTab = 'flights') {
-      const modal = document.getElementById('travel-modal');
-      if (!modal) return;
-      if (defaultTab) switchTravelTab(defaultTab);
-      modal.classList.remove('opacity-0', 'pointer-events-none');
-      modal.classList.add('opacity-100', 'pointer-events-auto');
-    }
+    function copyFlightAndCarSummary() {
+      const text = `✈️ כרתים 2026 - פרטי טיסות ורכב (משפחת ברזני):
 
-    function closeTravelDetailsModal() {
-      const modal = document.getElementById('travel-modal');
-      if (!modal) return;
-      modal.classList.remove('opacity-100', 'pointer-events-auto');
-      modal.classList.add('opacity-0', 'pointer-events-none');
-    }
+🛫 הלוך (17/09/2026): טיסה BZ752 (חברת Blue Bird Airways)
+   המראה: 08:20 מנתב"ג (טרמינל 3) | נחיתה: 10:10 בהרקליון (HER)
 
-    function switchTravelTab(tabName) {
-      const tabs = ['flights', 'car', 'hotel'];
-      tabs.forEach(t => {
-        const btn = document.getElementById(`tab-btn-${t}`);
-        const content = document.getElementById(`tab-content-${t}`);
-        if (t === tabName) {
-          if (btn) {
-            btn.classList.add('border-sky-600', 'text-sky-700', 'bg-white', 'shadow-sm');
-            btn.classList.remove('border-transparent', 'text-slate-600');
-          }
-          if (content) {
-            content.classList.remove('hidden');
-          }
-        } else {
-          if (btn) {
-            btn.classList.remove('border-sky-600', 'text-sky-700', 'bg-white', 'shadow-sm');
-            btn.classList.add('border-transparent', 'text-slate-600');
-          }
-          if (content) {
-            content.classList.add('hidden');
-          }
-        }
-      });
+🛬 חזור (21/09/2026): טיסה BZ751 (חברת Blue Bird Airways)
+   המראה: 21:30 מהרקליון (HER) | נחיתה: 23:10 בנתב"ג (TLV)
+
+🎫 קוד הזמנה טיסות (PNR): 305B7058 | כרטיס: 40430419851
+👥 נוסעים: אביחי (052-3408868), רחל (050-3655255), שי, טל ברזני
+🧳 כבודה: מזוודה 1 עד 20 ק"ג לבטן המטוס (משותפת לכולם) + תיק גב אישי לכל נוסע מתחת למושב.
+🌐 ניהול הזמנה וצ'ק-אין: http://booking.bluebirdair.com/booking/B7058614-F4F6-4B47-A4A5-0D1FFA0C7EC6
+
+🚗 רכב שכור: The Best Cars | הזמנה: C5-J0FE-3624
+🚙 דגם: Jeep Compass 4WD Northstar 240HP 2025 אוטומט
+📍 איסוף: שדה הרקליון (HER) ב-17/09 ב-11:00
+📍 החזרה: שדה הרקליון (HER) ב-21/09 ב-19:00
+💶 מחיר: 515.00€ (מקדמה שולמה: 257.50€ | יתרה לתשלום באיסוף: 257.50€)
+🛡️ ביטוח: מלא כולל 0€ השתתפות עצמית (CDW, FDW, שמשות, גחון, צד ג', גניבה), ללא פיקדון וללא חסימת אשראי.
+📞 טלפון ספק הרכב: +30 28970 42800
+
+🏨 בסיס כוכב: גאורגיופוליס (Georgioupoli) - 5 דק' מאגם קורנאס.`;
+
+      const textArea = document.createElement("textarea");
+      textArea.value = text;
+      textArea.style.position = "fixed";
+      textArea.style.left = "-999999px";
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      try {
+        document.execCommand('copy');
+        showToast("פרטי הטיסות, הרכב והלינה הועתקו בהצלחה!");
+      } catch (err) {
+        showToast("לא ניתן היה להעתיק אוטומטית", "⚠️");
+      }
+      document.body.removeChild(textArea);
     }
 
     // Filter and search destinations
@@ -1629,42 +1791,6 @@
       if (counter) {
         counter.innerText = `מציג ${visibleCount} מתוך 11 יעדים`;
       }
-    }
-
-    function copyFlightAndCarSummary() {
-      const text = `✈️ כרתים 2026 - פרטי טיסות, רכב ולינה (משפחת ברזני):
-
-🛫 הלוך (17/09/2026): טיסה BZ752 (חברת Blue Bird)
-   המראה: 08:20 מנתב"ג (טרמינל 3) | נחיתה: 10:10 בהרקליון (HER)
-
-🛬 חזור (21/09/2026): טיסה BZ751 (חברת Blue Bird)
-   המראה: 21:30 מהרקליון (HER) | נחיתה: 23:10 בנתב"ג (TLV)
-
-🎫 קוד הזמנה (PNR): 305B7058
-👥 נוסעים: אביחי, רחל, שי, טל ברזני
-🧳 כבודה: מזוודה אחת בלבד עד 20 ק"ג לבטן המטוס (משותפת לכולם) + תיק גב אישי לכל נוסע מתחת למושב.
-
-🚗 רכב שכור: Jeep Compass 4WD אוטומט (או מקביל)
-📍 איסוף בשדה הרקליון: 17/09 ב-11:00
-📍 החזרה בשדה הרקליון: 21/09 ב-18:30–19:00
-🛡️ ביטוח: 0€ השתתפות עצמית מלאה, ללא צורך בפיקדון וללא חסימת כרטיס אשראי.
-
-🏨 בסיס כוכב מומלץ: גאורגיופוליס (Georgioupoli) - 5 דק' מאגם קורנאס.`;
-
-      const textArea = document.createElement("textarea");
-      textArea.value = text;
-      textArea.style.position = "fixed";
-      textArea.style.left = "-999999px";
-      document.body.appendChild(textArea);
-      textArea.focus();
-      textArea.select();
-      try {
-        document.execCommand('copy');
-        showToast("פרטי הטיסות, הרכב והלינה הועתקו בהצלחה!");
-      } catch (err) {
-        showToast("לא ניתן היה להעתיק אוטומטית", "⚠️");
-      }
-      document.body.removeChild(textArea);
     }
 
     function showToast(message, icon = '✅') {
