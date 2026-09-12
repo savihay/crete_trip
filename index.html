@@ -89,19 +89,23 @@
         
         <div class="flex flex-wrap items-center gap-2">
           <!-- Base Hotel Badge -->
-          <div class="inline-flex items-center gap-2 bg-purple-500/25 text-purple-100 border border-purple-300/30 px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-medium backdrop-blur">
+          <button 
+            onclick="openTravelDetailsModal('hotel')"
+            class="inline-flex items-center gap-2 bg-purple-500/25 hover:bg-purple-500/40 text-purple-100 border border-purple-300/30 px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-medium backdrop-blur transition cursor-pointer"
+            title="פרטי בסיס הלינה בגאורגיופוליס"
+          >
             <span>🏨</span>
-            <span>בסיס כוכב: גאורגיופוליס (Georgioupoli)</span>
-          </div>
+            <span>בסיס כוכב: גאורגיופוליס (פרטים)</span>
+          </button>
 
           <!-- Flights & Car Rental Modal Button -->
           <button 
-            onclick="openTravelDetailsModal()" 
-            class="inline-flex items-center gap-2 bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold px-4 py-1.5 rounded-full text-xs sm:text-sm shadow-md transition transform active:scale-95"
-            title="הצגת כל פרטי הטיסה והשכרת הרכב"
+            onclick="openTravelDetailsModal('flights')" 
+            class="inline-flex items-center gap-2 bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold px-4 py-1.5 rounded-full text-xs sm:text-sm shadow-md transition transform active:scale-95 cursor-pointer"
+            title="הצגת כל פרטי הטיסות, הרכב והלינה"
           >
-            <span>✈️🚗</span>
-            <span>פרטי טיסה ורכב</span>
+            <span>✈️🚗🏨</span>
+            <span>טיסות, רכב ולינה</span>
           </button>
         </div>
       </div>
@@ -996,13 +1000,13 @@
             ✈️
           </div>
           <div>
-            <h3 class="heading-font text-lg sm:text-xl font-bold">פרטי טיסות והשכרת רכב</h3>
+            <h3 class="heading-font text-lg sm:text-xl font-bold">פרטי טיסות, רכב ולינה</h3>
             <p class="text-xs text-sky-200">חופשת משפחת ברזני בכרתים • 17–21 בספטמבר 2026</p>
           </div>
         </div>
         <button 
           onclick="closeTravelDetailsModal()" 
-          class="text-white/80 hover:text-white bg-white/10 hover:bg-white/20 w-8 h-8 rounded-full flex items-center justify-center text-sm transition"
+          class="text-white/80 hover:text-white bg-white/10 hover:bg-white/20 w-8 h-8 rounded-full flex items-center justify-center text-sm transition cursor-pointer"
           title="סגירה"
         >
           ✕
@@ -1014,18 +1018,26 @@
         <button 
           id="tab-btn-flights" 
           onclick="switchTravelTab('flights')" 
-          class="flex-1 py-2.5 px-4 font-bold text-xs sm:text-sm rounded-t-2xl border-b-2 border-sky-600 text-sky-700 bg-white shadow-sm flex items-center justify-center gap-2 transition"
+          class="flex-1 py-2.5 px-3 font-bold text-xs sm:text-sm rounded-t-2xl border-b-2 border-sky-600 text-sky-700 bg-white shadow-sm flex items-center justify-center gap-1.5 transition cursor-pointer"
         >
           <span>✈️</span>
-          <span>פרטי טיסות (Blue Bird)</span>
+          <span>טיסות (Blue Bird)</span>
         </button>
         <button 
           id="tab-btn-car" 
           onclick="switchTravelTab('car')" 
-          class="flex-1 py-2.5 px-4 font-bold text-xs sm:text-sm rounded-t-2xl border-b-2 border-transparent text-slate-600 hover:text-slate-900 flex items-center justify-center gap-2 transition"
+          class="flex-1 py-2.5 px-3 font-bold text-xs sm:text-sm rounded-t-2xl border-b-2 border-transparent text-slate-600 hover:text-slate-900 flex items-center justify-center gap-1.5 transition cursor-pointer"
         >
           <span>🚗</span>
-          <span>השכרת רכב (Jeep Compass)</span>
+          <span>רכב (Jeep 4WD)</span>
+        </button>
+        <button 
+          id="tab-btn-hotel" 
+          onclick="switchTravelTab('hotel')" 
+          class="flex-1 py-2.5 px-3 font-bold text-xs sm:text-sm rounded-t-2xl border-b-2 border-transparent text-slate-600 hover:text-slate-900 flex items-center justify-center gap-1.5 transition cursor-pointer"
+        >
+          <span>🏨</span>
+          <span>מקום לינה (גאורגיופוליס)</span>
         </button>
       </div>
 
@@ -1110,6 +1122,136 @@
                 </div>
               </div>
             </div>
+          </div>
+
+        </div>
+
+        <!-- Tab 2: Car Rental Content -->
+        <div id="tab-content-car" class="space-y-4 hidden">
+          
+          <!-- Car Main Info Card -->
+          <div class="bg-emerald-50/70 border border-emerald-200/80 rounded-2xl p-4">
+            <div class="flex items-center justify-between mb-3">
+              <span class="inline-flex items-center gap-1.5 text-xs font-bold bg-emerald-600 text-white px-3 py-1 rounded-full">
+                <span>🚙</span>
+                <span>רכב שטח SUV • 4WD</span>
+              </span>
+              <span class="text-xs font-semibold text-emerald-800 bg-emerald-100/90 px-2.5 py-0.5 rounded-md">גיר אוטומט</span>
+            </div>
+            
+            <div class="bg-white p-3.5 rounded-xl border border-emerald-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+              <div>
+                <h4 class="text-base font-extrabold text-slate-900">Jeep Compass 4x4 (או מקביל)</h4>
+                <p class="text-xs text-slate-500 mt-0.5">רכב פנאי-שטח מוגבה בעל הנעה כפולה, אידיאלי לעליות, כבישים הרריים מפותלים וחופים בכרתים.</p>
+              </div>
+              <div class="flex items-center gap-2 text-xs font-semibold text-slate-700 bg-slate-100 px-3 py-1.5 rounded-lg whitespace-nowrap">
+                <span>👥 5 מקומות</span>
+                <span>•</span>
+                <span>❄️ מזגן</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pickup & Drop-off Timetable -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <!-- Pickup -->
+            <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3.5">
+              <div class="flex items-center gap-2 text-xs font-bold text-sky-800 mb-2">
+                <span>📍</span>
+                <span>איסוף הרכב בשדה</span>
+              </div>
+              <div class="text-base font-extrabold text-slate-900">17/09/2026 • 11:00</div>
+              <div class="text-xs text-slate-600 mt-1">שדה התעופה הרקליון (HER)</div>
+              <div class="text-[11px] text-slate-500 mt-0.5">כ-50 דק' לאחר נחיתת טיסה BZ752 (10:10)</div>
+            </div>
+
+            <!-- Return -->
+            <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3.5">
+              <div class="flex items-center gap-2 text-xs font-bold text-indigo-800 mb-2">
+                <span>🔄</span>
+                <span>החזרת הרכב בשדה</span>
+              </div>
+              <div class="text-base font-extrabold text-slate-900">21/09/2026 • 18:30–19:00</div>
+              <div class="text-xs text-slate-600 mt-1">שדה התעופה הרקליון (HER)</div>
+              <div class="text-[11px] text-slate-500 mt-0.5">כ-2.5 שעות לפני המראת טיסה BZ751 (21:30)</div>
+            </div>
+          </div>
+
+          <!-- Insurance & Deposit Conditions (Peace of Mind) -->
+          <div class="bg-amber-50/90 border border-amber-200/80 rounded-2xl p-4 text-xs space-y-2.5">
+            <div class="font-bold text-amber-950 flex items-center gap-1.5 text-sm">
+              <span>🛡️</span>
+              <span>תנאי ביטוח וראש שקט:</span>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-amber-950">
+              <div class="flex items-start gap-2 bg-white/80 p-2.5 rounded-xl border border-amber-200/60">
+                <span class="text-emerald-600 font-bold text-sm">✓</span>
+                <div>
+                  <span class="font-bold">0€ השתתפות עצמית:</span>
+                  <p class="text-[11px] text-slate-600">ביטוח מקיף מלא (CDW / Full Coverage) ללא דמי השתתפות במקרה של שריטה או תאונה.</p>
+                </div>
+              </div>
+              <div class="flex items-start gap-2 bg-white/80 p-2.5 rounded-xl border border-amber-200/60">
+                <span class="text-emerald-600 font-bold text-sm">✓</span>
+                <div>
+                  <span class="font-bold">ללא פיקדון / ללא חסימת אשראי:</span>
+                  <p class="text-[11px] text-slate-600">אין צורך בהפקדת פיקדון כספי או חסימת מסגרת בכרטיס האשראי בעת קבלת הרכב.</p>
+                </div>
+              </div>
+            </div>
+            <div class="text-[11px] text-amber-800/90 pt-1">
+              💡 <strong>טיפ נהיגה בכרתים:</strong> בכביש 90 (הכביש המהיר הצפוני) נהוג לרדת מעט לשול הימני כדי לאפשר לרכב מהיר יותר לעקוף. בדרכים הרריות סעו בזהירות ושימו לב לעיזים לצד הדרך.
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Tab 3: Accommodation Content -->
+        <div id="tab-content-hotel" class="space-y-4 hidden">
+          
+          <div class="bg-purple-50/80 border border-purple-200/90 rounded-2xl p-4">
+            <div class="flex items-center justify-between mb-2">
+              <span class="inline-flex items-center gap-1.5 text-xs font-bold bg-purple-700 text-white px-3 py-1 rounded-full">
+                <span>🏨</span>
+                <span>בסיס כוכב מומלץ לחופשה</span>
+              </span>
+              <span class="text-xs font-semibold text-purple-800 bg-purple-100 px-2.5 py-0.5 rounded-md">מיקום אסטרטגי מנצח</span>
+            </div>
+            
+            <h4 class="text-base font-extrabold text-slate-900 mt-1">גאורגיופוליס (Georgioupoli)</h4>
+            <p class="text-xs text-slate-600 leading-relaxed mt-1">
+              עיירת נופש וחוף פסטורלית עם נהר צלול הנשפך אל הים, שפע טברנות אותנטיות ומיקום מדויק באמצע הציר שבין חאניה, רתימנו והירידות לקניוני הדרום.
+            </p>
+          </div>
+
+          <!-- Why Georgioupoli highlights -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs">
+            <div class="bg-white p-3 rounded-xl border border-slate-200 shadow-sm text-center">
+              <div class="text-lg mb-1">🐢</div>
+              <div class="font-bold text-slate-900">5 דקות מאגם קורנאס</div>
+              <div class="text-[11px] text-slate-500 mt-0.5">קפיצה קלה לשייט פדלים וצבי מים בכל שעה</div>
+            </div>
+            <div class="bg-white p-3 rounded-xl border border-slate-200 shadow-sm text-center">
+              <div class="text-lg mb-1">🛣️</div>
+              <div class="font-bold text-slate-900">גישה ישירה לכביש 90</div>
+              <div class="text-[11px] text-slate-500 mt-0.5">חיבור מהיר לחאניה (35 דק) ורתימנו (20 דק)</div>
+            </div>
+            <div class="bg-white p-3 rounded-xl border border-slate-200 shadow-sm text-center">
+              <div class="text-lg mb-1">🧭</div>
+              <div class="font-bold text-slate-900">יציאה נוחה לדרום</div>
+              <div class="text-[11px] text-slate-500 mt-0.5">כבישי גישה ישירים לקורטליוטיקו ואימברוס</div>
+            </div>
+          </div>
+
+          <!-- Specific Accommodation Placeholder Card -->
+          <div class="bg-slate-50 border-2 border-dashed border-slate-300 rounded-2xl p-4 text-center">
+            <div class="w-12 h-12 bg-white rounded-2xl shadow-sm flex items-center justify-center text-2xl mx-auto mb-2 text-purple-600">
+              🏡
+            </div>
+            <h5 class="font-bold text-slate-900 text-sm">פרטי המלון / וילה יתווספו כאן</h5>
+            <p class="text-xs text-slate-500 mt-1 max-w-md mx-auto">
+              ברגע שתסגרו את מקום הלינה הספציפי (שם המקום, כתובת מדויקת, שעות צ'ק-אין, וויפי וטלפון), נעדכן את כל הפרטים כאן עם קישור ישיר ל-Waze ול-Google Maps.
+            </p>
           </div>
 
         </div>
@@ -1396,18 +1538,118 @@
       }
     }
 
+    // Modal management functions
+    function openTravelDetailsModal(defaultTab = 'flights') {
+      const modal = document.getElementById('travel-modal');
+      if (!modal) return;
+      if (defaultTab) switchTravelTab(defaultTab);
+      modal.classList.remove('opacity-0', 'pointer-events-none');
+      modal.classList.add('opacity-100', 'pointer-events-auto');
+    }
+
+    function closeTravelDetailsModal() {
+      const modal = document.getElementById('travel-modal');
+      if (!modal) return;
+      modal.classList.remove('opacity-100', 'pointer-events-auto');
+      modal.classList.add('opacity-0', 'pointer-events-none');
+    }
+
+    function switchTravelTab(tabName) {
+      const tabs = ['flights', 'car', 'hotel'];
+      tabs.forEach(t => {
+        const btn = document.getElementById(`tab-btn-${t}`);
+        const content = document.getElementById(`tab-content-${t}`);
+        if (t === tabName) {
+          if (btn) {
+            btn.classList.add('border-sky-600', 'text-sky-700', 'bg-white', 'shadow-sm');
+            btn.classList.remove('border-transparent', 'text-slate-600');
+          }
+          if (content) {
+            content.classList.remove('hidden');
+          }
+        } else {
+          if (btn) {
+            btn.classList.remove('border-sky-600', 'text-sky-700', 'bg-white', 'shadow-sm');
+            btn.classList.add('border-transparent', 'text-slate-600');
+          }
+          if (content) {
+            content.classList.add('hidden');
+          }
+        }
+      });
+    }
+
+    // Filter and search destinations
+    let currentRegionFilter = 'all';
+
+    function filterRegion(region) {
+      currentRegionFilter = region;
+      
+      const filterBtns = document.querySelectorAll('.filter-btn');
+      filterBtns.forEach(btn => {
+        btn.classList.remove('active-filter', 'bg-sky-600', 'text-white', 'shadow-sm', 'font-semibold');
+        btn.classList.add('bg-slate-100', 'text-slate-700', 'hover:bg-slate-200');
+      });
+
+      const activeBtn = document.getElementById(`btn-${region}`);
+      if (activeBtn) {
+        activeBtn.classList.add('active-filter', 'bg-sky-600', 'text-white', 'shadow-sm', 'font-semibold');
+        activeBtn.classList.remove('bg-slate-100', 'text-slate-700', 'hover:bg-slate-200');
+      }
+
+      applyFilters();
+    }
+
+    function handleSearch() {
+      applyFilters();
+    }
+
+    function applyFilters() {
+      const searchInput = document.getElementById('search-input');
+      const searchTerm = (searchInput ? searchInput.value : '').trim().toLowerCase();
+      const cards = document.querySelectorAll('.destination-card');
+      let visibleCount = 0;
+
+      cards.forEach(card => {
+        const region = card.getAttribute('data-region');
+        const textContent = card.innerText.toLowerCase();
+
+        const matchesRegion = (currentRegionFilter === 'all' || region === currentRegionFilter);
+        const matchesSearch = !searchTerm || textContent.includes(searchTerm);
+
+        if (matchesRegion && matchesSearch) {
+          card.style.display = 'flex';
+          visibleCount++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      const counter = document.getElementById('items-counter');
+      if (counter) {
+        counter.innerText = `מציג ${visibleCount} מתוך 11 יעדים`;
+      }
+    }
+
     function copyFlightAndCarSummary() {
-      const text = `✈️ כרתים 2026 - פרטי טיסות ורכב (משפחת ברזני):
+      const text = `✈️ כרתים 2026 - פרטי טיסות, רכב ולינה (משפחת ברזני):
 
-🛫 הלוך (17/09/2026): טיסה BZ752 | המראה 08:20 מנתב"ג (טרמ' 3) | נחיתה בהרקליון 10:10
-🛬 חזור (21/09/2026): טיסה BZ751 | המראה 21:30 מהרקליון | נחיתה בנתב"ג 23:10
-🎫 PNR: 305B7058
-🧳 כבודה: מזוודה אחת בלבד של 20 ק"ג לבטן המטוס (לכל המשפחה יחד) + תיק גב אישי לכל נוסע.
+🛫 הלוך (17/09/2026): טיסה BZ752 (חברת Blue Bird)
+   המראה: 08:20 מנתב"ג (טרמינל 3) | נחיתה: 10:10 בהרקליון (HER)
 
-🚗 רכב: Jeep Compass 4WD אוטומט
+🛬 חזור (21/09/2026): טיסה BZ751 (חברת Blue Bird)
+   המראה: 21:30 מהרקליון (HER) | נחיתה: 23:10 בנתב"ג (TLV)
+
+🎫 קוד הזמנה (PNR): 305B7058
+👥 נוסעים: אביחי, רחל, שי, טל ברזני
+🧳 כבודה: מזוודה אחת בלבד עד 20 ק"ג לבטן המטוס (משותפת לכולם) + תיק גב אישי לכל נוסע מתחת למושב.
+
+🚗 רכב שכור: Jeep Compass 4WD אוטומט (או מקביל)
 📍 איסוף בשדה הרקליון: 17/09 ב-11:00
-📍 החזרה בשדה הרקליון: 21/09 ב-18:30-19:00
-🛡️ ביטוח 0€ השתתפות עצמית, ללא פיקדון / ללא חסימת אשראי.`;
+📍 החזרה בשדה הרקליון: 21/09 ב-18:30–19:00
+🛡️ ביטוח: 0€ השתתפות עצמית מלאה, ללא צורך בפיקדון וללא חסימת כרטיס אשראי.
+
+🏨 בסיס כוכב מומלץ: גאורגיופוליס (Georgioupoli) - 5 דק' מאגם קורנאס.`;
 
       const textArea = document.createElement("textarea");
       textArea.value = text;
@@ -1418,7 +1660,7 @@
       textArea.select();
       try {
         document.execCommand('copy');
-        showToast("פרטי הטיסות והרכב הועתקו בהצלחה!");
+        showToast("פרטי הטיסות, הרכב והלינה הועתקו בהצלחה!");
       } catch (err) {
         showToast("לא ניתן היה להעתיק אוטומטית", "⚠️");
       }
