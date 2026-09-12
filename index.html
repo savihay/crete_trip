@@ -1688,11 +1688,11 @@
       map.on('focus', () => { map.scrollWheelZoom.enable(); });
       mapEl.addEventListener('click', () => { if (map) map.scrollWheelZoom.enable(); });
 
-      // Clean, modern, high-res tile layer with transliterated English + Greek labels
-      L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-        attribution: '&copy; <a href="https://carto.com/">CARTO</a> &copy; OpenStreetMap contributors',
-        subdomains: 'abcd',
-        maxZoom: 19
+      // Google Maps tile layer — familiar look, no API key needed for tiles
+      L.tileLayer('https://mt{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+        attribution: '&copy; Google Maps',
+        subdomains: '0123',
+        maxZoom: 20
       }).addTo(map);
 
       markersGroup = L.featureGroup().addTo(map);
