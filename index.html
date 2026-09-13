@@ -30,22 +30,29 @@
       });
     }
 
+    var travelModalOpener = null;
+
     function openTravelDetailsModal(defaultTab) {
       if (!defaultTab) defaultTab = 'flights';
       var modal = document.getElementById('travel-modal');
       if (!modal) return;
+      travelModalOpener = document.activeElement;
       switchTravelTab(defaultTab);
       modal.classList.remove('hidden');
       modal.classList.add('flex');
       document.body.style.overflow = 'hidden';
+      var close = modal.querySelector('button[title="סגירה" aria-label="סגירה"]');
+      if (close) close.focus();
     }
 
     function closeTravelDetailsModal() {
       var modal = document.getElementById('travel-modal');
-      if (!modal) return;
+      if (!modal || modal.classList.contains('hidden')) return;
       modal.classList.add('hidden');
       modal.classList.remove('flex');
       document.body.style.overflow = '';
+      if (travelModalOpener && travelModalOpener.focus) travelModalOpener.focus();
+      travelModalOpener = null;
     }
   </script>
   
@@ -217,6 +224,13 @@
     }
     details[open] > summary::after { transform: rotate(180deg); }
 
+    /* Visible keyboard focus — the UA default disappears against the dark chrome */
+    :focus-visible {
+      outline: 3px solid #0ea5e9;
+      outline-offset: 2px;
+      border-radius: 4px;
+    }
+
     /* Hide scrollbar for category tabs */
     .no-scrollbar::-webkit-scrollbar {
       display: none;
@@ -248,7 +262,7 @@
           <button 
             onclick="openTravelDetailsModal('hotel')"
             class="inline-flex items-center gap-1 sm:gap-2 bg-purple-500/25 hover:bg-purple-500/40 text-purple-100 border border-purple-300/30 px-2 sm:px-3.5 py-1 sm:py-1.5 rounded-full text-[11px] sm:text-sm font-medium backdrop-blur transition cursor-pointer"
-            title="פרטי בסיס הלינה בגאורגיופוליס"
+            title="פרטי בסיס הלינה בגאורגיופוליס" aria-label="פרטי בסיס הלינה בגאורגיופוליס"
           >
             <span>🏨</span>
             <span class="hidden sm:inline">בסיס: גאורגיופוליס</span>
@@ -258,7 +272,7 @@
           <button 
             onclick="openTravelDetailsModal('flights')" 
             class="inline-flex items-center gap-1 sm:gap-2 bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold px-2.5 sm:px-4 py-1 sm:py-1.5 rounded-full text-[11px] sm:text-sm shadow-md transition transform active:scale-95 cursor-pointer"
-            title="הצגת כל פרטי הטיסות, הרכב והלינה"
+            title="הצגת כל פרטי הטיסות, הרכב והלינה" aria-label="הצגת כל פרטי הטיסות, הרכב והלינה"
           >
             <span>✈️🚗</span>
             <span>טיסות ורכב</span>
@@ -283,18 +297,18 @@
 
     <!-- View Switcher: all places  /  day-by-day plan -->
     <div class="bg-gradient-to-l from-sky-800 to-cyan-900 rounded-2xl p-1.5 mb-4 sm:mb-6 shadow-lg flex items-center gap-1.5" role="tablist" aria-label="תצוגה">
-      <button type="button" id="tab-view-places" role="tab" aria-selected="true" onclick="setView('places')"
+      <button type="button" id="tab-view-days" role="tab" aria-selected="true" aria-controls="view-days" onclick="setView('days')"
         class="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-4 sm:px-6 py-2 rounded-xl text-xs sm:text-sm font-bold bg-white text-sky-800 shadow-sm transition cursor-pointer">
-        <span>🗺️</span><span>מפה וכל המקומות</span>
+        <span aria-hidden="true">📅</span><span>תוכנית לפי ימים</span>
       </button>
-      <button type="button" id="tab-view-days" role="tab" aria-selected="false" onclick="setView('days')"
+      <button type="button" id="tab-view-places" role="tab" aria-selected="false" aria-controls="view-places" onclick="setView('places')"
         class="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-4 sm:px-6 py-2 rounded-xl text-xs sm:text-sm font-semibold text-white/80 hover:text-white transition cursor-pointer">
-        <span>📅</span><span>תוכנית לפי ימים</span>
+        <span aria-hidden="true">🗺️</span><span>מפה וכל המקומות</span>
       </button>
       <span class="hidden md:block flex-1 text-left pl-3 text-[11px] text-sky-200">5 ימים · 15 יעדים · 13 עצירות בדרך</span>
     </div>
 
-    <div id="view-places">
+    <div id="view-places" class="hidden">
     
     <!-- Filter Pills & Search Section -->
     <div class="bg-white rounded-2xl shadow-lg border border-slate-200/80 p-3 sm:p-5 mb-5 sm:mb-8">
@@ -323,8 +337,9 @@
         <div class="flex items-center gap-2">
           <div class="relative flex-1 sm:w-64">
             <input 
-              type="text" 
+              type="search" 
               id="search-input" 
+              aria-label="חיפוש אטרקציה" 
               oninput="handleSearch()"
               placeholder="חיפוש אטרקציה..." 
               class="w-full pl-3 pr-9 py-2 rounded-xl text-sm bg-slate-50 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:bg-white transition"
@@ -412,7 +427,7 @@
         <span>📍</span>
         <span>כל המקומות המומלצים</span>
       </h2>
-      <span id="items-counter" class="text-[10px] sm:text-xs text-slate-600 font-semibold bg-slate-200/80 px-2 sm:px-3 py-0.5 sm:py-1 rounded-full">
+      <span id="items-counter" role="status" aria-live="polite" class="text-[10px] sm:text-xs text-slate-600 font-semibold bg-slate-200/80 px-2 sm:px-3 py-0.5 sm:py-1 rounded-full">
         מציג 15 מתוך 15 יעדים
       </span>
     </div>
@@ -456,7 +471,7 @@
     </div><!-- /#view-places -->
 
     <!-- Day-by-day plan view -->
-    <div id="view-days" class="hidden">
+    <div id="view-days">
       <div class="flex items-center justify-between gap-2 mb-3 sm:mb-5 px-1">
         <h2 class="heading-font text-base sm:text-2xl font-bold text-slate-900 flex items-center gap-1.5">
           <span>📅</span><span>5 ימים</span>
@@ -468,6 +483,8 @@
         </div>
       </div>
 
+      <nav id="day-nav" aria-label="קפיצה ליום"
+           class="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-3 mb-1"></nav>
       <div id="days-container" class="space-y-4 sm:space-y-6"></div>
     </div>
 
@@ -491,7 +508,7 @@
   </div>
 
   <!-- Flight & Car Details Modal Dialog -->
-  <div id="travel-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-950/75 backdrop-blur-sm" onclick="if(event.target === this) closeTravelDetailsModal()">
+  <div id="travel-modal" role="dialog" aria-modal="true" aria-labelledby="travel-modal-title" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-950/75 backdrop-blur-sm" onclick="if(event.target === this) closeTravelDetailsModal()">
     <div class="bg-white w-full max-w-2xl rounded-3xl shadow-2xl border border-slate-200 overflow-hidden flex flex-col max-h-[92vh]">
       
       <!-- Modal Header -->
@@ -501,7 +518,7 @@
             ✈️
           </div>
           <div>
-            <h3 class="heading-font text-lg sm:text-xl font-bold">פרטי טיסות, רכב ולינה</h3>
+            <h3 id="travel-modal-title" class="heading-font text-lg sm:text-xl font-bold">פרטי טיסות, רכב ולינה</h3>
             <p class="text-xs text-sky-200">חופשת משפחת ברזני בכרתים • 17–21 בספטמבר 2026</p>
           </div>
         </div>
@@ -509,7 +526,7 @@
           type="button"
           onclick="closeTravelDetailsModal()" 
           class="text-white/80 hover:text-white bg-white/10 hover:bg-white/20 w-8 h-8 rounded-full flex items-center justify-center text-sm transition cursor-pointer"
-          title="סגירה"
+          title="סגירה" aria-label="סגירה"
         >
           ✕
         </button>
@@ -955,7 +972,7 @@
           'על הסיפון יש קפיטריה אבל יקרה — שווה להעלות אוכל ומים'
         ],
         bring: ['כובעים', 'הרבה מים', 'קרם הגנה', 'נעליים סגורות למבצר', 'מזומן'],
-        kidsNote: 'מים רדודים וחמימים — מושלם לטל. השייט הארוך עלול לשעמם, שווה להוריד סרט מראש.',
+        kidsNote: 'מים רדודים וחמימים לאורך כל הלגונה. השייט ארוך — שווה להוריד משהו לצפייה מראש.',
         gmaps: 'https://www.google.com/maps/search/?api=1&query=Kissamos+Port+Crete'
       },
       {
@@ -978,7 +995,7 @@
           'חניון Talos או חניון הנמל, שניהם 5 דק הליכה מהעיר העתיקה'
         ],
         bring: ['נעליים נוחות לאבן מחליקה', 'מזומן לשוק'],
-        kidsNote: 'ההליכה למגדלור והגלידריות בנמל עובדות מצוין בשני הגילאים.',
+        kidsNote: 'ההליכה למגדלור על השובר והגלידריות בנמל — שווה להשאיר זמן לשתיהן.',
         gmaps: 'https://www.google.com/maps/search/?api=1&query=Chania+Venetian+Harbour'
       },
       {
@@ -1001,7 +1018,7 @@
           'גם אם לא יורדים — התצפית מלמעלה לבדה שווה את הנסיעה'
         ],
         bring: ['נעליים סגורות', 'מים', 'כובע', 'אוכל בקופסה סגורה'],
-        kidsNote: 'הירידה מתאימה לשי ולטל בלי בעיה. האילוץ פה הוא החניה, לא הילדים.',
+        kidsNote: 'הירידה עם השרשראות כיפית ולגמרי בכוחות שלכן. האילוץ פה הוא החניה, לא הירידה.',
         unassignedNote: 'לא שובץ — נכנס רק אם נוותר על משהו ביום 2, או אם נעשה בוקר נפרד באקרוטירי.',
         gmaps: 'https://www.google.com/maps/search/?api=1&query=Seitan+Limania+Beach'
       },
@@ -1025,7 +1042,7 @@
           'בדרך: קניון טופוליה ומערת אגיה סופיה, וכפרי הערמונים אלוס'
         ],
         bring: ['שמשייה', 'אוכל ומים ליום שלם', 'מזומן לחניה'],
-        kidsNote: 'המים הרדודים והחול הוורוד אידיאליים לטל — אבל 5 שעות ברכב פחות.',
+        kidsNote: 'המים הרדודים והחול הוורוד מושלמים — אבל חמש שעות ברכב פחות.',
         unassignedNote: 'לא שובץ — 5 שעות נהיגה וכפילות חוויה עם באלוס. נכנס רק אם נוותר על יום הדרום או ספאקיה.',
         gmaps: 'https://www.google.com/maps/search/?api=1&query=Elafonisi+Beach+Crete'
       },
@@ -1049,7 +1066,7 @@
           'אין מים לאורך המסלול, רק בכניסה ובקצה'
         ],
         bring: ['נעלי הליכה סגורות', '1.5 ליטר מים לאדם', 'כובע', 'חטיפים', 'מזומן למונית'],
-        kidsNote: 'ירידה מתונה על שביל טוב — טל בת 9.5 תעשה את זה בלי בעיה. שלוש שעות עם הפסקות.',
+        kidsNote: 'ירידה מתונה על שביל טוב לכל האורך, בלי טיפוסים. שלוש שעות עם הפסקות.',
         gmaps: 'https://www.google.com/maps/search/?api=1&query=Imbros+Gorge+Crete'
       },
       {
@@ -1072,7 +1089,7 @@
           'אגדה מקומית: ה״דרוסולייטס״ — צללי לוחמים שנראים בשחר בסוף מאי'
         ],
         bring: ['בגד ים', 'כסף לטברנה'],
-        kidsNote: 'החוף הכי בטוח ברשימה. 100 מטר של מים רדודים — אפשר להירגע.',
+        kidsNote: 'החוף הכי רגוע ברשימה — 100 מטר של מים עד הברכיים.',
         gmaps: 'https://www.google.com/maps/search/?api=1&query=Frangokastello+Castle'
       },
       {
@@ -1095,7 +1112,7 @@
           'המים קרים באמת, אפילו בספטמבר'
         ],
         bring: ['סנדלי מים', 'שקית אטומה לטלפון', 'מגבת', 'מזומן לכניסה'],
-        kidsNote: 'המדרגות בסדר לשתיהן. הקור של המים הוא ההפתעה, לא הקושי.',
+        kidsNote: 'המדרגות קלות. ההפתעה היא כמה המים קרים, גם בספטמבר.',
         gmaps: 'https://www.google.com/maps/search/?api=1&query=Kourtaliotiko+Gorge+Waterfall'
       },
       {
@@ -1118,7 +1135,7 @@
           'אלטרנטיבה לעצלנים: סירה מפלקיאס ישירות לחוף'
         ],
         bring: ['מים לעלייה', 'נעלי מים', 'קרם הגנה'],
-        kidsNote: 'שיט במעלה הנהר בין הדקלים — זה הדבר שהן יזכרו מהטיול.',
+        kidsNote: 'שיט במעלה הנהר בין הדקלים — כנראה מה שתזכרו הכי הרבה מהטיול.',
         gmaps: 'https://www.google.com/maps/search/?api=1&query=Preveli+Beach+Crete'
       },
       {
@@ -1141,7 +1158,7 @@
           'שווה להביא משקפי שנירקול משלכם'
         ],
         bring: ['משקפי שנירקול', 'נעלי מים', 'מגבת'],
-        kidsNote: 'שי (14) תאהב את הקפיצות. לטל — לוודא שוסט או להישאר בחלק הרדוד ליד הסלעים.',
+        kidsNote: 'הקפיצות מהסלעים הן העיקר. המים עמוקים מיד, אז שנירקול ליד הסלעים הרדודים.',
         gmaps: 'https://www.google.com/maps/search/?api=1&query=Kalypso+Beach+Plakias'
       },
       {
@@ -1164,7 +1181,7 @@
           'החניון למטה ליד האגם — לא לעצור בחניונים של התצפית מלמעלה'
         ],
         bring: ['בגד ים', 'כובע', 'מזומן'],
-        kidsNote: 'הצבים הם ההיט. גם מקום טוב לתת להן להוביל את הפדלבוט.',
+        kidsNote: 'הצבים הם ההיט — ואתן מובילות את הפדלבוט.',
         gmaps: 'https://www.google.com/maps/search/?api=1&query=Lake+Kournas+Crete'
       },
       {
@@ -1178,7 +1195,7 @@
         drive: '0:20 מקורטליוטיקו · 0:50 מהבסיס',
         cost: 'חינם',
         tip: 'בכניסה טברנה משפחתית מעולה (Drymos) עם פינת חי.',
-        desc: 'קניון קטן והרפתקני עם סולמות עץ, חבלי עזר, גשרונים ובריכות מים — והכי מהנה ברשימה לגילאים האלה. בכניסה כנסייה חצובה במערה וטברנה עם פינת חי.',
+        desc: 'קניון קטן והרפתקני עם סולמות עץ, חבלי עזר, גשרונים ובריכות מים — והכי משחקי ברשימה. בכניסה כנסייה חצובה במערה וטברנה עם פינת חי.',
         long: 'פאטסוס, שנקרא גם קניון אגיוס אנטוניוס על שם הכנסייה החצובה במערה בכניסה, הוא הקניון הכי משחקי ברשימה. הוא לא ארוך ולא קשה, אבל הוא מלא במכשולים כיפיים: סולמות עץ, חבלי עזר, גשרונים קטנים מעל הנחל ומעברים בין סלעים. בקיץ ובראשית הסתיו יש עדיין מים בבריכות. הכניסה חינם, ובכניסה יושבת טברנת Drymos המשפחתית עם פינת חי קטנה.',
         practical: [
           'חינם, בלי שער ובלי שעות פתיחה',
@@ -1187,7 +1204,7 @@
           'טברנת Drymos בכניסה — מקום מצוין לצהריים אחרי'
         ],
         bring: ['נעליים סגורות עם אחיזה', 'מים', 'ידיים פנויות (תיק גב, לא תיק יד)'],
-        kidsNote: 'זה בול לשי ולטל — סולמות וחבלים זה בדיוק הגיל. אולי החביב עליהן.',
+        kidsNote: 'סולמות, חבלים וגשרונים. יש סיכוי טוב שזה יהיה האהוב עליכן בטיול.',
         gmaps: 'https://www.google.com/maps/search/?api=1&query=Patsos+Gorge+Crete'
       },
       {
@@ -1210,7 +1227,7 @@
           'ההליכה בין המפלונים שטוחה ונוחה, כמה עשרות מטרים'
         ],
         bring: ['נעליים שלא אכפת שיירטבו', 'תיאבון'],
-        kidsNote: 'מפלים קטנים שאפשר לגעת בהם ודגי פורל בבריכות. קליל ומהנה.',
+        kidsNote: 'מפלונים שאפשר לגעת בהם ובריכות עם דגי פורל. קליל ומרענן.',
         gmaps: 'https://www.google.com/maps/search/?api=1&query=Argyroupoli+Springs+Crete'
       },
       {
@@ -1234,7 +1251,7 @@
           '20 דקות בלבד משדה התעופה — משתלב מצוין ביום ההמראה'
         ],
         bring: ['כובע וקרם הגנה', 'הרבה מים', 'נעליים נוחות', 'תעודות זהות לילדות'],
-        kidsNote: 'סיפור המינוטאור והמבוך עובד מצוין בגיל 9.5, ולשי זו היסטוריה אמיתית. לספר את האגדה לפני הכניסה.',
+        kidsNote: 'זה המבוך של המינוטאור מהאגדה. שווה לקרוא את הסיפור לפני שנכנסים.',
         gmaps: 'https://www.google.com/maps/search/?api=1&query=Knossos+Palace'
       },
       {
@@ -1257,7 +1274,7 @@
           'כרטיס משולב עם קנוסוס (~20€) חוסך אם עושים את שניהם'
         ],
         bring: ['סבלנות לשעה וחצי', 'תעודות זהות לילדות'],
-        kidsNote: 'דיסקת פאיסטוס — כתב שאף אחד לא פיצח 4,000 שנה — זה בדיוק סוג החידה שתופסת את שתיהן.',
+        kidsNote: 'דיסקת פאיסטוס: כתב בן 4,000 שנה שאף אחד בעולם לא הצליח לפענח. עדיין.',
         gmaps: 'https://www.google.com/maps/search/?api=1&query=Heraklion+Archaeological+Museum'
       },
       {
@@ -1280,7 +1297,7 @@
           'מזרקת רימונדי והמינרט של נרנג׳ס בלב הסמטאות'
         ],
         bring: ['נעליים נוחות', 'כובע לפורטצה (חשוף)'],
-        kidsNote: 'הפורטצה עם החומות והמנהרות עובדת טוב בשני הגילאים.',
+        kidsNote: 'הפורטצה — חומות שלמות, מנהרות ותצפית של 360 מעלות.',
         gmaps: 'https://www.google.com/maps/search/?api=1&query=Rethymno+Old+Town'
       }
     ];
@@ -1305,7 +1322,7 @@
     // ===== The 5 days =====
     const daysData = [
       {
-        num: 1, date: '17/09', dow: 'חמישי', cluster: 'center',
+        num: 1, iso: '2026-09-17', wxLat: 35.37, wxLng: 24.47, date: '17/09', dow: 'חמישי', cluster: 'center',
         title: 'מהשדה מערבה',
         subtitle: 'נחיתה, רתימנו והתמקמות',
         window: 'רכב 11:00 → שקיעה ~19:30',
@@ -1316,7 +1333,7 @@
         ]
       },
       {
-        num: 2, date: '18/09', dow: 'שישי', cluster: 'kissamos',
+        num: 2, iso: '2026-09-18', wxLat: 35.58, wxLng: 23.59, date: '18/09', dow: 'שישי', cluster: 'kissamos',
         title: 'באלוס וחאניה',
         subtitle: 'היום הגדול במערב',
         window: 'יציאה 08:15 → חזרה ~22:15',
@@ -1328,7 +1345,7 @@
         warn: 'היום הכי ארוך בטיול. אם זה נראה כבד — מוותרים על חאניה כאן ומעבירים אותה לערב של יום 1.'
       },
       {
-        num: 3, date: '19/09', dow: 'שבת', cluster: 'south',
+        num: 3, iso: '2026-09-19', wxLat: 35.15, wxLng: 24.47, date: '19/09', dow: 'שבת', cluster: 'south',
         title: 'קניונים, מפלים וחופי הדרום',
         subtitle: 'יום המים',
         window: 'יציאה ~08:30 → ערב בפלקיאס',
@@ -1340,7 +1357,7 @@
         warn: 'ארבעה יעדים ושלוש מנות זמן. קליפסו ופאטסוס שניהם ⭐⭐ — בוחרים אחד לפי מה שמתחשק באותו רגע.'
       },
       {
-        num: 4, date: '20/09', dow: 'ראשון', cluster: 'sfakia',
+        num: 4, iso: '2026-09-20', wxLat: 35.2, wxLng: 24.14, date: '20/09', dow: 'ראשון', cluster: 'sfakia',
         title: 'ספאקיה',
         subtitle: 'הקניון והים הלובי',
         window: 'יציאה ~07:45 → חזרה בערב',
@@ -1351,7 +1368,7 @@
         ]
       },
       {
-        num: 5, date: '21/09', dow: 'שני', cluster: 'center',
+        num: 5, iso: '2026-09-21', wxLat: 35.3, wxLng: 25.16, date: '21/09', dow: 'שני', cluster: 'center',
         title: 'מזרחה אל השדה — דרך קנוסוס',
         subtitle: 'הופכים את נסיעת הפינוי ליום',
         window: 'צ׳ק-אאוט ~09:30 → החזרת רכב 19:00',
@@ -1799,6 +1816,27 @@
       }
     }
 
+    // ===== Modal focus trap =====
+    // Without this, Tab walks out of an open dialog into the page behind it,
+    // which for a keyboard or screen-reader user means the modal is a dead end.
+    const FOCUSABLE = 'a[href],button:not([disabled]),input,select,textarea,[tabindex]:not([tabindex="-1"])';
+
+    function openModalEl() {
+      return [document.getElementById('dest-modal'), document.getElementById('travel-modal')]
+        .find(m => m && !m.classList.contains('hidden'));
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key !== 'Tab') return;
+      const modal = openModalEl();
+      if (!modal) return;
+      const items = [...modal.querySelectorAll(FOCUSABLE)].filter(el => el.offsetParent !== null);
+      if (!items.length) return;
+      const first = items[0], last = items[items.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    });
+
     // Close modal on Escape key
     window.addEventListener('keydown', (e) => {
       if (e.key !== 'Escape') return;
@@ -1973,7 +2011,7 @@
 
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div class="bg-purple-50 border border-purple-200 rounded-2xl p-3">
-              <h4 class="text-xs font-bold text-purple-900 mb-1.5 flex items-center gap-1.5"><span>👧</span><span>שי (14) וטל (9.5)</span></h4>
+              <h4 class="text-xs font-bold text-purple-900 mb-1.5 flex items-center gap-1.5"><span>👧</span><span>לשי ולטל</span></h4>
               <p class="text-xs text-purple-800 leading-relaxed">${esc(d.kidsNote)}</p>
             </div>
             <div class="bg-amber-50 border border-amber-200 rounded-2xl p-3">
@@ -2036,20 +2074,23 @@
         const route = [BASE, ...items, BASE].map(p => `${p.lat},${p.lng}`).join('/');
 
         return `
-        <section id="day-${day.num}" class="bg-white rounded-2xl sm:rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
+        <section id="day-${day.num}" aria-labelledby="day-${day.num}-title" class="bg-white rounded-2xl sm:rounded-3xl border border-slate-200 shadow-sm overflow-hidden scroll-mt-4">
           <div class="bg-gradient-to-l from-slate-900 to-sky-950 text-white p-3 sm:p-5">
             <div class="flex items-center gap-2.5">
-              <span class="w-8 h-8 shrink-0 rounded-xl bg-white/15 flex items-center justify-center text-sm font-black backdrop-blur">${day.num}</span>
+              <span class="w-8 h-8 shrink-0 rounded-xl bg-white/15 flex items-center justify-center text-sm font-black backdrop-blur" aria-hidden="true">${day.num}</span>
               <div class="flex-1 min-w-0">
-                <h3 class="heading-font text-base sm:text-2xl font-bold leading-tight truncate">${esc(day.title)}</h3>
-                <p class="text-[11px] sm:text-xs text-slate-300 mt-0.5 leading-snug">
-                  ${esc(day.dow)} ${esc(day.date)}<span class="hidden sm:inline"> · ${esc(cl.name)}</span> · ${esc(day.window)}
-                </p>
+                <h3 id="day-${day.num}-title" class="heading-font text-base sm:text-2xl font-bold leading-tight">יום ${day.num}: ${esc(day.title)}</h3>
+                <div class="flex items-center gap-2 flex-wrap mt-1">
+                  ${weatherChip(day.num)}
+                  <p class="text-[11px] sm:text-xs text-slate-300 leading-snug">
+                    ${esc(day.dow)} ${esc(day.date)}<span class="hidden sm:inline"> · ${esc(cl.name)}</span> · ${esc(day.window)}
+                  </p>
+                </div>
               </div>
               <a href="https://www.google.com/maps/dir/${route}" target="_blank" rel="noopener noreferrer"
-                aria-label="מסלול היום ב-Google Maps"
+                aria-label="פתיחת מסלול יום ${day.num} ב-Google Maps"
                 class="shrink-0 text-xs font-bold px-2.5 sm:px-3 py-2 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 transition shadow">
-                🚀<span class="hidden sm:inline"> מסלול היום</span>
+                <span aria-hidden="true">🚀</span><span class="hidden sm:inline"> מסלול היום</span>
               </a>
             </div>
           </div>
@@ -2142,7 +2183,7 @@
     }
 
     // ===== View switcher =====
-    let currentView = 'places';
+    let currentView = 'days';
 
     function setView(view) {
       currentView = view;
@@ -2161,6 +2202,9 @@
 
       if (!isPlaces) {
         renderDays();
+        renderDayNav();
+        loadWeather().then(() => { if (currentView === 'days') { renderDays(); renderDayNav(); } })
+                     .catch(err => console.warn('Weather unavailable:', err));
       } else if (map) {
         requestAnimationFrame(() => map.invalidateSize());
       }
@@ -2188,9 +2232,102 @@
         chip('chip-airport', 'selectDestinationMap(-2)', 'bg-slate-100 text-slate-700 border-slate-200', '✈️ שדה הרקליון');
     }
 
+
+    // ===== Weather =====
+    // Open-Meteo: free, no key, CORS-enabled. One request covers all five days by
+    // passing comma-separated coordinates — Balos and Sfakia get their own forecast
+    // rather than the base's, because they are genuinely different weather.
+    let weatherByDay = null;
+
+    const WX = {
+      0:['☀️','בהיר'], 1:['🌤️','בהיר בעיקרו'], 2:['⛅','מעונן חלקית'], 3:['☁️','מעונן'],
+      45:['🌫️','ערפל'], 48:['🌫️','ערפל'],
+      51:['🌦️','טפטוף קל'], 53:['🌦️','טפטוף'], 55:['🌦️','טפטוף חזק'],
+      61:['🌧️','גשם קל'], 63:['🌧️','גשם'], 65:['🌧️','גשם חזק'],
+      66:['🌧️','גשם'], 67:['🌧️','גשם חזק'],
+      71:['🌨️','שלג'], 73:['🌨️','שלג'], 75:['🌨️','שלג כבד'], 77:['🌨️','גרגרי שלג'],
+      80:['🌦️','ממטרים'], 81:['🌦️','ממטרים'], 82:['⛈️','ממטרים עזים'],
+      85:['🌨️','ממטרי שלג'], 86:['🌨️','ממטרי שלג'],
+      95:['⛈️','סופת רעמים'], 96:['⛈️','סופת רעמים'], 99:['⛈️','סופת רעמים']
+    };
+    const wxLabel = code => WX[code] || ['🌡️', ''];
+
+    async function loadWeather() {
+      if (weatherByDay) return weatherByDay;
+      try {
+        const cached = JSON.parse(localStorage.getItem('crete-wx') || 'null');
+        if (cached && Date.now() - cached.at < 3 * 3600 * 1000) {
+          weatherByDay = cached.data;
+          return weatherByDay;
+        }
+      } catch (e) { /* private mode or blocked storage — just refetch */ }
+
+      const lats = daysData.map(d => d.wxLat).join(',');
+      const lngs = daysData.map(d => d.wxLng).join(',');
+      const url = `https://api.open-meteo.com/v1/forecast?latitude=${lats}&longitude=${lngs}` +
+                  `&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,wind_speed_10m_max` +
+                  `&timezone=Europe%2FAthens&forecast_days=16`;
+
+      const res = await fetch(url);
+      if (!res.ok) throw new Error('weather ' + res.status);
+      const json = await res.json();
+      const list = Array.isArray(json) ? json : [json];
+
+      const out = {};
+      daysData.forEach((day, i) => {
+        const loc = list[i];
+        if (!loc || !loc.daily) return;
+        const idx = loc.daily.time.indexOf(day.iso);
+        if (idx === -1) return; // outside the forecast horizon
+        out[day.num] = {
+          code: loc.daily.weather_code[idx],
+          max: Math.round(loc.daily.temperature_2m_max[idx]),
+          min: Math.round(loc.daily.temperature_2m_min[idx]),
+          rain: loc.daily.precipitation_probability_max[idx],
+          wind: Math.round(loc.daily.wind_speed_10m_max[idx])
+        };
+      });
+
+      weatherByDay = out;
+      try { localStorage.setItem('crete-wx', JSON.stringify({ at: Date.now(), data: out })); } catch (e) { /* ignore */ }
+      return out;
+    }
+
+    function weatherChip(num) {
+      const w = weatherByDay && weatherByDay[num];
+      if (!w) return '';
+      const [icon, text] = wxLabel(w.code);
+      // Wind matters here: Balos and Elafonisi get unpleasant above ~30 km/h.
+      const windy = w.wind >= 30;
+      const wet = w.rain >= 30;
+      return `
+        <div class="flex items-center gap-1 text-[11px] sm:text-xs bg-white/10 border border-white/20 rounded-lg px-1.5 py-0.5 backdrop-blur shrink-0"
+             title="${esc(text)} · מקסימום ${w.max}° · מינימום ${w.min}° · גשם ${w.rain}% · רוח ${w.wind} קמ״ש">
+          <span aria-hidden="true">${icon}</span>
+          <span class="font-bold text-white">${w.max}°</span>
+          <span class="text-slate-300">${w.min}°</span>
+          ${wet ? `<span class="text-sky-200">💧${w.rain}%</span>` : ''}
+          ${windy ? `<span class="text-amber-200">💨${w.wind}</span>` : ''}
+          <span class="sr-only">${esc(text)}, מקסימום ${w.max} מעלות, מינימום ${w.min} מעלות, סיכוי גשם ${w.rain} אחוז, רוח ${w.wind} קילומטר לשעה</span>
+        </div>`;
+    }
+
+    // ===== Jump straight to a day =====
+    function renderDayNav() {
+      const bar = document.getElementById('day-nav');
+      if (!bar) return;
+      bar.innerHTML = daysData.map(d => `
+        <button type="button" onclick="showDayView(${d.num})"
+          class="shrink-0 px-3 py-1.5 rounded-xl text-xs font-bold bg-white border border-slate-200 text-slate-700 hover:bg-sky-50 hover:border-sky-300 transition cursor-pointer">
+          <span class="text-sky-700">יום ${d.num}</span>
+          <span class="text-slate-400 mx-1">·</span>${esc(d.title)}
+        </button>`).join('');
+    }
+
     function initAll() {
       renderCards();
       applyFilters();
+      setView('days');
 
       // The map is the only part that needs a CDN. If Leaflet did not load
       // (no signal, blocked CDN) everything else must still work.
