@@ -974,7 +974,7 @@
         ],
         bring: ['כובעים', 'הרבה מים', 'קרם הגנה', 'נעליים סגורות למבצר', 'מזומן'],
         kidsNote: 'מים רדודים וחמימים לאורך כל הלגונה. השייט ארוך — שווה להוריד משהו לצפייה מראש.',
-        gmaps: 'https://www.google.com/maps/search/?api=1&query=Kissamos+Port+Crete'
+        gmaps: 'https://www.google.com/maps/search/?api=1&query=Balos+Lagoon+Crete'
       },
       {
         id: 'chania', day: 2, order: 2, priority: 3, cluster: 'chania',
@@ -1305,19 +1305,19 @@
 
     // ===== On-the-way stops: viewpoints and quick pauses, added only if the day flows =====
     const stopsData = [
-      { id: 'panormo',      day: 1, icon: '🐚', title: 'כפר פאנורמו',            note: 'כפר דייגים קטן ומקסים בדיוק על הכביש מהשדה', lat: 35.4187, lng: 24.6906 },
-      { id: 'geo-jetty',    day: 1, icon: '🌅', title: 'כנסיית אגיוס ניקולאוס',  note: 'הכנסייה הקטנה על השובר בגאורגיופוליס — שקיעה', lat: 35.3648, lng: 24.2660 },
-      { id: 'kissamos',     day: 2, icon: '⚓', title: 'נמל קיסאמוס',            note: 'נקודת ההפלגה — להיות שם 09:45', lat: 35.5008, lng: 23.6497 },
-      { id: 'falassarna',   day: 2, icon: '🌇', title: 'חוף פלסארנה',            note: 'חוף שקיעה מפורסם, 20 דק מקיסאמוס — רק אם לא עושים חאניה', lat: 35.5000, lng: 23.5750 },
-      { id: 'kotsifou',     day: 3, icon: '🪨', title: 'קניון קוציפו',           note: '2 ק״מ נסיעה דרמטית בין צוקים + כנסייה חצובה בסלע', lat: 35.2350, lng: 24.4030 },
-      { id: 'spili',        day: 3, icon: '🦁', title: 'ספילי — מזרקת האריות',   note: 'כפר הררי עם מזרקה ונציאנית של 25 ראשי אריות', lat: 35.2136, lng: 24.5350 },
-      { id: 'damnoni',      day: 3, icon: '🏖️', title: 'חוף דמנוני',            note: 'חוף חולי נוח ליד פלקיאס, אלטרנטיבה לקליפסו', lat: 35.1897, lng: 24.4180 },
-      { id: 'vrisses',      day: 4, icon: '🍯', title: 'וריסס — יוגורט ודבש',    note: 'עצירת בוקר קלאסית בדרך לספאקיה, מתחת לעצי הדולב', lat: 35.3833, lng: 24.2000 },
-      { id: 'askifou',      day: 4, icon: '⛰️', title: 'מישור אסקיפו',           note: 'מישור הררי בגובה 726 מ׳ מוקף ההרים הלבנים', lat: 35.2761, lng: 24.1811 },
-      { id: 'krioneritis',  day: 4, icon: '🔭', title: 'תצפית קריונריטיס',       note: 'הסרפנטינות היורדות לים הלובי — התצפית של הדרך', lat: 35.2200, lng: 24.1450 },
-      { id: 'arkadi',       day: 5, icon: '⛪', title: 'מנזר ארקדי',            note: 'סמל ההתנגדות הכרתית, 25 דק דרומית לרתימנו — בדיוק על הציר מזרחה', lat: 35.3097, lng: 24.6297 },
-      { id: 'margarites',   day: 5, icon: '🏺', title: 'מרגריטס',                note: 'כפר קדרים עם סדנאות פתוחות, קרוב לארקדי', lat: 35.3050, lng: 24.7000 },
-      { id: 'aptera',       day: 1, icon: '🏺', title: 'אפטרה',                  note: 'עיר עתיקה + מצודת קולס עם תצפית על מפרץ סודה — רק אם נשאר כוח', lat: 35.4620, lng: 24.1400 }
+      { id: 'panormo',      day: 1, q: 'Panormo Crete', icon: '🐚', title: 'כפר פאנורמו',            note: 'כפר דייגים קטן ומקסים בדיוק על הכביש מהשדה', lat: 35.4187, lng: 24.6906 },
+      { id: 'geo-jetty',    day: 1, q: 'Agios Nikolaos Church Georgioupoli', icon: '🌅', title: 'כנסיית אגיוס ניקולאוס',  note: 'הכנסייה הקטנה על השובר בגאורגיופוליס — שקיעה', lat: 35.3648, lng: 24.2660 },
+      { id: 'kissamos',     day: 2, q: 'Kissamos Port', icon: '⚓', title: 'נמל קיסאמוס',            note: 'נקודת ההפלגה — להיות שם 09:45', lat: 35.5008, lng: 23.6497 },
+      { id: 'falassarna',   day: 2, q: 'Falassarna Beach Crete', icon: '🌇', title: 'חוף פלסארנה',            note: 'חוף שקיעה מפורסם, 20 דק מקיסאמוס — רק אם לא עושים חאניה', lat: 35.5000, lng: 23.5750 },
+      { id: 'kotsifou',     day: 3, q: 'Kotsifou Gorge Crete', icon: '🪨', title: 'קניון קוציפו',           note: '2 ק״מ נסיעה דרמטית בין צוקים + כנסייה חצובה בסלע', lat: 35.2350, lng: 24.4030 },
+      { id: 'spili',        day: 3, q: 'Spili Crete', icon: '🦁', title: 'ספילי — מזרקת האריות',   note: 'כפר הררי עם מזרקה ונציאנית של 25 ראשי אריות', lat: 35.2136, lng: 24.5350 },
+      { id: 'damnoni',      day: 3, q: 'Damnoni Beach Crete', icon: '🏖️', title: 'חוף דמנוני',            note: 'חוף חולי נוח ליד פלקיאס, אלטרנטיבה לקליפסו', lat: 35.1897, lng: 24.4180 },
+      { id: 'vrisses',      day: 4, q: 'Vrisses Crete', icon: '🍯', title: 'וריסס — יוגורט ודבש',    note: 'עצירת בוקר קלאסית בדרך לספאקיה, מתחת לעצי הדולב', lat: 35.3833, lng: 24.2000 },
+      { id: 'askifou',      day: 4, q: 'Askifou Plateau Crete', icon: '⛰️', title: 'מישור אסקיפו',           note: 'מישור הררי בגובה 726 מ׳ מוקף ההרים הלבנים', lat: 35.2761, lng: 24.1811 },
+      { id: 'krioneritis',  day: 4, q: 'Krioneritis Sfakia Crete', icon: '🔭', title: 'תצפית קריונריטיס',       note: 'הסרפנטינות היורדות לים הלובי — התצפית של הדרך', lat: 35.2200, lng: 24.1450 },
+      { id: 'arkadi',       day: 5, q: 'Arkadi Monastery Crete', icon: '⛪', title: 'מנזר ארקדי',            note: 'סמל ההתנגדות הכרתית, 25 דק דרומית לרתימנו — בדיוק על הציר מזרחה', lat: 35.3097, lng: 24.6297 },
+      { id: 'margarites',   day: 5, q: 'Margarites Crete', icon: '🏺', title: 'מרגריטס',                note: 'כפר קדרים עם סדנאות פתוחות, קרוב לארקדי', lat: 35.3050, lng: 24.7000 },
+      { id: 'aptera',       day: 1, q: 'Aptera Archaeological Site', icon: '🏺', title: 'אפטרה',                  note: 'עיר עתיקה + מצודת קולס עם תצפית על מפרץ סודה — רק אם נשאר כוח', lat: 35.4620, lng: 24.1400 }
     ];
 
     // ===== The 5 days =====
@@ -1447,8 +1447,8 @@
             <h4 class="font-extrabold text-slate-900 text-sm">גאורגיופוליס (Georgioupoli)</h4>
             <p class="text-xs text-slate-600 mt-1 leading-relaxed">בסיס כוכב אסטרטגי על הים! 5 דק' בלבד מאגם קורנאס, 20 דק' מרתימנו וחיבור ישיר לכביש 90 ולירידות לקניוני הדרום.</p>
             <div class="mt-2.5 pt-2 border-t border-slate-100 flex items-center justify-between gap-2">
-              <a href="https://www.google.com/maps/dir/?api=1&destination=35.3628,24.2588" target="_blank" class="w-full text-center text-xs font-bold text-white bg-purple-700 hover:bg-purple-800 py-1.5 px-3 rounded-lg shadow-sm transition">
-                🚗 נווט ב-Google Maps
+              <a href="https://www.google.com/maps/search/?api=1&query=Georgioupoli+Crete" target="_blank" rel="noopener noreferrer" class="w-full text-center text-xs font-bold text-white bg-purple-700 hover:bg-purple-800 py-1.5 px-3 rounded-lg shadow-sm transition">
+                📍 פתח ב-Google Maps
               </a>
             </div>
           </div>
@@ -1471,8 +1471,8 @@
             <h4 class="font-extrabold text-slate-900 text-sm">שדה התעופה הרקליון (HER)</h4>
             <p class="text-xs text-slate-600 mt-1 leading-relaxed">נחיתה ב-17/9 ב-10:10 (טיסה BZ752), איסוף Jeep Compass מחברת The Best Cars (11:00) והחזרת הרכב ב-21/9 ב-19:00 לקראת טיסה BZ751 ב-21:30.</p>
             <div class="mt-2.5 pt-2 border-t border-slate-100 flex items-center justify-between gap-2">
-              <a href="https://www.google.com/maps/dir/?api=1&destination=35.3397,25.1803" target="_blank" class="w-full text-center text-xs font-bold text-white bg-blue-700 hover:bg-blue-800 py-1.5 px-3 rounded-lg shadow-sm transition">
-                🚗 נווט ב-Google Maps
+              <a href="https://www.google.com/maps/search/?api=1&query=Heraklion+International+Airport" target="_blank" rel="noopener noreferrer" class="w-full text-center text-xs font-bold text-white bg-blue-700 hover:bg-blue-800 py-1.5 px-3 rounded-lg shadow-sm transition">
+                📍 פתח ב-Google Maps
               </a>
             </div>
           </div>
@@ -1511,8 +1511,8 @@
                   💡 ${dest.tip}
                 </div>
                 <div class="flex items-center gap-1.5">
-                  <a href="https://www.google.com/maps/dir/?api=1&destination=${dest.lat},${dest.lng}" target="_blank" class="flex-1 text-center text-xs font-bold text-white bg-sky-600 hover:bg-sky-500 py-1.5 px-2 rounded-xl transition shadow-sm">
-                    🚗 נווט ליעד
+                  <a href="${placeUrl(dest)}" target="_blank" rel="noopener noreferrer" class="flex-1 text-center text-xs font-bold text-white bg-sky-600 hover:bg-sky-500 py-1.5 px-2 rounded-xl transition shadow-sm">
+                    📍 פתח ב-Maps
                   </a>
                   <button type="button" onclick="openDestModal(${idx})" class="text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 py-1.5 px-3 rounded-xl transition cursor-pointer">
                     פרטים
@@ -1856,7 +1856,12 @@
     const esc = s => String(s).replace(/[&<>"']/g, c =>
       ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
     const destIndex = d => destinationsData.indexOf(d);
-    const navUrl = d => `https://www.google.com/maps/dir/?api=1&destination=${d.lat},${d.lng}`;
+    // Links to a place open its Google Maps entry (photos, hours, reviews, and a
+    // Directions button of its own) rather than starting navigation immediately.
+    // A named query resolves to the real POI; coordinates are the fallback.
+    const placeUrl = x => x.gmaps
+      || (x.q ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(x.q)}`
+              : `https://www.google.com/maps/search/?api=1&query=${x.lat},${x.lng}`);
 
     function priorityBadge(p, extraCls = '') {
       const m = priorityMeta[p];
@@ -2030,9 +2035,9 @@
       `;
 
       document.getElementById('dest-modal-footer').innerHTML = `
-        <a href="${navUrl(d)}" target="_blank" rel="noopener noreferrer"
+        <a href="${placeUrl(d)}" target="_blank" rel="noopener noreferrer"
           class="flex-1 inline-flex items-center justify-center gap-1.5 bg-sky-700 hover:bg-sky-800 text-white font-bold text-xs px-4 py-2.5 rounded-xl transition shadow-sm">
-          <span>🚗</span><span>נווט ליעד</span>
+          <span aria-hidden="true">📍</span><span>פתח ב-Google Maps</span>
         </a>
         <button type="button" onclick="closeDestModal();focusAndShowMap(${idx});"
           class="inline-flex items-center justify-center gap-1.5 bg-white hover:bg-slate-50 border border-slate-300 text-slate-800 font-semibold text-xs px-4 py-2.5 rounded-xl transition cursor-pointer">
@@ -2143,8 +2148,8 @@
                         <div class="text-xs font-bold text-slate-900">${esc(s.title)}</div>
                         <div class="text-[11px] text-slate-500 leading-snug">${esc(s.note)}</div>
                       </div>
-                      <a href="https://www.google.com/maps/dir/?api=1&destination=${s.lat},${s.lng}" target="_blank" rel="noopener noreferrer"
-                        class="text-[11px] font-bold text-sky-700 hover:text-sky-900 whitespace-nowrap">נווט</a>
+                      <a href="${placeUrl(s)}" target="_blank" rel="noopener noreferrer"
+                        class="text-[11px] font-bold text-sky-700 hover:text-sky-900 whitespace-nowrap">📍 Maps</a>
                     </div>`).join('')}
                 </div>
               </details>` : ''}
