@@ -181,6 +181,13 @@
       border-color: #0284c7 !important;
     }
 
+    /* Mobile: 17 full-text pins overlap into an unreadable pile at island zoom,
+       so the label collapses to icon + number and the name moves to the popup. */
+    @media (max-width: 767px) {
+      .map-pin-badge .pin-label { display: none; }
+      .map-pin-badge { font-size: 12px; padding: 4px 7px; gap: 2px; }
+    }
+
     /* Card hover highlights its matching pin without moving the map */
     .map-pin-badge.pin-highlight,
     .custom-div-icon.pin-highlight .map-pin-badge {
@@ -223,12 +230,15 @@
 <body class="bg-slate-50 text-slate-800 min-h-screen antialiased flex flex-col">
 
   <!-- Top Navigation / Hero Header — compact on mobile -->
-  <header class="relative bg-gradient-to-br from-cyan-900 via-sky-800 to-blue-900 text-white pb-5 sm:pb-14 pt-4 sm:pt-8 px-3 sm:px-8 shadow-xl">
+  <header class="relative bg-gradient-to-br from-cyan-900 via-sky-800 to-blue-900 text-white pb-3 sm:pb-10 pt-2.5 sm:pt-6 px-3 sm:px-8 shadow-xl">
     <div class="max-w-6xl mx-auto">
       
       <!-- Top badges bar -->
-      <div class="flex flex-wrap items-center justify-between gap-2 sm:gap-3 mb-3 sm:mb-6">
-        <div class="inline-flex items-center gap-1.5 sm:gap-2 bg-white/15 backdrop-blur-md px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full text-[11px] sm:text-sm font-medium border border-white/20">
+      <div class="flex flex-nowrap items-center justify-between gap-2 sm:gap-3 mb-0 sm:mb-6">
+        <h1 class="heading-font sm:hidden text-base font-black tracking-tight text-white truncate">
+          כרתים <span class="font-medium text-sky-200 text-xs">17–21/9</span>
+        </h1>
+        <div class="hidden sm:inline-flex items-center gap-2 bg-white/15 backdrop-blur-md px-3.5 py-1.5 rounded-full text-sm font-medium border border-white/20">
           <span>🇬🇷</span>
           <span>כרתים • 17–21/9/2026</span>
         </div>
@@ -257,8 +267,8 @@
       </div>
 
       <!-- Main Title & Subtitle -->
-      <div class="text-right max-w-3xl">
-        <h1 class="heading-font text-xl sm:text-5xl font-black tracking-tight leading-tight text-white mb-1 sm:mb-3">
+      <div class="hidden sm:block text-right max-w-3xl">
+        <h1 class="heading-font text-4xl font-black tracking-tight leading-tight text-white mb-2">
           האטרקציות והטבע בכרתים
         </h1>
         <p class="hidden sm:block text-sky-100 text-base sm:text-lg leading-relaxed font-light">
@@ -266,30 +276,10 @@
         </p>
       </div>
 
-      <!-- Key Trip Stats — hidden on mobile -->
-      <div class="hidden sm:grid grid-cols-2 sm:grid-cols-4 gap-3 mt-8 pt-6 border-t border-white/15 text-center">
-        <div class="bg-white/10 backdrop-blur rounded-2xl p-3 border border-white/10">
-          <div class="text-2xl font-bold text-cyan-300">15</div>
-          <div class="text-xs text-sky-200">מוקדי עניין נבחרים</div>
-        </div>
-        <div class="bg-white/10 backdrop-blur rounded-2xl p-3 border border-white/10">
-          <div class="text-2xl font-bold text-cyan-300">6</div>
-          <div class="text-xs text-sky-200">אשכולות גיאוגרפיים</div>
-        </div>
-        <div class="bg-white/10 backdrop-blur rounded-2xl p-3 border border-white/10">
-          <div class="text-2xl font-bold text-cyan-300">13</div>
-          <div class="text-xs text-sky-200">עצירות בדרך</div>
-        </div>
-        <div class="bg-white/10 backdrop-blur rounded-2xl p-3 border border-white/10">
-          <div class="text-2xl font-bold text-cyan-300">5</div>
-          <div class="text-xs text-sky-200">ימי חופשה מלאים</div>
-        </div>
-      </div>
-
     </div>
   </header>
 
-  <main class="max-w-6xl mx-auto px-3 sm:px-8 -mt-3 sm:-mt-6 flex-1 w-full pb-10 sm:pb-16">
+  <main class="relative z-10 max-w-6xl mx-auto px-3 sm:px-8 -mt-3 sm:-mt-6 flex-1 w-full pb-10 sm:pb-16">
 
     <!-- View Switcher: all places  /  day-by-day plan -->
     <div class="bg-gradient-to-l from-sky-800 to-cyan-900 rounded-2xl p-1.5 mb-4 sm:mb-6 shadow-lg flex items-center gap-1.5" role="tablist" aria-label="תצוגה">
@@ -360,20 +350,14 @@
     <section id="map-section" class="bg-white rounded-3xl p-3 sm:p-6 shadow-md border border-slate-200/90 mb-6 sm:mb-10 overflow-hidden">
       <div class="flex flex-wrap items-center justify-between gap-2 sm:gap-3 mb-3 sm:mb-4">
         <div class="flex items-center gap-2 sm:gap-3">
-          <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl sm:rounded-2xl bg-sky-100 text-sky-800 flex items-center justify-center text-lg sm:text-xl">
+          <div class="hidden sm:flex w-10 h-10 rounded-2xl bg-sky-100 text-sky-800 items-center justify-center text-xl">
             🗺️
           </div>
           <div>
-            <div class="hidden sm:flex items-center gap-2 mb-0.5">
-              <span class="text-[10px] sm:text-xs bg-sky-100 text-sky-800 font-extrabold px-2 py-0.5 rounded-full">מפה חיה מרובת סיכות</span>
-              <span class="text-[10px] sm:text-xs bg-emerald-100 text-emerald-800 font-extrabold px-2 py-0.5 rounded-full">17 מוקדים בבת אחת</span>
-            </div>
             <h2 class="heading-font text-sm sm:text-xl font-bold text-slate-900 leading-tight">
-              מפת כל היעדים בכרתים
+              <span class="sm:hidden">🗺️ המפה</span><span class="hidden sm:inline">מפת כל היעדים בכרתים</span>
             </h2>
-            <p class="hidden sm:block text-xs text-slate-500">
-              כל 15 האטרקציות, מלון הבסיס בגאורגיופוליס ושדה הרקליון מסומנים יחד בסיכות. לחצו על כל סיכה לפרטים וניווט.
-            </p>
+
           </div>
         </div>
 
@@ -405,7 +389,7 @@
       </div>
 
       <!-- Quick Destination Chips Navigation Bar -->
-      <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-2 text-xs font-medium border-b border-slate-100 mb-3" id="map-chips-bar"></div>
+      <div class="hidden sm:flex items-center gap-1.5 overflow-x-auto no-scrollbar py-2 text-xs font-medium border-b border-slate-100 mb-3" id="map-chips-bar"></div>
 
       <!-- Multi-Pin Interactive Leaflet Map Container -->
       <div id="map-wrapper" class="rounded-2xl overflow-hidden shadow-inner border border-slate-200">
@@ -439,11 +423,11 @@
       </div>
 
     <!-- Full Route Navigation Banner -->
-    <section class="mt-8 sm:mt-12 bg-gradient-to-br from-slate-900 to-sky-950 text-white rounded-2xl sm:rounded-3xl p-4 sm:p-8 shadow-xl">
-      <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 sm:gap-6">
-        <div class="max-w-2xl">
-          <h3 class="heading-font text-lg sm:text-2xl font-bold mb-1 sm:mb-2">🗺️ מוכנים לצאת לדרך?</h3>
-          <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+    <section class="mt-5 sm:mt-12 bg-gradient-to-br from-slate-900 to-sky-950 text-white rounded-2xl sm:rounded-3xl p-3 sm:p-8 shadow-xl">
+      <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-3 sm:gap-6">
+        <div class="hidden sm:block max-w-2xl">
+          <h3 class="heading-font text-2xl font-bold mb-2">🗺️ מוכנים לצאת לדרך?</h3>
+          <p class="text-sm text-slate-300 leading-relaxed">
             כל 15 הנקודות מחוברות במפת Google Maps — פתחו ונווטו ישירות מהנייד.
           </p>
         </div>
@@ -453,7 +437,7 @@
             href="https://www.google.com/maps/dir/Heraklion+International+Airport/Rethymno/Georgioupoli/Lake+Kournas/Patsos+Gorge/Kourtaliotiko+Gorge/Kalypso+Beach/Preveli+Beach/Imbros+Gorge/Chania/Balos+Beach/Elafonisi+Beach" 
             target="_blank" 
             rel="noopener noreferrer"
-            class="flex-1 lg:flex-none inline-flex items-center justify-center gap-2 bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold px-4 sm:px-6 py-2.5 sm:py-3.5 rounded-xl sm:rounded-2xl transition shadow-lg text-xs sm:text-sm"
+            class="flex-1 lg:flex-none inline-flex items-center justify-center gap-2 bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold px-4 sm:px-6 py-2 sm:py-3.5 rounded-xl sm:rounded-2xl transition shadow-lg text-xs sm:text-sm"
           >
             <span>🚀</span>
             <span>פתח מסלול מלא</span>
@@ -473,30 +457,17 @@
 
     <!-- Day-by-day plan view -->
     <div id="view-days" class="hidden">
-      <div class="bg-white rounded-2xl sm:rounded-3xl border border-slate-200 shadow-sm p-4 sm:p-6 mb-4 sm:mb-6">
-        <h2 class="heading-font text-lg sm:text-2xl font-bold text-slate-900 flex items-center gap-2 mb-1.5">
-          <span>📅</span><span>תוכנית 5 הימים</span>
+      <div class="flex items-center justify-between gap-2 mb-3 sm:mb-5 px-1">
+        <h2 class="heading-font text-base sm:text-2xl font-bold text-slate-900 flex items-center gap-1.5">
+          <span>📅</span><span>5 ימים</span>
         </h2>
-        <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
-          כל יום בנוי סביב <strong>אשכול גיאוגרפי אחד</strong> — לא מערבבים שני אזורים רחוקים באותו יום.
-          בכל יום יש רשימה <strong>מסודרת לפי חשיבות</strong> של מה שרוצים להספיק, ומתחתיה עצירות ״בדרך״ שמוסיפים רק אם הזמן מסתדר.
-          זה לא לוח זמנים — זה סדר עדיפויות.
-        </p>
-        <div class="grid grid-cols-3 gap-2 mt-3">
-          <div class="bg-rose-50 border border-rose-200 rounded-xl p-2 text-center">
-            <div class="text-xs font-black text-rose-800">⭐⭐⭐ חובה</div>
-            <div class="text-[10px] text-rose-700 mt-0.5">לא מוותרים</div>
-          </div>
-          <div class="bg-amber-50 border border-amber-200 rounded-xl p-2 text-center">
-            <div class="text-xs font-black text-amber-900">⭐⭐ מאוד רוצים</div>
-            <div class="text-[10px] text-amber-800 mt-0.5">אם היום זורם</div>
-          </div>
-          <div class="bg-slate-100 border border-slate-300 rounded-xl p-2 text-center">
-            <div class="text-xs font-black text-slate-700">⭐ אם יוצא</div>
-            <div class="text-[10px] text-slate-600 mt-0.5">בונוס</div>
-          </div>
+        <div class="flex items-center gap-1 text-[10px] sm:text-xs font-bold">
+          <span class="px-2 py-1 rounded-lg bg-rose-100 text-rose-800 border border-rose-200">⭐⭐⭐ חובה</span>
+          <span class="px-2 py-1 rounded-lg bg-amber-100 text-amber-900 border border-amber-200">⭐⭐ רוצים</span>
+          <span class="px-2 py-1 rounded-lg bg-slate-100 text-slate-600 border border-slate-300">⭐ אם יוצא</span>
         </div>
       </div>
+
       <div id="days-container" class="space-y-4 sm:space-y-6"></div>
     </div>
 
@@ -1087,7 +1058,7 @@
         en: 'Frangokastello Castle & Beach',
         region: 'southwest', regionName: 'דרום-מערב',
         lat: 35.1836, lng: 24.2400, zoom: 14, icon: '🏰',
-        img: 'images/frangokastello.svg', ph: 'd97706', phText: 'Frangokastello',
+        img: 'images/frangokastello.jpg', fallbackImg: 'images/frangokastello.svg', ph: 'd97706', phText: 'Frangokastello',
         duration: '2–3 שעות',
         drive: '0:20 מקומיטאדס · 1:10 מהבסיס',
         cost: 'חינם (המבצר מבחוץ)',
@@ -1225,7 +1196,7 @@
         en: 'Argyroupoli Springs (Ancient Lappa)',
         region: 'center', regionName: 'מרכז',
         lat: 35.2900, lng: 24.3300, zoom: 14, icon: '⛲',
-        img: 'images/argyroupoli.svg', ph: '0d9488', phText: 'Argyroupoli+Springs',
+        img: 'images/argyroupoli.jpg', fallbackImg: 'images/argyroupoli.svg', ph: '0d9488', phText: 'Argyroupoli+Springs',
         duration: '1.5–2 שעות',
         drive: '0:20 מהבסיס',
         cost: 'חינם (ארוחה בטברנה)',
@@ -1248,7 +1219,7 @@
         en: 'Palace of Knossos',
         region: 'east', regionName: 'הרקליון',
         lat: 35.2980, lng: 25.1633, zoom: 15, icon: '🏛️',
-        img: 'images/knossos.svg', ph: 'b91c1c', phText: 'Knossos+Palace',
+        img: 'images/knossos.jpg', fallbackImg: 'images/knossos.svg', ph: 'b91c1c', phText: 'Knossos+Palace',
         duration: '2–2.5 שעות',
         drive: '1:25 מהבסיס · 0:20 לשדה',
         cost: '~15€ מבוגר · ילדים עד 18 חינם',
@@ -1272,7 +1243,7 @@
         en: 'Heraklion Archaeological Museum',
         region: 'east', regionName: 'הרקליון',
         lat: 35.3395, lng: 25.1352, zoom: 15, icon: '🏺',
-        img: 'images/heraklion-museum.svg', ph: '4338ca', phText: 'Heraklion+Museum',
+        img: 'images/heraklion-museum.jpg', fallbackImg: 'images/heraklion-museum.svg', ph: '4338ca', phText: 'Heraklion+Museum',
         duration: '1.5–2 שעות',
         drive: '0:15 מקנוסוס · 0:15 לשדה',
         cost: '~12€ מבוגר · ילדים עד 18 חינם',
@@ -1447,7 +1418,7 @@
       // 1. Hotel Base Marker (Georgioupoli)
       const hotelIcon = L.divIcon({
         className: 'custom-div-icon',
-        html: `<div class="map-pin-badge bg-purple-700 hover:bg-purple-800"><span>🏨</span><span>בסיס: גאורגיופוליס</span></div>`,
+        html: `<div class="map-pin-badge bg-purple-700 hover:bg-purple-800"><span>🏨</span><span class="pin-label">בסיס: גאורגיופוליס</span></div>`,
         iconSize: [0, 0],
         popupAnchor: [0, -26]
       });
@@ -1471,7 +1442,7 @@
       // 2. Heraklion Airport Marker
       const airportIcon = L.divIcon({
         className: 'custom-div-icon',
-        html: `<div class="map-pin-badge bg-blue-700 hover:bg-blue-800"><span>✈️</span><span>שדה הרקליון (HER)</span></div>`,
+        html: `<div class="map-pin-badge bg-blue-700 hover:bg-blue-800"><span>✈️</span><span class="pin-label">שדה הרקליון (HER)</span></div>`,
         iconSize: [0, 0],
         popupAnchor: [0, -26]
       });
@@ -1501,7 +1472,7 @@
 
         const customIcon = L.divIcon({
           className: 'custom-div-icon',
-          html: `<div class="map-pin-badge ${pinBg}"><span>${dest.icon}</span><span>${idx + 1}. ${dest.title.split('(')[0].trim()}</span></div>`,
+          html: `<div class="map-pin-badge ${pinBg}"><span>${dest.icon}</span><span>${idx + 1}</span><span class="pin-label">. ${esc(dest.title.split('(')[0].trim())}</span></div>`,
           iconSize: [0, 0],
           popupAnchor: [0, -26]
         });
@@ -1510,7 +1481,7 @@
           .bindPopup(`
             <div class="overflow-hidden">
               <div class="relative h-28 w-full bg-slate-100">
-                <img src="${dest.img}" alt="${dest.title}" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/400x200/0284c7/ffffff?text=${encodeURIComponent(dest.title)}'"/>
+                <img src="${dest.img}" alt="${dest.title}" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='${dest.fallbackImg || `https://placehold.co/400x200/0284c7/ffffff?text=${encodeURIComponent(dest.title)}`}'"/>
                 <div class="absolute top-2 right-2 bg-slate-900/80 backdrop-blur text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full">
                   יעד #${idx + 1} • ${dest.regionName}
                 </div>
@@ -1594,7 +1565,7 @@
           if (dest) {
             infoBox.innerHTML = `
               <div class="flex items-center gap-3 w-full">
-                <img src="${dest.img}" class="w-11 h-11 rounded-xl object-cover border border-slate-200 shadow-sm" onerror="this.src='https://placehold.co/100x100/0284c7/ffffff?text=${encodeURIComponent(dest.title)}'"/>
+                <img src="${dest.img}" class="w-11 h-11 rounded-xl object-cover border border-slate-200 shadow-sm" onerror="this.onerror=null;this.src='${dest.fallbackImg || `https://placehold.co/100x100/0284c7/ffffff?text=${encodeURIComponent(dest.title)}`}'"/>
                 <div class="flex-1 min-w-0">
                   <div class="flex items-center justify-between gap-1">
                     <h4 class="font-bold text-slate-900 text-xs sm:text-sm truncate">${dest.icon} ${dest.title}</h4>
@@ -1876,7 +1847,7 @@
           <div>
             <div class="relative h-40 sm:h-60 w-full overflow-hidden bg-slate-100">
               <img src="${d.img}" alt="${esc(d.title)}" loading="lazy"
-                   onerror="this.onerror=null;this.src='https://placehold.co/800x500/${d.ph}/ffffff?text=${d.phText}';"
+                   onerror="this.onerror=null;this.src='${d.fallbackImg || `https://placehold.co/800x500/${d.ph}/ffffff?text=${d.phText}`}';"
                    class="w-full h-full object-cover" />
               <div class="absolute top-3 right-3 flex items-center gap-1.5">
                 <span class="bg-sky-900/85 backdrop-blur-md text-white text-xs font-bold px-3 py-1 rounded-full shadow">${esc(d.regionName)}</span>
@@ -1891,10 +1862,10 @@
             </div>
 
             <div class="p-3 sm:p-5">
-              <h3 class="heading-font text-lg font-bold text-slate-900 mb-0.5">${esc(d.title)}</h3>
+              <h3 class="heading-font text-base sm:text-lg font-bold text-slate-900 mb-0.5">${esc(d.title)}</h3>
               <p class="text-xs text-slate-500 font-medium mb-3">${esc(d.en)}</p>
-              <p class="text-sm text-slate-600 leading-relaxed mb-4">${esc(d.desc)}</p>
-              <div class="bg-amber-50 border border-amber-200/70 rounded-2xl p-3 text-xs text-amber-900 flex items-start gap-2 mb-4">
+              <p class="text-[13px] sm:text-sm text-slate-600 leading-relaxed mb-3 sm:mb-4">${esc(d.desc)}</p>
+              <div class="bg-amber-50 border border-amber-200/70 rounded-2xl p-2.5 sm:p-3 text-xs text-amber-900 flex items-start gap-2 mb-3 sm:mb-4">
                 <span>💡</span>
                 <span><strong>טיפ משפחתי:</strong> ${esc(d.tip)}</span>
               </div>
@@ -1935,7 +1906,7 @@
       document.getElementById('dest-modal-body').innerHTML = `
         <div class="relative h-44 sm:h-64 w-full bg-slate-100">
           <img src="${d.img}" alt="${esc(d.title)}"
-               onerror="this.onerror=null;this.src='https://placehold.co/800x500/${d.ph}/ffffff?text=${d.phText}';"
+               onerror="this.onerror=null;this.src='${d.fallbackImg || `https://placehold.co/800x500/${d.ph}/ffffff?text=${d.phText}`}';"
                class="w-full h-full object-cover" />
           <div class="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/20 to-transparent"></div>
           <button type="button" onclick="closeDestModal()" aria-label="סגירה"
@@ -2066,26 +2037,25 @@
 
         return `
         <section id="day-${day.num}" class="bg-white rounded-2xl sm:rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
-          <div class="bg-gradient-to-l from-slate-900 to-sky-950 text-white p-4 sm:p-5">
-            <div class="flex flex-wrap items-start justify-between gap-2">
-              <div>
-                <div class="flex items-center gap-2 mb-1">
-                  <span class="w-8 h-8 rounded-xl bg-white/15 flex items-center justify-center text-sm font-black backdrop-blur">${day.num}</span>
-                  <span class="text-xs font-bold text-sky-200">${esc(day.dow)} ${esc(day.date)}</span>
-                  <span class="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-white/15 border border-white/20">${esc(cl.name)}</span>
-                </div>
-                <h3 class="heading-font text-lg sm:text-2xl font-bold leading-tight">${esc(day.title)}</h3>
-                <p class="text-xs text-slate-300 mt-0.5">${esc(day.subtitle)} · ${esc(day.window)}</p>
+          <div class="bg-gradient-to-l from-slate-900 to-sky-950 text-white p-3 sm:p-5">
+            <div class="flex items-center gap-2.5">
+              <span class="w-8 h-8 shrink-0 rounded-xl bg-white/15 flex items-center justify-center text-sm font-black backdrop-blur">${day.num}</span>
+              <div class="flex-1 min-w-0">
+                <h3 class="heading-font text-base sm:text-2xl font-bold leading-tight truncate">${esc(day.title)}</h3>
+                <p class="text-[11px] sm:text-xs text-slate-300 mt-0.5 leading-snug">
+                  ${esc(day.dow)} ${esc(day.date)}<span class="hidden sm:inline"> · ${esc(cl.name)}</span> · ${esc(day.window)}
+                </p>
               </div>
               <a href="https://www.google.com/maps/dir/${route}" target="_blank" rel="noopener noreferrer"
-                class="text-[10px] sm:text-xs font-bold px-3 py-2 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 transition shadow whitespace-nowrap">
-                🚀 מסלול היום
+                aria-label="מסלול היום ב-Google Maps"
+                class="shrink-0 text-xs font-bold px-2.5 sm:px-3 py-2 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 transition shadow">
+                🚀<span class="hidden sm:inline"> מסלול היום</span>
               </a>
             </div>
           </div>
 
           <div class="p-3 sm:p-5 space-y-3">
-            <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">${esc(day.summary)}</p>
+            <p class="hidden sm:block text-sm text-slate-600 leading-relaxed">${esc(day.summary)}</p>
 
             ${day.warn ? `
               <div class="bg-amber-50 border border-amber-300 rounded-2xl p-3 text-xs text-amber-900 flex items-start gap-2">
@@ -2093,7 +2063,7 @@
               </div>` : ''}
 
             <div>
-              <div class="flex items-center justify-between mb-2">
+              <div class="hidden sm:flex items-center justify-between mb-2">
                 <h4 class="heading-font text-sm font-bold text-slate-900 flex items-center gap-1.5">
                   <span>🎯</span><span>מה רוצים להספיק — לפי סדר</span>
                 </h4>
@@ -2106,13 +2076,13 @@
                       class="w-full text-right bg-slate-50 hover:bg-sky-50 border border-slate-200 hover:border-sky-300 rounded-2xl p-3 transition cursor-pointer flex items-center gap-3 group">
                       <span class="w-7 h-7 shrink-0 rounded-lg bg-sky-600 text-white text-xs font-black flex items-center justify-center">${i + 1}</span>
                       <span class="flex-1 min-w-0">
-                        <span class="flex items-center gap-1.5 flex-wrap">
-                          <span class="font-bold text-slate-900 text-sm">${d.icon} ${esc(d.title)}</span>
+                        <span class="block font-bold text-slate-900 text-sm leading-snug">${d.icon} ${esc(d.title)}</span>
+                        <span class="flex items-center gap-1.5 flex-wrap mt-1">
                           ${priorityBadge(d.priority)}
+                          <span class="text-[11px] text-slate-500">⏳ ${esc(d.duration)} · 🚗 ${esc(d.drive)}</span>
                         </span>
-                        <span class="block text-[11px] text-slate-500 mt-0.5">⏳ ${esc(d.duration)} · 🚗 ${esc(d.drive)}</span>
                       </span>
-                      <span class="text-slate-400 group-hover:text-sky-600 text-xs font-bold whitespace-nowrap transition">פרטים ←</span>
+                      <span class="hidden sm:block text-slate-400 group-hover:text-sky-600 text-xs font-bold whitespace-nowrap transition">פרטים ←</span>
                     </button>
                   </li>`).join('')}
               </ol>
@@ -2151,11 +2121,10 @@
 
       const unassigned = destinationsData.filter(d => !d.day);
       const unassignedBlock = unassigned.length ? `
-        <section class="bg-white rounded-2xl sm:rounded-3xl border-2 border-dashed border-slate-300 p-4 sm:p-5">
-          <h3 class="heading-font text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2 mb-1">
-            <span>📌</span><span>לא שובצו ליום — אבל נשארים ברשימה</span>
+        <section class="bg-white rounded-2xl sm:rounded-3xl border-2 border-dashed border-slate-300 p-3 sm:p-5">
+          <h3 class="heading-font text-sm sm:text-lg font-bold text-slate-900 flex items-center gap-2 mb-2">
+            <span>📌</span><span>לא שובצו — הראשונים להיכנס</span>
           </h3>
-          <p class="text-xs text-slate-500 mb-3">שני מקומות שלא נכנסו לתכנון בגלל מרחק או חפיפה. אם יום מתקצר או משתנה — הם הראשונים להיכנס.</p>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
             ${unassigned.map(d => `
               <button type="button" onclick="openDestModal(${destIndex(d)})"
@@ -2252,7 +2221,7 @@
           </div>`;
       }
       const bar = document.getElementById('map-chips-bar');
-      if (bar) bar.classList.add('hidden');
+      if (bar) { bar.classList.add('hidden'); bar.classList.remove('sm:flex'); }
       const info = document.getElementById('map-hover-info');
       if (info) info.classList.add('hidden');
     }
