@@ -262,10 +262,10 @@
           <button 
             onclick="openTravelDetailsModal('hotel')"
             class="inline-flex items-center gap-1 sm:gap-2 bg-purple-500/25 hover:bg-purple-500/40 text-purple-100 border border-purple-300/30 px-2 sm:px-3.5 py-1 sm:py-1.5 rounded-full text-[11px] sm:text-sm font-medium backdrop-blur transition cursor-pointer"
-            title="פרטי בסיס הלינה בגאורגיופוליס" aria-label="פרטי בסיס הלינה בגאורגיופוליס"
+            title="פרטי מקום הלינה באקסופולי" aria-label="פרטי מקום הלינה באקסופולי"
           >
             <span>🏨</span>
-            <span class="hidden sm:inline">בסיס: גאורגיופוליס</span>
+            <span class="hidden sm:inline">לינה: אקסופולי</span>
           </button>
 
           <!-- Flights & Car Rental Modal Button -->
@@ -305,7 +305,7 @@
         class="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-4 sm:px-6 py-2 rounded-xl text-xs sm:text-sm font-semibold text-white/80 hover:text-white transition cursor-pointer">
         <span aria-hidden="true">🗺️</span><span>מפה וכל המקומות</span>
       </button>
-      <span class="hidden md:block flex-1 text-left pl-3 text-[11px] text-sky-200">5 ימים · 15 יעדים · 13 עצירות בדרך</span>
+      <span class="hidden md:block flex-1 text-left pl-3 text-[11px] text-sky-200">5 ימים · 15 יעדים · 14 עצירות בדרך</span>
     </div>
 
     <div id="view-places" class="hidden">
@@ -415,8 +415,8 @@
       <div id="map-hover-info" class="hidden sm:flex mt-3 p-3 bg-sky-50/80 border border-sky-100 rounded-2xl min-h-[56px] items-center justify-between text-xs text-slate-700 transition">
         <div class="flex items-center gap-2">
           <span class="text-base">🏨</span>
-          <span class="font-bold text-slate-900">מלון הבסיס: גאורגיופוליס (Georgioupoli)</span>
-          <span class="text-slate-500">— נקודת כוכב אסטרטגית על הים במרחק 5 דק' מאגם קורנאס וגישה ישירה לכביש 90.</span>
+          <span class="font-bold text-slate-900">מקום הלינה: אקסופולי (Exopoli)</span>
+          <span class="text-slate-500">— מעל גאורגיופוליס: 3 דק' לכנסייה שבים, 10 דק' לאגם קורנאס, גישה ישירה לכביש 90.</span>
         </div>
       </div>
     </section>
@@ -925,13 +925,13 @@
   <!-- Footer -->
   <footer class="bg-slate-900 text-slate-400 text-xs py-6 text-center border-t border-slate-800">
     <div class="max-w-6xl mx-auto px-4">
-      <p>תוכנית חופשה משפחתית בכרתים • 17–21 בספטמבר 2026 • בסיס מומלץ: גאורגיופוליס</p>
+      <p>תוכנית חופשה משפחתית בכרתים • 17–21 בספטמבר 2026 • לינה: אקסופולי</p>
     </div>
   </footer>
 
   <script>
     // ===== Trip constants =====
-    const BASE = { lat: 35.3628, lng: 24.2588, name: 'גאורגיופוליס' };
+    const BASE = { lat: 35.373939, lng: 24.246020, name: 'אקסופולי (Exopoli)' };
     const AIRPORT = { lat: 35.3397, lng: 25.1803, name: 'שדה הרקליון (HER)' };
 
     // ===== Geographic clusters — never mix two distant clusters in one day =====
@@ -954,14 +954,14 @@
     // ===== The 13 main destinations =====
     const destinationsData = [
       {
-        id: 'balos', day: 2, order: 1, priority: 3, cluster: 'kissamos',
+        id: 'balos', day: null, order: 0, priority: 3, cluster: 'kissamos',
         title: 'לגונת באלוס והאי גרמבוסה',
         en: 'Balos Lagoon & Gramvousa Island',
         region: 'northwest', regionName: 'צפון-מערב',
         lat: 35.5836, lng: 23.5888, zoom: 12, icon: '🏝️',
         img: 'images/balos.jpg', ph: '0284c7', phText: 'Balos+Lagoon',
         duration: '5–6 שעות (כולל שייט)',
-        drive: '1:05 מהבסיס לנמל קיסאמוס',
+        drive: '1:05 מהבסיס לנמל קיסאמוס (לא משובץ)',
         cost: '~27–30€ למבוגר לשייט + ~1€ מס נמל',
         tip: 'להגיע רק בשייט מנמל Kissamos (לא ברכב עקב דרך עפר משובשת שאינה מכוסה בביטוח).',
         desc: 'שייט במעבורת מנמל קיסאמוס אל לגונת טורקיז מפורסמת עם מים רדודים, צלולים וחמימים, וחול לבן-ורדרד. בדרך עולים למבצר הוונציאני ההיסטורי המשקיף ממעוף הציפור על כל המפרץ. חוויה טרופית בלתי נשכחת לכל המשפחה.',
@@ -974,17 +974,18 @@
         ],
         bring: ['כובעים', 'הרבה מים', 'קרם הגנה', 'נעליים סגורות למבצר', 'מזומן'],
         kidsNote: 'מים רדודים וחמימים לאורך כל הלגונה. השייט ארוך — שווה להוריד משהו לצפייה מראש.',
+        unassignedNote: 'לא שובץ בתוכנית הנוכחית — ⭐⭐⭐ ודורש הזמנת שייט מראש מנמל קיסאמוס. שווה החלטה מודעת לפני שסוגרים.',
         gmaps: 'https://www.google.com/maps/search/?api=1&query=Balos+Lagoon+Crete'
       },
       {
-        id: 'chania', day: 2, order: 2, priority: 3, cluster: 'chania',
+        id: 'chania', day: 2, order: 3, priority: 3, cluster: 'chania',
         title: 'העיר העתיקה והנמל הוונציאני בחאניה',
         en: 'Old Venetian Harbor & Town of Chania',
         region: 'northwest', regionName: 'צפון-מערב',
         lat: 35.5173, lng: 24.0179, zoom: 14, icon: '⛵',
         img: 'images/chania.jpg', ph: '0369a1', phText: 'Chania+Old+Town',
         duration: '3–4 שעות (מושלם לערב)',
-        drive: '0:37 מקיסאמוס · 0:40 מהבסיס',
+        drive: '0:30 מסייטן · 0:40 לבסיס',
         cost: 'חינם (חניה ~3–5€)',
         tip: 'לחנות בחניון Talos המוסדר מחוץ לחומות ולהיכנס ברגל — הרחובות בפנים צרים מאוד.',
         desc: 'העיר העתיקה היפה בכרתים: נמל ונציאני מהמאה ה-14 עם מגדלור מצרי מפורסם, סמטאות אבן צבעוניות, שוק מקורה ומסעדות דגים על המים. שעת השקיעה כאן היא אחת החוויות היפות של האי.',
@@ -1000,7 +1001,7 @@
         gmaps: 'https://www.google.com/maps/search/?api=1&query=Chania+Venetian+Harbour'
       },
       {
-        id: 'seitan', day: null, order: 0, priority: 1, cluster: 'chania',
+        id: 'seitan', day: 2, order: 2, priority: 2, cluster: 'chania',
         title: 'חוף סייטן לימני (זיג-זג)',
         en: 'Seitan Limania Beach (Stefanou)',
         region: 'northwest', regionName: 'צפון-מערב',
@@ -1044,11 +1045,11 @@
         ],
         bring: ['שמשייה', 'אוכל ומים ליום שלם', 'מזומן לחניה'],
         kidsNote: 'המים הרדודים והחול הוורוד מושלמים — אבל חמש שעות ברכב פחות.',
-        unassignedNote: 'לא שובץ — 5 שעות נהיגה וכפילות חוויה עם באלוס. נכנס רק אם נוותר על יום הדרום או ספאקיה.',
+        unassignedNote: 'חלופה ליום 2: במקום פאטסוס וסייטן ביחד, יום שלם אחד באלפוניסי (2:15 לכיוון).',
         gmaps: 'https://www.google.com/maps/search/?api=1&query=Elafonisi+Beach+Crete'
       },
       {
-        id: 'imbros', day: 4, order: 1, priority: 3, cluster: 'sfakia',
+        id: 'imbros', day: 3, order: 1, priority: 3, cluster: 'sfakia',
         title: 'קניון אימברוס וחורה ספאקיון',
         en: 'Imbros Gorge & Chora Sfakion',
         region: 'southwest', regionName: 'דרום-מערב',
@@ -1071,7 +1072,7 @@
         gmaps: 'https://www.google.com/maps/search/?api=1&query=Imbros+Gorge+Crete'
       },
       {
-        id: 'frangokastello', day: 4, order: 2, priority: 2, cluster: 'sfakia',
+        id: 'frangokastello', day: 3, order: 2, priority: 2, cluster: 'sfakia',
         title: 'מבצר וחוף פרנגוקסטלו',
         en: 'Frangokastello Castle & Beach',
         region: 'southwest', regionName: 'דרום-מערב',
@@ -1094,7 +1095,7 @@
         gmaps: 'https://www.google.com/maps/search/?api=1&query=Frangokastello+Castle'
       },
       {
-        id: 'kourtaliotiko', day: 3, order: 1, priority: 3, cluster: 'south',
+        id: 'kourtaliotiko', day: 4, order: 1, priority: 3, cluster: 'south',
         title: 'קניון קורטליוטיקו והמפל הנסתר',
         en: 'Kourtaliotiko Gorge & Waterfalls',
         region: 'south', regionName: 'דרום ומפלים',
@@ -1117,7 +1118,7 @@
         gmaps: 'https://www.google.com/maps/search/?api=1&query=Kourtaliotiko+Gorge+Waterfall'
       },
       {
-        id: 'preveli', day: 3, order: 2, priority: 3, cluster: 'south',
+        id: 'preveli', day: 4, order: 2, priority: 3, cluster: 'south',
         title: 'חוף ויער הדקלים פרבלי',
         en: 'Preveli Palm Beach & River',
         region: 'south', regionName: 'דרום ומפלים',
@@ -1140,7 +1141,7 @@
         gmaps: 'https://www.google.com/maps/search/?api=1&query=Preveli+Beach+Crete'
       },
       {
-        id: 'kalypso', day: 3, order: 3, priority: 2, cluster: 'south',
+        id: 'kalypso', day: 4, order: 3, priority: 2, cluster: 'south',
         title: 'חוף קליפסו (פיורד הפיראטים)',
         en: 'Kalypso Beach / Pirates Fjord (Plakias)',
         region: 'south', regionName: 'דרום ומפלים',
@@ -1163,7 +1164,7 @@
         gmaps: 'https://www.google.com/maps/search/?api=1&query=Kalypso+Beach+Plakias'
       },
       {
-        id: 'kournas', day: 1, order: 3, priority: 3, cluster: 'center',
+        id: 'kournas', day: 1, order: 1, priority: 3, cluster: 'center',
         title: 'אגם קורנאס (צבי מים ופדלים)',
         en: 'Lake Kournas',
         region: 'center', regionName: 'מרכז (ליד גאורגיופוליס)',
@@ -1186,14 +1187,14 @@
         gmaps: 'https://www.google.com/maps/search/?api=1&query=Lake+Kournas+Crete'
       },
       {
-        id: 'patsos', day: 3, order: 4, priority: 2, cluster: 'south',
+        id: 'patsos', day: 2, order: 1, priority: 3, cluster: 'south',
         title: 'קניון פאטסוס (חבלים וסולמות)',
         en: 'Patsos Gorge (St. Anthony Gorge)',
         region: 'south', regionName: 'דרום (10 ק״מ מקורטליוטיקו)',
         lat: 35.2606, lng: 24.5544, zoom: 13, icon: '🧗',
         img: 'images/patsos.jpg', ph: '16a34a', phText: 'Patsos+Gorge',
         duration: '2–3 שעות',
-        drive: '0:20 מקורטליוטיקו · 0:50 מהבסיס',
+        drive: '0:50 מהבסיס · 1:40 לסייטן',
         cost: 'חינם',
         tip: 'בכניסה טברנה משפחתית מעולה (Drymos) עם פינת חי.',
         desc: 'קניון קטן והרפתקני עם סולמות עץ, חבלי עזר, גשרונים ובריכות מים — והכי משחקי ברשימה. בכניסה כנסייה חצובה במערה וטברנה עם פינת חי.',
@@ -1209,7 +1210,7 @@
         gmaps: 'https://www.google.com/maps/search/?api=1&query=Patsos+Gorge+Crete'
       },
       {
-        id: 'argyroupoli', day: 5, order: 1, priority: 2, cluster: 'center',
+        id: 'argyroupoli', day: 1, order: 2, priority: 2, cluster: 'center',
         title: 'מעיינות ארגירופולי',
         en: 'Argyroupoli Springs (Ancient Lappa)',
         region: 'center', regionName: 'מרכז',
@@ -1232,7 +1233,7 @@
         gmaps: 'https://www.google.com/maps/search/?api=1&query=Argyroupoli+Springs+Crete'
       },
       {
-        id: 'knossos', day: 5, order: 2, priority: 2, cluster: 'heraklion',
+        id: 'knossos', day: 5, order: 1, priority: 1, cluster: 'heraklion',
         title: 'ארמון קנוסוס',
         en: 'Palace of Knossos',
         region: 'east', regionName: 'הרקליון',
@@ -1256,7 +1257,7 @@
         gmaps: 'https://www.google.com/maps/search/?api=1&query=Knossos+Palace'
       },
       {
-        id: 'heraklion-museum', day: 5, order: 3, priority: 1, cluster: 'heraklion',
+        id: 'heraklion-museum', day: null, order: 0, priority: 1, cluster: 'heraklion',
         title: 'המוזיאון הארכיאולוגי בהרקליון',
         en: 'Heraklion Archaeological Museum',
         region: 'east', regionName: 'הרקליון',
@@ -1276,10 +1277,11 @@
         ],
         bring: ['סבלנות לשעה וחצי', 'תעודות זהות לילדות'],
         kidsNote: 'דיסקת פאיסטוס: כתב בן 4,000 שנה שאף אחד בעולם לא הצליח לפענח. עדיין.',
+        unassignedNote: 'לא שובץ — חלופה ממוזגת לקנוסוס ביום ההמראה, אם הצהריים יוצאים חמים מדי.',
         gmaps: 'https://www.google.com/maps/search/?api=1&query=Heraklion+Archaeological+Museum'
       },
       {
-        id: 'rethymno', day: 1, order: 1, priority: 2, cluster: 'center',
+        id: 'rethymno', day: 1, order: 3, priority: 2, cluster: 'center',
         title: 'העיר העתיקה של רתימנו',
         en: 'Old Town & Venetian Harbor of Rethymno',
         region: 'center', regionName: 'מרכז',
@@ -1305,77 +1307,79 @@
 
     // ===== On-the-way stops: viewpoints and quick pauses, added only if the day flows =====
     const stopsData = [
-      { id: 'panormo',      day: 1, q: 'Panormo Crete', icon: '🐚', title: 'כפר פאנורמו',            note: 'כפר דייגים קטן ומקסים בדיוק על הכביש מהשדה', lat: 35.4187, lng: 24.6906 },
-      { id: 'geo-jetty',    day: 1, q: 'Agios Nikolaos Church Georgioupoli', icon: '🌅', title: 'כנסיית אגיוס ניקולאוס',  note: 'הכנסייה הקטנה על השובר בגאורגיופוליס — שקיעה', lat: 35.3648, lng: 24.2660 },
-      { id: 'kissamos',     day: 2, q: 'Kissamos Port', icon: '⚓', title: 'נמל קיסאמוס',            note: 'נקודת ההפלגה — להיות שם 09:45', lat: 35.5008, lng: 23.6497 },
-      { id: 'falassarna',   day: 2, q: 'Falassarna Beach Crete', icon: '🌇', title: 'חוף פלסארנה',            note: 'חוף שקיעה מפורסם, 20 דק מקיסאמוס — רק אם לא עושים חאניה', lat: 35.5000, lng: 23.5750 },
-      { id: 'kotsifou',     day: 3, q: 'Kotsifou Gorge Crete', icon: '🪨', title: 'קניון קוציפו',           note: '2 ק״מ נסיעה דרמטית בין צוקים + כנסייה חצובה בסלע', lat: 35.2350, lng: 24.4030 },
-      { id: 'spili',        day: 3, q: 'Spili Crete', icon: '🦁', title: 'ספילי — מזרקת האריות',   note: 'כפר הררי עם מזרקה ונציאנית של 25 ראשי אריות', lat: 35.2136, lng: 24.5350 },
-      { id: 'damnoni',      day: 3, q: 'Damnoni Beach Crete', icon: '🏖️', title: 'חוף דמנוני',            note: 'חוף חולי נוח ליד פלקיאס, אלטרנטיבה לקליפסו', lat: 35.1897, lng: 24.4180 },
-      { id: 'vrisses',      day: 4, q: 'Vrisses Crete', icon: '🍯', title: 'וריסס — יוגורט ודבש',    note: 'עצירת בוקר קלאסית בדרך לספאקיה, מתחת לעצי הדולב', lat: 35.3833, lng: 24.2000 },
-      { id: 'askifou',      day: 4, q: 'Askifou Plateau Crete', icon: '⛰️', title: 'מישור אסקיפו',           note: 'מישור הררי בגובה 726 מ׳ מוקף ההרים הלבנים', lat: 35.2761, lng: 24.1811 },
-      { id: 'krioneritis',  day: 4, q: 'Krioneritis Sfakia Crete', icon: '🔭', title: 'תצפית קריונריטיס',       note: 'הסרפנטינות היורדות לים הלובי — התצפית של הדרך', lat: 35.2200, lng: 24.1450 },
-      { id: 'arkadi',       day: 5, q: 'Arkadi Monastery Crete', icon: '⛪', title: 'מנזר ארקדי',            note: 'סמל ההתנגדות הכרתית, 25 דק דרומית לרתימנו — בדיוק על הציר מזרחה', lat: 35.3097, lng: 24.6297 },
-      { id: 'margarites',   day: 5, q: 'Margarites Crete', icon: '🏺', title: 'מרגריטס',                note: 'כפר קדרים עם סדנאות פתוחות, קרוב לארקדי', lat: 35.3050, lng: 24.7000 },
-      { id: 'aptera',       day: 1, q: 'Aptera Archaeological Site', icon: '🏺', title: 'אפטרה',                  note: 'עיר עתיקה + מצודת קולס עם תצפית על מפרץ סודה — רק אם נשאר כוח', lat: 35.4620, lng: 24.1400 }
+      { id: 'st-nicholas',  day: 1, q: 'Agios Nikolaos Church Georgioupoli', icon: '⛪', title: 'הכנסייה שבתוך הים',   note: 'אגיוס ניקולאוס הלבנה בקצה שביל הסלעים — 3 דק׳ מהלינה, מושלם לשקיעה', lat: 35.3648, lng: 24.2660 },
+      { id: 'panormo',      day: 1, q: 'Panormo Crete',                      icon: '🐚', title: 'כפר פאנורמו',          note: 'כפר דייגים קטן ומקסים בדיוק על הכביש מהשדה', lat: 35.4187, lng: 24.6906 },
+      { id: 'venizelos',    day: 2, q: 'Venizelos Graves Chania',            icon: '🌇', title: 'תצפית קברי ונציאלוס',  note: 'פנורמה על כל מפרץ חאניה והעיר העתיקה — לתזמן לשקיעה לפני הירידה לנמל', lat: 35.5108, lng: 24.0475 },
+      { id: 'topolia',      day: 2, q: 'Agia Sofia Cave Topolia',            icon: '🕳️', title: 'קניון טופוליה ומערת אגיה סופיה', note: 'מערת נטיפים וכנסייה חצובה בסלע — רק אם בוחרים באלפוניסי ליום שלם', lat: 35.4100, lng: 23.6800 },
+      { id: 'vrisses',      day: 3, q: 'Vrisses Crete',                      icon: '🍯', title: 'וריסס — יוגורט ודבש',  note: 'עצירת בוקר קלאסית בדרך לספאקיה, מתחת לעצי הדולב', lat: 35.3833, lng: 24.2000 },
+      { id: 'askifou',      day: 3, q: 'Askifou Plateau Crete',              icon: '⛰️', title: 'תצפית מישור אסקיפו',   note: 'רמה הררית מבודדת בגובה 726 מ׳ מוקפת ההרים הלבנים', lat: 35.2761, lng: 24.1811 },
+      { id: 'krioneritis',  day: 3, q: 'Krioneritis Sfakia Crete',           icon: '🔭', title: 'תצפית קריונריטיס',     note: 'הסרפנטינות היורדות לים הלובי — התצפית של הדרך', lat: 35.2200, lng: 24.1450 },
+      { id: 'kourt-view',   day: 4, q: 'Kourtaliotiko Gorge viewpoint',      icon: '📸', title: 'תצפית קורטליוטיקו',    note: 'עצירה על הכביש מעל המצוקים — הצילום הדרמטי של הקניון מלמעלה', lat: 35.2180, lng: 24.4700 },
+      { id: 'kotsifou',     day: 4, q: 'Kotsifou Gorge Crete',               icon: '🪨', title: 'קניון קוציפו',         note: '2 ק״מ נסיעה דרמטית בין צוקים + כנסייה חצובה בסלע', lat: 35.2350, lng: 24.4030 },
+      { id: 'damnoni',      day: 4, q: 'Damnoni Beach Crete',                icon: '🏖️', title: 'חוף דמנוני',           note: 'חוף חולי נוח ליד פלקיאס, אלטרנטיבה לקליפסו', lat: 35.1897, lng: 24.4180 },
+      { id: 'spili',        day: 4, q: 'Spili Crete',                        icon: '🦁', title: 'ספילי — מזרקת האריות', note: 'כפר הררי עם מזרקה ונציאנית של 25 ראשי אריות', lat: 35.2136, lng: 24.5350 },
+      { id: 'arkadi',       day: 5, q: 'Arkadi Monastery Crete',             icon: '⛪', title: 'מנזר ארקדי',           note: 'סמל ההתנגדות הכרתית, 25 דק דרומית לרתימנו — על הציר מזרחה', lat: 35.3097, lng: 24.6297 },
+      { id: 'margarites',   day: 5, q: 'Margarites Crete',                   icon: '🏺', title: 'מרגריטס',              note: 'כפר קדרים עם סדנאות פתוחות, קרוב לארקדי', lat: 35.3050, lng: 24.7000 },
+      { id: 'aptera',       day: 5, q: 'Aptera Archaeological Site',         icon: '🏛️', title: 'אפטרה',                note: 'עיר עתיקה + מצודת קולס עם תצפית על מפרץ סודה', lat: 35.4620, lng: 24.1400 }
     ];
 
     // ===== The 5 days =====
     const daysData = [
       {
-        num: 1, iso: '2026-09-17', wxLat: 35.37, wxLng: 24.47, date: '17/09', dow: 'חמישי', cluster: 'center',
-        title: 'מהשדה מערבה',
-        subtitle: 'נחיתה, רתימנו והתמקמות',
-        window: 'רכב 11:00 → שקיעה ~19:30',
-        summary: 'יום במסדרון המזרחי בלבד — כל מה שנעשה נמצא על הקו שבין השדה לבסיס, אפס נסיעה עודפת. האילוץ פה הוא כוח, לא זמן: קמים ב-05:00 לטיסה. לכן עיר עתיקה ופדלבוט, ולא קניון.',
+        num: 1, iso: '2026-09-17', wxLat: 35.374, wxLng: 24.246, date: '17/09', dow: 'חמישי', cluster: 'center',
+        title: 'התאקלמות, אגם ומעיינות',
+        subtitle: 'הכל בטווח 20 דקות מהלינה',
+        window: 'רכב 11:00 → ערב ברתימנו',
+        summary: 'יום קצר ורגוע אחרי טיסה. הכל יושב על הציר בין השדה לאקסופולי או ממש לידה, בלי נסיעה עודפת.',
+        evening: { title: 'רתימנו העתיקה', note: 'סמטאות ציוריות, מדרחוב ומסעדות מעולות', q: 'Rethymno Old Town' },
         logistics: [
-          'נחיתה 10:10 · איסוף Jeep Compass 11:00',
-          'שדה → רתימנו 1:05 · רתימנו → גאורגיופוליס 0:20'
+          'נחיתה 10:10 · איסוף Jeep Compass 11:00 · שדה → אקסופולי 1:30',
+          'אקסופולי → קורנאס 0:10 · → ארגירופולי 0:20 · → רתימנו 0:20'
         ]
       },
       {
-        num: 2, iso: '2026-09-18', wxLat: 35.58, wxLng: 23.59, date: '18/09', dow: 'שישי', cluster: 'kissamos',
-        title: 'באלוס וחאניה',
-        subtitle: 'היום הגדול במערב',
-        window: 'יציאה 08:15 → חזרה ~22:15',
-        summary: 'שייט לבאלוס ולגרמבוסה, ובדרך חזרה ערב בנמל הוונציאני של חאניה. שני היעדים במערב — נסיעה אחת, יום אחד.',
+        num: 2, iso: '2026-09-18', wxLat: 35.52, wxLng: 24.02, date: '18/09', dow: 'שישי', cluster: 'chania',
+        title: 'פאטסוס, פיורד וחאניה',
+        subtitle: 'קניון בבוקר, צפון-מערב אחר כך',
+        window: 'יציאה מוקדמת → ערב בחאניה',
+        summary: 'מסלול החבלים והסולמות בבוקר, ואז צפונה-מערבה לפיורד של סייטן, שקיעה בתצפית ונציאלוס וערב בנמל הוונציאני.',
+        evening: { title: 'הנמל הוונציאני בחאניה', note: 'המקום היפה באי לשעות הערב — סמטאות מוארות ומסעדות על המים', q: 'Chania Venetian Harbour' },
         logistics: [
-          'יציאה מהבסיס 08:15 · נמל קיסאמוס 09:30 · הפלגה ~10:35',
-          'חזרה לנמל ~17:30 · קיסאמוס → חאניה 0:37 · חאניה → בסיס 0:40'
+          'אקסופולי → פאטסוס 0:50 · פאטסוס → סייטן 1:40 · סייטן → חאניה 0:30 · חאניה → אקסופולי 0:40'
         ],
-        warn: 'היום הכי ארוך בטיול. אם זה נראה כבד — מוותרים על חאניה כאן ומעבירים אותה לערב של יום 1.'
+        warn: 'היום היחיד שמערבב שני אזורים רחוקים: פאטסוס דרומית-מזרחית לרתימנו, סייטן באקרוטירי — כ-1:40 ביניהם. אם זה מרגיש הרבה, ויתור על פאטסוס הופך את היום לצפון-מערב נקי. חלופה שלישית: יום שלם באלפוניסי במקום שניהם.'
       },
       {
-        num: 3, iso: '2026-09-19', wxLat: 35.15, wxLng: 24.47, date: '19/09', dow: 'שבת', cluster: 'south',
-        title: 'קניונים, מפלים וחופי הדרום',
-        subtitle: 'יום המים',
-        window: 'יציאה ~08:30 → ערב בפלקיאס',
-        summary: 'ארבעה יעדים בתוך רדיוס של 25 דקות זה מזה — ריאלי להספיק שלושה. הסדר בנוי כך שהחלק המאומץ (מדרגות המפל) קורה כשעוד קריר. פאטסוס ברשימה כי הוא 20 דקות מקורטליוטיקו, לא ליד הבסיס כפי שנראה על המפה.',
-        logistics: [
-          'בסיס → קורטליוטיקו 0:50 · → פרבלי 0:15 · → קליפסו 0:25 · → בסיס 1:00',
-          'אם בוחרים פאטסוס במקום קליפסו: קורטליוטיקו → פאטסוס 0:20 · פאטסוס → בסיס 0:50'
-        ],
-        warn: 'ארבעה יעדים ושלוש מנות זמן. קליפסו ופאטסוס שניהם ⭐⭐ — בוחרים אחד לפי מה שמתחשק באותו רגע.'
-      },
-      {
-        num: 4, iso: '2026-09-20', wxLat: 35.2, wxLng: 24.14, date: '20/09', dow: 'ראשון', cluster: 'sfakia',
-        title: 'ספאקיה',
+        num: 3, iso: '2026-09-19', wxLat: 35.20, wxLng: 24.14, date: '19/09', dow: 'שבת', cluster: 'sfakia',
+        title: 'אימברוס ודרום האי',
         subtitle: 'הקניון והים הלובי',
-        window: 'יציאה ~07:45 → חזרה בערב',
-        summary: 'ירידה של שלוש שעות באימברוס, צהריים בחורה ספאקיון וחוף רדוד בפרנגוקסטלו כפרס. לצאת מוקדם — הקניון קשה יותר בחום.',
+        window: 'יציאה ~07:45 → ערב באקסופולי',
+        summary: 'ירידה מתונה ומוצלת באימברוס, דגים בנמל חורה ספאקיון, ורחצה בחוף הרדוד של פרנגוקסטלו כפרס. לצאת מוקדם — הקניון קשה יותר בחום.',
+        evening: { title: 'כיכר גאורגיופוליס', note: 'עצי אקליפטוס ענקיים, גלידריות וטברנות — 3 דקות מהלינה, בלי נסיעה', q: 'Georgioupoli Square' },
         logistics: [
-          'בסיס → קומיטאדס 1:05 (חונים שם!) · מונית/מיניבוס לאימברוס',
-          'קומיטאדס → חורה ספאקיון 0:05 · → פרנגוקסטלו 0:20 · → בסיס 1:10'
+          'אקסופולי → קומיטאדס 1:05 (חונים שם!) · מונית/מיניבוס לאימברוס',
+          'קומיטאדס → חורה ספאקיון 0:05 · → פרנגוקסטלו 0:20 · → אקסופולי 1:10'
         ]
       },
       {
-        num: 5, iso: '2026-09-21', wxLat: 35.3, wxLng: 25.16, date: '21/09', dow: 'שני', cluster: 'center',
-        title: 'מזרחה אל השדה — דרך קנוסוס',
-        subtitle: 'הופכים את נסיעת הפינוי ליום',
-        window: 'צ׳ק-אאוט ~09:30 → החזרת רכב 19:00',
-        summary: 'היום היחיד שבו אנחנו בכלל בצד המזרחי של האי, ולכן ההזדמנות היחידה לקנוסוס ולמוזיאון — שניהם 15–20 דקות מהשדה. במקום לנסוע 1.5 שעות ריקות מזרחה, שמים על הציר את כל מה שממילא נמצא עליו. אפס חזרה אחורה.',
+        num: 4, iso: '2026-09-20', wxLat: 35.15, wxLng: 24.47, date: '20/09', dow: 'ראשון', cluster: 'south',
+        title: 'עולם המים של הדרום',
+        subtitle: 'מפל, יער דקלים ופיורד',
+        window: 'יציאה ~08:30 → ערב בפלקיאס',
+        summary: 'שלושה יעדים בתוך רדיוס של 25 דקות. הסדר בנוי כך שמדרגות המפל קורות כשעוד קריר.',
+        evening: { title: 'פלקיאס', note: 'טיילת חוף, טברנות דגים וגלידה — 5 דקות מקליפסו', q: 'Plakias Crete' },
         logistics: [
-          'בסיס → ארגירופולי 0:20 · → (ארקדי 0:40) → קנוסוס 1:00 · → שדה 0:20',
+          'אקסופולי → קורטליוטיקו 0:50 · → פרבלי 0:15 · → קליפסו 0:25 · → אקסופולי 1:00'
+        ]
+      },
+      {
+        num: 5, iso: '2026-09-21', wxLat: 35.30, wxLng: 25.16, date: '21/09', dow: 'שני', cluster: 'heraklion',
+        title: 'בוקר רגוע וציר מזרחה',
+        subtitle: 'יום המראה',
+        window: 'בוקר חופשי → החזרת רכב 19:00',
+        summary: 'בוקר בבריכה או בחוף המקומי, ואז מזרחה. קנוסוס ברשות — 20 דקות מהשדה, וזו הפעם היחידה בטיול שאנחנו באזור.',
+        logistics: [
+          'אקסופולי → קנוסוס 1:25 · קנוסוס → שדה 0:20',
           'החזרת רכב 19:00 · טיסה BZ751 ב-21:30',
           'מזוודות בתא המטען כל היום — לא להשאיר דברים גלויים ברכב'
         ],
@@ -1436,18 +1440,18 @@
       // 1. Hotel Base Marker (Georgioupoli)
       const hotelIcon = L.divIcon({
         className: 'custom-div-icon',
-        html: `<div class="map-pin-badge bg-purple-700 hover:bg-purple-800"><span>🏨</span><span class="pin-label">בסיס: גאורגיופוליס</span></div>`,
+        html: `<div class="map-pin-badge bg-purple-700 hover:bg-purple-800"><span>🏨</span><span class="pin-label">הלינה: אקסופולי</span></div>`,
         iconSize: [0, 0],
         popupAnchor: [0, -26]
       });
-      const hotelMarker = L.marker([35.3628, 24.2588], { icon: hotelIcon, title: 'גאורגיופוליס - מלון הבסיס' })
+      const hotelMarker = L.marker([BASE.lat, BASE.lng], { icon: hotelIcon, title: 'אקסופולי — מקום הלינה' })
         .bindPopup(`
           <div class="p-3.5 text-right">
-            <div class="text-[10px] font-bold text-purple-800 bg-purple-100 px-2 py-0.5 rounded-md inline-block mb-1.5">🏨 מלון הבסיס לחופשה</div>
-            <h4 class="font-extrabold text-slate-900 text-sm">גאורגיופוליס (Georgioupoli)</h4>
-            <p class="text-xs text-slate-600 mt-1 leading-relaxed">בסיס כוכב אסטרטגי על הים! 5 דק' בלבד מאגם קורנאס, 20 דק' מרתימנו וחיבור ישיר לכביש 90 ולירידות לקניוני הדרום.</p>
+            <div class="text-[10px] font-bold text-purple-800 bg-purple-100 px-2 py-0.5 rounded-md inline-block mb-1.5">🏨 מקום הלינה</div>
+            <h4 class="font-extrabold text-slate-900 text-sm">אקסופולי (Exopoli), 730 08</h4>
+            <p class="text-xs text-slate-600 mt-1 leading-relaxed">הכפר יושב על המדרון מעל גאורגיופוליס: 3 דק' לכנסייה שבים, 10 דק' לאגם קורנאס, 20 דק' לרתימנו וחיבור ישיר לכביש 90 ולירידות לקניוני הדרום.</p>
             <div class="mt-2.5 pt-2 border-t border-slate-100 flex items-center justify-between gap-2">
-              <a href="https://www.google.com/maps/search/?api=1&query=Georgioupoli+Crete" target="_blank" rel="noopener noreferrer" class="w-full text-center text-xs font-bold text-white bg-purple-700 hover:bg-purple-800 py-1.5 px-3 rounded-lg shadow-sm transition">
+              <a href="https://www.google.com/maps/search/?api=1&query=35.373939232780536%2C24.24601991225581" target="_blank" rel="noopener noreferrer" class="w-full text-center text-xs font-bold text-white bg-purple-700 hover:bg-purple-800 py-1.5 px-3 rounded-lg shadow-sm transition">
                 📍 פתח ב-Google Maps
               </a>
             </div>
@@ -1566,8 +1570,8 @@
           infoBox.innerHTML = `
             <div class="flex items-center gap-2">
               <span class="text-base">🏨</span>
-              <span class="font-bold text-slate-900">מלון הבסיס: גאורגיופוליס (Georgioupoli)</span>
-              <span class="text-slate-500">— נקודת כוכב אסטרטגית על הים במרחק 5 דק' מאגם קורנאס וגישה ישירה לכביש 90.</span>
+              <span class="font-bold text-slate-900">מקום הלינה: אקסופולי (Exopoli)</span>
+              <span class="text-slate-500">— מעל גאורגיופוליס: 3 דק' לכנסייה שבים, 10 דק' לאגם קורנאס, גישה ישירה לכביש 90.</span>
             </div>
           `;
         } else if (index === -2) {
@@ -1682,7 +1686,7 @@
 🛡️ ביטוח: מלא כולל 0€ השתתפות עצמית (CDW, FDW, שמשות, גחון, צד ג', גניבה), ללא פיקדון וללא חסימת אשראי.
 📞 טלפון ספק הרכב: +30 28970 42800
 
-🏨 בסיס כוכב: גאורגיופוליס (Georgioupoli) - 5 דק' מאגם קורנאס.`;
+🏨 לינה: אקסופולי (Exopoli) 730 08 - 10 דק' מאגם קורנאס.`;
 
       const textArea = document.createElement("textarea");
       textArea.value = text;
@@ -1771,7 +1775,7 @@
 
     function copyAllDetails() {
       const textToCopy = `🇬🇷 תוכנית היעדים והאטרקציות לכרתים (ספטמבר 2026):
-בסיס מומלץ: גאורגיופוליס (Georgioupoli)
+לינה: אקסופולי (Georgioupoli)
 
 1. לגונת באלוס והאי גרמבוסה (שייט מנמל קיסאמוס)
 2. העיר העתיקה והנמל הוונציאני בחאניה
@@ -2135,6 +2139,18 @@
               </ol>
             </div>
 
+            ${day.evening ? `
+              <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(day.evening.q)}"
+                 target="_blank" rel="noopener noreferrer"
+                 class="flex items-center gap-2.5 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 rounded-2xl p-3 transition">
+                <span class="text-base" aria-hidden="true">🌙</span>
+                <span class="flex-1 min-w-0">
+                  <span class="block text-xs font-bold text-indigo-950">לערב: ${esc(day.evening.title)}</span>
+                  <span class="block text-[11px] text-indigo-800/80 leading-snug">${esc(day.evening.note)}</span>
+                </span>
+                <span class="text-[11px] font-bold text-indigo-700 whitespace-nowrap">📍 Maps</span>
+              </a>` : ''}
+
             ${stops.length ? `
               <details class="bg-slate-50 border border-slate-200 rounded-2xl overflow-hidden">
                 <summary class="p-3 cursor-pointer text-xs font-bold text-slate-800 flex items-center gap-1.5 select-none">
@@ -2231,7 +2247,7 @@
       const chip = (id, onclick, cls, label) =>
         `<button type="button" onclick="${onclick}" id="${id}" class="map-chip px-3 py-1.5 rounded-xl whitespace-nowrap border ${cls}">${label}</button>`;
       bar.innerHTML =
-        chip('chip-base', 'selectDestinationMap(-1)', 'bg-purple-100 text-purple-900 border-purple-200 active-chip', '🏨 גאורגיופוליס (הבסיס)') +
+        chip('chip-base', 'selectDestinationMap(-1)', 'bg-purple-100 text-purple-900 border-purple-200 active-chip', '🏨 אקסופולי (הלינה)') +
         destinationsData.map((d, i) =>
           chip(`chip-${i}`, `selectDestinationMap(${i})`, 'bg-slate-100 text-slate-700 border-slate-200',
                `${d.icon} ${i + 1}. ${esc(d.title.split('(')[0].trim())}`)).join('') +
