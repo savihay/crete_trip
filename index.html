@@ -41,7 +41,7 @@
       modal.classList.remove('hidden');
       modal.classList.add('flex');
       document.body.style.overflow = 'hidden';
-      var close = modal.querySelector('button[title="סגירה" aria-label="סגירה"]');
+      var close = modal.querySelector('button[aria-label="סגירה"]');
       if (close) close.focus();
     }
 
@@ -188,6 +188,26 @@
       border-color: #0284c7 !important;
     }
 
+    /* On-the-way stops: deliberately smaller and quieter than the destination
+       pins, so the map still reads as 15 places plus supporting detail. */
+    .map-pin-stop {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      border-radius: 9999px;
+      background: #ffffff;
+      border: 2px solid #64748b;
+      font-size: 12px;
+      line-height: 1;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+      transform: translate(-50%, -50%);
+      transition: transform 0.15s ease;
+      cursor: pointer;
+    }
+    .map-pin-stop:hover { transform: translate(-50%, -50%) scale(1.25); z-index: 900 !important; }
+
     /* The house we are staying in — black, so it reads as home against the
        coloured destination pins rather than as one more attraction. */
     .map-pin-badge.pin-home {
@@ -272,8 +292,8 @@
             class="inline-flex items-center gap-1 sm:gap-2 bg-purple-500/25 hover:bg-purple-500/40 text-purple-100 border border-purple-300/30 px-2 sm:px-3.5 py-1 sm:py-1.5 rounded-full text-[11px] sm:text-sm font-medium backdrop-blur transition cursor-pointer"
             title="פרטי מקום הלינה באקסופולי" aria-label="פרטי מקום הלינה באקסופולי"
           >
-            <span>🏨</span>
-            <span class="hidden sm:inline">לינה: אקסופולי</span>
+            <span>🏠</span>
+            <span class="hidden sm:inline">הבית: אקסופולי</span>
           </button>
 
           <!-- Flights & Car Rental Modal Button -->
@@ -313,7 +333,7 @@
         class="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-4 sm:px-6 py-2 rounded-xl text-xs sm:text-sm font-semibold text-white/80 hover:text-white transition cursor-pointer">
         <span aria-hidden="true">🗺️</span><span>מפה וכל המקומות</span>
       </button>
-      <span class="hidden md:block flex-1 text-left pl-3 text-[11px] text-sky-200">5 ימים · 15 יעדים · 14 עצירות בדרך</span>
+      <span class="hidden md:block flex-1 text-left pl-3 text-[11px] text-sky-200">5 ימים · 15 יעדים · 15 עצירות בדרך</span>
     </div>
 
     <div id="view-places" class="hidden">
@@ -390,7 +410,7 @@
             type="button"
             onclick="resetMapView()" 
             class="text-[10px] sm:text-xs font-bold px-2 sm:px-3.5 py-1.5 sm:py-2 rounded-lg sm:rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition flex items-center gap-1 sm:gap-1.5 shadow-sm cursor-pointer"
-            title="הצגת כל כרתים עם כל 17 הסיכות ביחד"
+            title="הצגת כל כרתים עם כל 32 הסיכות ביחד"
           >
             <span>🔄</span>
             <span class="hidden sm:inline">הצג את כל הסיכות (כל כרתים)</span>
@@ -567,8 +587,8 @@
           onclick="switchTravelTab('hotel')" 
           class="flex-1 py-2.5 px-3 font-bold text-xs sm:text-sm rounded-t-2xl border-b-2 border-transparent text-slate-600 hover:text-slate-900 flex items-center justify-center gap-1.5 transition cursor-pointer"
         >
-          <span>🏨</span>
-          <span>מקום לינה (גאורגיופוליס)</span>
+          <span aria-hidden="true">🏠</span>
+          <span>הבית (אקסופולי)</span>
         </button>
       </div>
 
@@ -858,50 +878,54 @@
 
         <!-- Tab 3: Accommodation Content -->
         <div id="tab-content-hotel" class="space-y-4 hidden">
-          
-          <div class="bg-purple-50/80 border border-purple-200 rounded-2xl p-4">
-            <div class="flex items-center justify-between mb-2">
-              <span class="inline-flex items-center gap-1.5 text-xs font-bold bg-purple-700 text-white px-3 py-1 rounded-full">
-                <span>🏨</span>
-                <span>בסיס כוכב מומלץ לחופשה</span>
+
+          <div class="bg-slate-900 text-white rounded-2xl p-4">
+            <div class="flex items-center justify-between mb-2 gap-2">
+              <span class="inline-flex items-center gap-1.5 text-xs font-bold bg-white/15 px-3 py-1 rounded-full border border-white/20">
+                <span aria-hidden="true">🏠</span><span>הבית שלנו</span>
               </span>
-              <span class="text-xs font-semibold text-purple-800 bg-purple-100 px-2.5 py-0.5 rounded-md">מיקום אסטרטגי מנצח</span>
+              <span class="text-xs font-semibold text-emerald-300 bg-emerald-950/60 px-2.5 py-0.5 rounded-md border border-emerald-800">מוזמן ✓</span>
             </div>
-            
-            <h4 class="text-base font-extrabold text-slate-900 mt-1">גאורגיופוליס (Georgioupoli)</h4>
-            <p class="text-xs text-slate-600 leading-relaxed mt-1">
-              עיירת נופש וחוף פסטורלית עם נהר צלול הנשפך אל הים, שפע טברנות אותנטיות ומיקום מדויק באמצע הציר שבין חאניה, רתימנו והירידות לקניוני הדרום.
+            <h4 class="text-base font-extrabold mt-1">אקסופולי (Exopoli), 730 08</h4>
+            <p class="text-[11px] font-mono text-slate-400 mt-1">35.373939, 24.246020</p>
+            <p class="text-xs text-slate-300 leading-relaxed mt-2">
+              הכפר יושב על המדרון מעל גאורגיופוליס, מעט פנימה מהחוף — שקט יותר, ועם נוף.
             </p>
+            <div class="grid grid-cols-2 gap-2 mt-3">
+              <a href="https://www.google.com/maps/search/?api=1&query=35.373939232780536%2C24.24601991225581"
+                 target="_blank" rel="noopener noreferrer"
+                 class="text-center text-xs font-bold bg-white text-slate-900 hover:bg-slate-100 py-2 px-3 rounded-xl transition">
+                📍 Google Maps
+              </a>
+              <a href="https://waze.com/ul?ll=35.373939232780536,24.24601991225581&navigate=yes"
+                 target="_blank" rel="noopener noreferrer"
+                 class="text-center text-xs font-bold bg-sky-500 text-slate-950 hover:bg-sky-400 py-2 px-3 rounded-xl transition">
+                🚗 Waze
+              </a>
+            </div>
           </div>
 
-          <!-- Why Georgioupoli highlights -->
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs">
             <div class="bg-white p-3 rounded-xl border border-slate-200 shadow-sm text-center">
+              <div class="text-lg mb-1">⛪</div>
+              <div class="font-bold text-slate-900">3 דק׳ לכנסייה שבים</div>
+              <div class="text-[11px] text-slate-500 mt-0.5">אגיוס ניקולאוס — שקיעה בלי לנסוע</div>
+            </div>
+            <div class="bg-white p-3 rounded-xl border border-slate-200 shadow-sm text-center">
               <div class="text-lg mb-1">🐢</div>
-              <div class="font-bold text-slate-900">5 דקות מאגם קורנאס</div>
-              <div class="text-[11px] text-slate-500 mt-0.5">קפיצה קלה לשייט פדלים וצבי מים בכל שעה</div>
+              <div class="font-bold text-slate-900">10 דק׳ לאגם קורנאס</div>
+              <div class="text-[11px] text-slate-500 mt-0.5">קפיצה לפדלבוט בכל בוקר או אחה״צ</div>
             </div>
             <div class="bg-white p-3 rounded-xl border border-slate-200 shadow-sm text-center">
               <div class="text-lg mb-1">🛣️</div>
-              <div class="font-bold text-slate-900">גישה ישירה לכביש 90</div>
-              <div class="text-[11px] text-slate-500 mt-0.5">חיבור מהיר לחאניה (35 דק) ורתימנו (20 דק)</div>
-            </div>
-            <div class="bg-white p-3 rounded-xl border border-slate-200 shadow-sm text-center">
-              <div class="text-lg mb-1">🧭</div>
-              <div class="font-bold text-slate-900">יציאה נוחה לדרום</div>
-              <div class="text-[11px] text-slate-500 mt-0.5">כבישי גישה ישירים לקורטליוטיקו ואימברוס</div>
+              <div class="font-bold text-slate-900">כביש 90 בדקות</div>
+              <div class="text-[11px] text-slate-500 mt-0.5">רתימנו 20 דק׳ · חאניה 40 דק׳</div>
             </div>
           </div>
 
-          <!-- Specific Accommodation Placeholder Card -->
-          <div class="bg-slate-50 border-2 border-dashed border-slate-300 rounded-2xl p-4 text-center">
-            <div class="w-12 h-12 bg-white rounded-2xl shadow-sm flex items-center justify-center text-2xl mx-auto mb-2 text-purple-600">
-              🏡
-            </div>
-            <h5 class="font-bold text-slate-900 text-sm">פרטי המלון / וילה יתווספו כאן</h5>
-            <p class="text-xs text-slate-500 mt-1 max-w-md mx-auto">
-              ברגע שתסגרו את מקום הלינה הספציפי (שם המקום, כתובת מדויקת, שעות צ'ק-אין, וויפי וטלפון), נעדכן את כל הפרטים כאן עם קישור ישיר ל-Waze ול-Google Maps.
-            </p>
+          <div class="bg-amber-50 border border-amber-200 rounded-2xl p-3 text-xs text-amber-950 flex items-start gap-2">
+            <span aria-hidden="true">📝</span>
+            <span>שעות צ׳ק-אין, קוד כניסה, וויפי וטלפון המארח — להוסיף כאן כשיהיו. התוכנית מניחה צ׳ק-אין סביב 15:20.</span>
           </div>
 
         </div>
@@ -1348,9 +1372,15 @@
       { id: 'st-nicholas', day: 1, q: 'Agios Nikolaos Church Georgioupoli', icon: '⛪',
         title: 'הכנסייה שבתוך הים', when: 'בציר הזמן — 19:15, לשקיעה',
         note: 'אגיוס ניקולאוס הלבנה בקצה שביל הסלעים. 3 דקות מהבית', lat: 35.3648, lng: 24.2660 },
+      { id: 'fodele', day: 1, q: 'Fodele Crete El Greco', icon: '🍊', detour: '~40 דק׳',
+        title: 'פודלה — הכפר של אל גרקו', when: 'בציר הזמן — 11:45, רשות',
+        note: 'כפר הולדתו של אל גרקו בעמק פרדסים, 3 ק״מ מהכביש ו-30 דק׳ מהשדה. העצירה הראשונה האפשרית אחרי הרכב', lat: 35.3897, lng: 24.9564 },
+      { id: 'kournas-view', day: 1, q: 'Lake Kournas viewpoint', icon: '📸',
+        title: 'תצפית מעל אגם קורנאס', when: 'בציר הזמן — 17:00, בדרך לאגם',
+        note: 'מרפסת תצפית על הכביש בעלייה, ממש לפני הירידה לאגם. כל האגם עם ההרים מאחור', lat: 35.3300, lng: 24.2830 },
       { id: 'panormo', day: 1, q: 'Panormo Crete', icon: '🐚',
-        title: 'כפר פאנורמו', when: 'בין השדה לרתימנו — 20 דק׳',
-        note: 'כפר דייגים קטן עם נמל ונציאני, ממש על כביש 90. רק אם יוצאים מהשדה בזמן', lat: 35.4187, lng: 24.6906 },
+        title: 'כפר פאנורמו', when: 'על כביש 90 — 20 דק׳',
+        note: 'כפר דייגים קטן עם נמל ונציאני, ממש על הדרך. חלופה לפודלה אם רוצים עצירה אחת ולא שתיים', lat: 35.4187, lng: 24.6906 },
 
       { id: 'aptera', day: 2, q: 'Aptera Archaeological Site', icon: '🏛️',
         title: 'אפטרה ומצודת קולס', when: 'בדרך לחאניה — 10 דק׳ מהכביש',
@@ -1394,32 +1424,31 @@
     const daysData = [
       {
         num: 1, iso: '2026-09-17', wxLat: 35.374, wxLng: 24.246, date: '17/09', dow: 'חמישי', cluster: 'center',
-        title: 'נחיתה, רתימנו ומעיינות',
-        subtitle: 'הכל בכיוון אחד — מערבה, בלי לחזור אחורה',
-        window: 'רכב 11:00 → שקיעה 19:35',
-        summary: 'היום בנוי בכיוון אחד בלבד — מהשדה מערבה, בלי אף חזרה אחורה. צהריים ברתימנו, ארגירופולי בשעות החום (זה המקום הכי מוצל ברשימה), ואז צ׳ק-אין ושקיעה 3 דקות מהדירה. אגם קורנאס לא נכנס כאן בכוונה: הוא 10 דקות מהדירה וזמין כל בוקר.',
+        title: 'נחיתה, מעיינות ואגם',
+        subtitle: 'ישר למעיינות, ואז הביתה',
+        window: 'רכב 11:00 → ערב בכיכר או ברתימנו',
+        summary: 'נוסעים ישר למעיינות — הן 20 דקות מהבית, אז הן הדבר היחיד שעושים לפני הצ׳ק-אין. ארגירופולי גם מספקת את הצהריים וגם נופלת בשעה הכי חמה, וזה המקום הכי מוצל וקריר ברשימה. אחרי מנוחה בבית יוצאים לאגם באור של אחר הצהריים, והערב נבחר לפי הכוח שנשאר.',
         schedule: [
           { t: '10:10', what: 'נחיתה בהרקליון (HER)', note: 'טיסה BZ752' },
           { t: '11:00', what: 'איסוף הרכב — The Best Cars', note: 'רישיון, דרכון וכרטיס אשראי של הנהג הראשי. יתרה של 257.50€ משולמת כאן' },
-          { t: '11:15', what: 'יוצאים מערבה בכביש 90', note: 'הכביש הראשי לאורך החוף הצפוני — קל ומהיר' },
-          { t: '12:20', what: '🍽️ צהריים ברתימנו העתיקה', kind: 'food',
-            note: 'לחנות בחניון הנמל ולהיכנס ברגל. לאכול סמטה אחת פנימה מהטיילת, לא עליה — שם זה יקר ובינוני. Loggia או Othonas הן קלאסיקות מקומיות. מנות היום נגמרות, כדאי להיות בפנים עד 13:00' },
-          { t: '13:30', what: 'העיר העתיקה והפורטצה', note: 'מזרקת רימונדי, הסמטאות, ומבצר הפורטצה (4€ למבוגר, ילדים עד 18 חינם)' },
-          { t: '15:00', what: 'נסיעה לארגירופולי', note: '35 דק׳ — יורדים מהכביש הראשי דרומה' },
-          { t: '15:35', what: 'מעיינות ארגירופולי', note: 'השעה הכי חמה ביום, וזה המקום הכי מוצל וקריר ברשימה. מפלונים, טחנות מים ועצי דולב. קפה או קינוח על המים' },
-          { t: '17:30', what: 'נסיעה לאקסופולי', note: '20 דקות' },
-          { t: '17:50', what: '🏠 צ׳ק-אין, פריקה ומנוחה', kind: 'base', note: 'נשימה אחרי יום שהתחיל ב-04:30' },
-          { t: 'גמיש', what: '🐢 אגם קורנאס — מתי שמתחשק', kind: 'base',
-            note: '10 דקות מהדירה, ולכן לא נעול לשעה. כל בוקר או אחר צהריים בטיול עובד — והאור על ההרים הכי יפה אחרי 16:00' },
-          { t: '19:15', what: '🌅 הכנסייה שבתוך הים', note: 'אגיוס ניקולאוס, 3 דקות מהדירה. שקיעה ב-19:35' },
-          { t: '20:15', what: '🍽️ ארוחת ערב בכיכר גאורגיופוליס', kind: 'food',
-            note: 'מתחת לעצי האקליפטוס הענקיים. אפס נסיעה, וזה בדיוק מה שצריך בערב הראשון' }
+          { t: '11:15', what: 'יוצאים מערבה בכביש 90', note: 'לא עוצרים ברתימנו — היא שמורה לערב, היום או ביום אחר' },
+          { t: '11:45', what: '🍊 פודלה — אם רוצים לפרוק רגליים', note: 'רשות. 3 ק״מ מהכביש, כפר הולדתו של אל גרקו בתוך פרדסי תפוזים. מוסיף כ-40 דק׳ — רק אם הילדות לא רעבות מדי' },
+          { t: '12:50', what: '🍽️ צהריים במעיינות ארגירופולי', kind: 'food',
+            note: 'הטברנות יושבות ממש מעל הזרם ומגישות פורל שגדל בבריכות המקום. Palaios Mylos או Argiroupolis' },
+          { t: '14:00', what: 'המעיינות', note: 'עשרות מפלונים, טחנות מים עתיקות ועצי דולב בני מאות שנים. שטוח, מוצל וקריר — בדיוק לשעה הכי חמה' },
+          { t: '15:00', what: 'נסיעה לאקסופולי', note: '20 דקות' },
+          { t: '15:20', what: '🏠 צ׳ק-אין, פריקה ומנוחה', kind: 'base', note: 'נשימה אחרי יום שהתחיל ב-04:30' },
+          { t: '17:00', what: '📸 תצפית מעל אגם קורנאס', note: 'מרפסת תצפית על הכביש בעלייה, ממש לפני הירידה לאגם — כל האגם עם ההרים מאחור' },
+          { t: '17:15', what: 'אגם קורנאס', note: 'פדלבוט ~15–20€ לשעה. האור על ההרים הכי יפה עכשיו, וצבי המים נראים מתחת לסירה' },
+          { t: '19:10', what: '🌅 הכנסייה שבתוך הים', note: 'אגיוס ניקולאוס, 3 דקות מהבית. שקיעה ב-19:35' },
+          { t: '20:15', what: '🍽️ ערב — בוחרים לפי הכוח', kind: 'food',
+            note: 'כיכר גאורגיופוליס: 3 דקות, עצי אקליפטוס וטברנות. או רתימנו: 20 דקות, עיר עתיקה מוארת — יפה יותר, אבל חוזרים ב-23:00' }
         ],
-        evening: { title: 'כיכר גאורגיופוליס', note: 'אפס נסיעה בערב הראשון — עצי אקליפטוס, גלידריות וטברנות', q: 'Georgioupoli Square' },
+        evening: { title: 'כיכר גאורגיופוליס או רתימנו', note: 'הכיכר 3 דקות · רתימנו 20 דקות ויפה יותר בערב — מחליטים בבית', q: 'Georgioupoli Square' },
         logistics: [
-          'שדה → רתימנו 1:05 · רתימנו → ארגירופולי 0:35 · ארגירופולי → אקסופולי 0:20',
-          'סה״כ נהיגה ביום: כשעתיים, הכל בכיוון אחד',
-          'אגם קורנאס: 10 דק׳ מהדירה — לכל בוקר או אחה״צ שמתאים'
+          'שדה → ארגירופולי 1:35 · ארגירופולי → אקסופולי 0:20 · אקסופולי → קורנאס 0:10',
+          'סה״כ נהיגה עד הצ׳ק-אין: כשעתיים, הכל מערבה',
+          'ערב: כיכר גאורגיופוליס 0:03 · רתימנו 0:20 לכיוון'
         ]
       },
       {
@@ -1679,6 +1708,39 @@
         mapMarkers[idx] = marker;
       });
 
+      // On-the-way stops, as quiet secondary pins
+      stopsData.forEach(s => {
+        const day = daysData.find(d => d.num === s.day);
+        const marker = L.marker([s.lat, s.lng], {
+          icon: L.divIcon({
+            className: 'custom-div-icon',
+            html: `<div class="map-pin-stop" title="${esc(s.title)}">${s.icon}</div>`,
+            iconSize: [0, 0],
+            popupAnchor: [0, -14]
+          }),
+          title: s.title,
+          zIndexOffset: -500
+        }).bindPopup(`
+          <div class="p-3 text-right">
+            <div class="flex items-center gap-1.5 flex-wrap mb-1">
+              <span class="text-[10px] font-bold bg-slate-200 text-slate-700 px-2 py-0.5 rounded-md">עצירה בדרך</span>
+              ${day ? `<span class="text-[10px] font-bold bg-sky-100 text-sky-800 px-2 py-0.5 rounded-md">יום ${s.day}</span>` : ''}
+              ${s.detour
+                ? `<span class="text-[10px] font-bold bg-amber-100 text-amber-900 px-2 py-0.5 rounded-md">↩ ${esc(s.detour)}</span>`
+                : `<span class="text-[10px] font-bold bg-emerald-100 text-emerald-900 px-2 py-0.5 rounded-md">✓ על הדרך</span>`}
+            </div>
+            <h4 class="font-extrabold text-slate-900 text-sm">${s.icon} ${esc(s.title)}</h4>
+            ${s.when ? `<div class="text-[11px] text-sky-700 font-semibold mt-0.5">${esc(s.when)}</div>` : ''}
+            <p class="text-xs text-slate-600 mt-1 leading-relaxed">${esc(s.note)}</p>
+            <a href="${placeUrl(s)}" target="_blank" rel="noopener noreferrer"
+               class="mt-2.5 block text-center text-xs font-bold text-white bg-slate-700 hover:bg-slate-800 py-1.5 px-3 rounded-lg shadow-sm transition">
+              📍 פתח ב-Google Maps
+            </a>
+          </div>
+        `);
+        marker.addTo(markersGroup);
+      });
+
       renderMapChips();
 
       // Fit bounds to show every marker across Crete at once
@@ -1762,7 +1824,7 @@
         infoBox.innerHTML = `
           <div class="flex items-center gap-2">
             <span class="text-base">🇬🇷</span>
-            <span class="font-bold text-slate-900">תצוגת כל 17 המוקדים והסיכות בכרתים</span>
+            <span class="font-bold text-slate-900">תצוגת כל 32 המוקדים והסיכות בכרתים</span>
             <span class="text-slate-500">— כל 15 האטרקציות, מלון הבסיס ושדה התעופה מסומנים יחד בו-זמנית.</span>
           </div>
         `;
@@ -1834,7 +1896,7 @@
 🛡️ ביטוח: מלא כולל 0€ השתתפות עצמית (CDW, FDW, שמשות, גחון, צד ג', גניבה), ללא פיקדון וללא חסימת אשראי.
 📞 טלפון ספק הרכב: +30 28970 42800
 
-🏨 לינה: אקסופולי (Exopoli) 730 08 - 10 דק' מאגם קורנאס.`;
+🏠 לינה: אקסופולי (Exopoli) 730 08 - 10 דק' מאגם קורנאס.`;
 
       const textArea = document.createElement("textarea");
       textArea.value = text;
