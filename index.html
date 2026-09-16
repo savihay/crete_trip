@@ -188,6 +188,14 @@
       border-color: #0284c7 !important;
     }
 
+    /* The house we are staying in — black, so it reads as home against the
+       coloured destination pins rather than as one more attraction. */
+    .map-pin-badge.pin-home {
+      background-color: #0f172a;
+      border-color: #ffffff;
+    }
+    .map-pin-badge.pin-home:hover { background-color: #1e293b; }
+
     /* Mobile: 17 full-text pins overlap into an unreadable pile at island zoom,
        so the label collapses to icon + number and the name moves to the popup. */
     @media (max-width: 767px) {
@@ -414,7 +422,7 @@
       <!-- Live Interactive Info Bar — hidden on mobile -->
       <div id="map-hover-info" class="hidden sm:flex mt-3 p-3 bg-sky-50/80 border border-sky-100 rounded-2xl min-h-[56px] items-center justify-between text-xs text-slate-700 transition">
         <div class="flex items-center gap-2">
-          <span class="text-base">🏨</span>
+          <span class="text-base">🏠</span>
           <span class="font-bold text-slate-900">מקום הלינה: אקסופולי (Exopoli)</span>
           <span class="text-slate-500">— מעל גאורגיופוליס: 3 דק' לכנסייה שבים, 10 דק' לאגם קורנאס, גישה ישירה לכביש 90.</span>
         </div>
@@ -1337,19 +1345,49 @@
 
     // ===== On-the-way stops: viewpoints and quick pauses, added only if the day flows =====
     const stopsData = [
-      { id: 'st-nicholas',  day: 1, q: 'Agios Nikolaos Church Georgioupoli', icon: '⛪', title: 'הכנסייה שבתוך הים',   note: 'אגיוס ניקולאוס הלבנה בקצה שביל הסלעים — 3 דק׳ מהלינה, מושלם לשקיעה', lat: 35.3648, lng: 24.2660 },
-      { id: 'panormo',      day: 1, q: 'Panormo Crete',                      icon: '🐚', title: 'כפר פאנורמו',          note: 'כפר דייגים קטן ומקסים בדיוק על הכביש מהשדה', lat: 35.4187, lng: 24.6906 },
-      { id: 'venizelos',    day: 2, q: 'Venizelos Graves Chania',            icon: '🌇', title: 'תצפית קברי ונציאלוס',  note: 'פנורמה על כל מפרץ חאניה והעיר העתיקה — לתזמן לשקיעה לפני הירידה לנמל', lat: 35.5108, lng: 24.0475 },
-      { id: 'vrisses',      day: 3, q: 'Vrisses Crete',                      icon: '🍯', title: 'וריסס — יוגורט ודבש',  note: 'עצירת בוקר קלאסית בדרך לספאקיה, מתחת לעצי הדולב', lat: 35.3833, lng: 24.2000 },
-      { id: 'askifou',      day: 3, q: 'Askifou Plateau Crete',              icon: '⛰️', title: 'תצפית מישור אסקיפו',   note: 'רמה הררית מבודדת בגובה 726 מ׳ מוקפת ההרים הלבנים', lat: 35.2761, lng: 24.1811 },
-      { id: 'krioneritis',  day: 3, q: 'Krioneritis Sfakia Crete',           icon: '🔭', title: 'תצפית קריונריטיס',     note: 'הסרפנטינות היורדות לים הלובי — התצפית של הדרך', lat: 35.2200, lng: 24.1450 },
-      { id: 'kourt-view',   day: 4, q: 'Kourtaliotiko Gorge viewpoint',      icon: '📸', title: 'תצפית קורטליוטיקו',    note: 'עצירה על הכביש מעל המצוקים — הצילום הדרמטי של הקניון מלמעלה', lat: 35.2180, lng: 24.4700 },
-      { id: 'kotsifou',     day: 4, q: 'Kotsifou Gorge Crete',               icon: '🪨', title: 'קניון קוציפו',         note: '2 ק״מ נסיעה דרמטית בין צוקים + כנסייה חצובה בסלע', lat: 35.2350, lng: 24.4030 },
-      { id: 'damnoni',      day: 4, q: 'Damnoni Beach Crete',                icon: '🏖️', title: 'חוף דמנוני',           note: 'חוף חולי נוח ליד פלקיאס, אלטרנטיבה לקליפסו', lat: 35.1897, lng: 24.4180 },
-      { id: 'spili',        day: 4, q: 'Spili Crete',                        icon: '🦁', title: 'ספילי — מזרקת האריות', note: 'כפר הררי עם מזרקה ונציאנית של 25 ראשי אריות', lat: 35.2136, lng: 24.5350 },
-      { id: 'arkadi',       day: 5, q: 'Arkadi Monastery Crete',             icon: '⛪', title: 'מנזר ארקדי',           note: 'סמל ההתנגדות הכרתית, 25 דק דרומית לרתימנו — על הציר מזרחה', lat: 35.3097, lng: 24.6297 },
-      { id: 'margarites',   day: 5, q: 'Margarites Crete',                   icon: '🏺', title: 'מרגריטס',              note: 'כפר קדרים עם סדנאות פתוחות, קרוב לארקדי', lat: 35.3050, lng: 24.7000 },
-      { id: 'aptera',       day: 5, q: 'Aptera Archaeological Site',         icon: '🏛️', title: 'אפטרה',                note: 'עיר עתיקה + מצודת קולס עם תצפית על מפרץ סודה', lat: 35.4620, lng: 24.1400 }
+      { id: 'st-nicholas', day: 1, q: 'Agios Nikolaos Church Georgioupoli', icon: '⛪',
+        title: 'הכנסייה שבתוך הים', when: 'בציר הזמן — 19:15, לשקיעה',
+        note: 'אגיוס ניקולאוס הלבנה בקצה שביל הסלעים. 3 דקות מהבית', lat: 35.3648, lng: 24.2660 },
+      { id: 'panormo', day: 1, q: 'Panormo Crete', icon: '🐚',
+        title: 'כפר פאנורמו', when: 'בין השדה לרתימנו — 20 דק׳',
+        note: 'כפר דייגים קטן עם נמל ונציאני, ממש על כביש 90. רק אם יוצאים מהשדה בזמן', lat: 35.4187, lng: 24.6906 },
+
+      { id: 'aptera', day: 2, q: 'Aptera Archaeological Site', icon: '🏛️',
+        title: 'אפטרה ומצודת קולס', when: 'בדרך לחאניה — 10 דק׳ מהכביש',
+        note: 'עיר עתיקה על צוק, ותצפית על כל מפרץ סודה. עצירה טבעית בין סייטן לחאניה', lat: 35.4620, lng: 24.1400 },
+      { id: 'venizelos', day: 2, q: 'Venizelos Graves Chania', icon: '🌇',
+        title: 'תצפית קברי ונציאלוס', when: 'בציר הזמן — 19:00, לשקיעה',
+        note: 'פנורמה על מפרץ חאניה והעיר העתיקה. 10 דק׳ מהנמל', lat: 35.5108, lng: 24.0475 },
+
+      { id: 'vrisses', day: 3, q: 'Vrisses Crete', icon: '🍯',
+        title: 'וריסס — יוגורט ודבש', when: 'בציר הזמן — 07:20, בדרך דרומה',
+        note: 'מתחת לעצי הדולב, ממש על הכביש לספאקיה', lat: 35.3833, lng: 24.2000 },
+      { id: 'askifou', day: 3, q: 'Askifou Plateau Crete', icon: '⛰️',
+        title: 'מישור אסקיפו', when: 'בציר הזמן — 17:20, בדרך חזרה',
+        note: 'רמה הררית מבודדת בגובה 726 מ׳ מוקפת ההרים הלבנים. הכביש עובר בתוכה', lat: 35.2761, lng: 24.1811 },
+      { id: 'krioneritis', day: 3, q: 'Krioneritis Sfakia Crete', icon: '🔭',
+        title: 'תצפית קריונריטיס', when: 'בציר הזמן — 17:00, בדרך חזרה',
+        note: 'הסרפנטינות היורדות לים הלובי. התצפית של הכביש הזה', lat: 35.2200, lng: 24.1450 },
+
+      { id: 'kourt-view', day: 4, q: 'Kourtaliotiko Gorge viewpoint', icon: '📸',
+        title: 'תצפית קורטליוטיקו', when: 'בציר הזמן — 10:15',
+        note: 'על הכביש מעל המצוקים — הקניון מלמעלה', lat: 35.2180, lng: 24.4700 },
+      { id: 'kotsifou', day: 4, q: 'Kotsifou Gorge Crete', icon: '🪨',
+        title: 'קניון קוציפו', when: 'בציר הזמן — 15:20, בדרך לקליפסו',
+        note: '2 ק״מ נסיעה בין צוקים אנכיים + כנסייה חצובה בסלע. נוסעים דרכו ממילא', lat: 35.2350, lng: 24.4030 },
+      { id: 'damnoni', day: 4, q: 'Damnoni Beach Crete', icon: '🏖️',
+        title: 'חוף דמנוני', when: 'חלופה לקליפסו',
+        note: 'חוף חולי נוח ליד פלקיאס. אם קליפסו סלעי מדי או עמוק מדי', lat: 35.1897, lng: 24.4180 },
+      { id: 'spili', day: 4, q: 'Spili Crete', icon: '🦁', detour: '40 דק׳ הלוך-חזור',
+        title: 'ספילי — מזרקת האריות', when: 'סטייה מהציר',
+        note: 'מזרקה ונציאנית של 25 ראשי אריות. יפה, אבל לא על הדרך — רק אם מוותרים על משהו אחר', lat: 35.2136, lng: 24.5350 },
+
+      { id: 'arkadi', day: 5, q: 'Arkadi Monastery Crete', icon: '⛪', detour: '50 דק׳ הלוך-חזור',
+        title: 'מנזר ארקדי', when: 'סטייה מהציר מזרחה',
+        note: 'סמל ההתנגדות הכרתית. 25 דק׳ דרומית לרתימנו — ביום רזרבה יש לזה מקום', lat: 35.3097, lng: 24.6297 },
+      { id: 'margarites', day: 5, q: 'Margarites Crete', icon: '🏺', detour: '+15 דק׳ מארקדי',
+        title: 'מרגריטס', when: 'רק אם עושים ארקדי',
+        note: 'כפר קדרים עם סדנאות פתוחות. 15 דק׳ מארקדי — אם כבר סטיתם, זה כמעט חינם', lat: 35.3050, lng: 24.7000 }
     ];
 
     // ===== The 5 days =====
@@ -1427,7 +1465,9 @@
           { t: '12:10', what: '🍽️ צהריים בחורה ספאקיון', kind: 'food',
             note: '5 דקות משם. עיירת דייגים בקצה הדרומי — דגים על המים, ופיתת ספאקיה עם גבינה ודבש לקינוח' },
           { t: '14:00', what: 'פרנגוקסטלו', note: '20 דקות מזרחה. מבצר ונציאני מ-1374, ולידו 100 מטר של מים עד הברכיים — הפרס אחרי הירידה' },
-          { t: '17:00', what: 'חזרה לאקסופולי', note: '1:10 דרך מישור אסקיפו. תצפית קריונריטיס בדרך למעלה' },
+          { t: '17:00', what: '🔭 תצפית קריונריטיס', note: 'העלייה חזרה מספאקיה — הסרפנטינות מעל הים הלובי. עצירה של 10 דקות' },
+          { t: '17:20', what: '⛰️ מישור אסקיפו', note: 'הכביש עובר בתוך הרמה. 726 מ׳, מוקף ההרים הלבנים' },
+          { t: '17:45', what: 'חזרה לאקסופולי', note: '50 דקות' },
           { t: '19:30', what: '🍽️ ערב בכיכר גאורגיופוליס', kind: 'food',
             note: '3 דקות מהדירה. אחרי יום הליכה זה בדיוק מה שצריך — בלי עוד נסיעה' }
         ],
@@ -1544,18 +1584,19 @@
       // 1. Hotel Base Marker (Georgioupoli)
       const hotelIcon = L.divIcon({
         className: 'custom-div-icon',
-        html: `<div class="map-pin-badge bg-purple-700 hover:bg-purple-800"><span>🏨</span><span class="pin-label">הלינה: אקסופולי</span></div>`,
+        html: `<div class="map-pin-badge pin-home"><span>🏠</span><span class="pin-label">הבית — אקסופולי</span></div>`,
         iconSize: [0, 0],
         popupAnchor: [0, -26]
       });
       const hotelMarker = L.marker([BASE.lat, BASE.lng], { icon: hotelIcon, title: 'אקסופולי — מקום הלינה' })
         .bindPopup(`
           <div class="p-3.5 text-right">
-            <div class="text-[10px] font-bold text-purple-800 bg-purple-100 px-2 py-0.5 rounded-md inline-block mb-1.5">🏨 מקום הלינה</div>
+            <div class="text-[10px] font-bold text-white bg-slate-900 px-2 py-0.5 rounded-md inline-block mb-1.5">🏠 הבית שלנו</div>
             <h4 class="font-extrabold text-slate-900 text-sm">אקסופולי (Exopoli), 730 08</h4>
+            <p class="text-[10px] font-mono text-slate-400 mt-0.5">35.373939, 24.246020</p>
             <p class="text-xs text-slate-600 mt-1 leading-relaxed">הכפר יושב על המדרון מעל גאורגיופוליס: 3 דק' לכנסייה שבים, 10 דק' לאגם קורנאס, 20 דק' לרתימנו וחיבור ישיר לכביש 90 ולירידות לקניוני הדרום.</p>
             <div class="mt-2.5 pt-2 border-t border-slate-100 flex items-center justify-between gap-2">
-              <a href="https://www.google.com/maps/search/?api=1&query=35.373939232780536%2C24.24601991225581" target="_blank" rel="noopener noreferrer" class="w-full text-center text-xs font-bold text-white bg-purple-700 hover:bg-purple-800 py-1.5 px-3 rounded-lg shadow-sm transition">
+              <a href="https://www.google.com/maps/search/?api=1&query=35.373939232780536%2C24.24601991225581" target="_blank" rel="noopener noreferrer" class="w-full text-center text-xs font-bold text-white bg-slate-900 hover:bg-slate-800 py-1.5 px-3 rounded-lg shadow-sm transition">
                 📍 פתח ב-Google Maps
               </a>
             </div>
@@ -1676,8 +1717,8 @@
         if (index === -1) {
           infoBox.innerHTML = `
             <div class="flex items-center gap-2">
-              <span class="text-base">🏨</span>
-              <span class="font-bold text-slate-900">מקום הלינה: אקסופולי (Exopoli)</span>
+              <span class="text-base">🏠</span>
+              <span class="font-bold text-slate-900">🏠 הבית: אקסופולי (Exopoli)</span>
               <span class="text-slate-500">— מעל גאורגיופוליס: 3 דק' לכנסייה שבים, 10 דק' לאגם קורנאס, גישה ישירה לכביש 90.</span>
             </div>
           `;
@@ -2303,7 +2344,13 @@
                     <div class="flex items-start gap-2 bg-white border border-slate-200 rounded-xl p-2.5">
                       <span class="text-sm">${s.icon}</span>
                       <div class="flex-1 min-w-0">
-                        <div class="text-xs font-bold text-slate-900">${esc(s.title)}</div>
+                        <div class="flex items-center gap-1.5 flex-wrap">
+                          <span class="text-xs font-bold text-slate-900">${esc(s.title)}</span>
+                          ${s.detour
+                            ? `<span class="text-[10px] font-bold bg-amber-100 text-amber-900 border border-amber-200 px-1.5 py-0.5 rounded-md">↩ ${esc(s.detour)}</span>`
+                            : `<span class="text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-200 px-1.5 py-0.5 rounded-md">✓ על הדרך</span>`}
+                        </div>
+                        ${s.when ? `<div class="text-[11px] text-sky-700 font-semibold mt-0.5">${esc(s.when)}</div>` : ''}
                         <div class="text-[11px] text-slate-500 leading-snug">${esc(s.note)}</div>
                       </div>
                       <a href="${placeUrl(s)}" target="_blank" rel="noopener noreferrer"
@@ -2389,7 +2436,7 @@
       const chip = (id, onclick, cls, label) =>
         `<button type="button" onclick="${onclick}" id="${id}" class="map-chip px-3 py-1.5 rounded-xl whitespace-nowrap border ${cls}">${label}</button>`;
       bar.innerHTML =
-        chip('chip-base', 'selectDestinationMap(-1)', 'bg-purple-100 text-purple-900 border-purple-200 active-chip', '🏨 אקסופולי (הלינה)') +
+        chip('chip-base', 'selectDestinationMap(-1)', 'bg-slate-900 text-white border-slate-900 active-chip', '🏠 הבית (אקסופולי)') +
         destinationsData.map((d, i) =>
           chip(`chip-${i}`, `selectDestinationMap(${i})`, 'bg-slate-100 text-slate-700 border-slate-200',
                `${d.icon} ${i + 1}. ${esc(d.title.split('(')[0].trim())}`)).join('') +
