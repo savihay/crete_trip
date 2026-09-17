@@ -1576,7 +1576,7 @@
     let map = null;
     let markersGroup = null;
     const mapMarkers = {};
-    let currentMapIndex = -1;
+    let currentMapIndex = null;   // null = nothing selected, show everything
     let hoverDebounceTimer = null;
 
     function initLeafletMap() {
@@ -1752,15 +1752,9 @@
       renderMapChips();
       renderMapLegend();
 
-      // Open on the whole island with every pin visible and nothing selected
+      // The map is created while its tab is hidden, so a fit here would be
+      // computed against a zero-size container. setView() fits it on first show.
       resetMapView();
-      map.fitBounds(markersGroup.getBounds(), { padding: [35, 35] });
-      setTimeout(() => {
-        if (map && markersGroup) {
-          map.invalidateSize();
-          map.fitBounds(markersGroup.getBounds(), { padding: [35, 35] });
-        }
-      }, 250);
     }
 
     function selectDestinationMap(index) {
@@ -1822,10 +1816,19 @@
       }
     }
 
+    // Leaflet cannot measure a hidden container, so invalidateSize() must run
+    // before any fitBounds or the result is computed against a 0x0 map.
+    function fitAllPins() {
+      if (!map || !markersGroup) return;
+      map.invalidateSize();
+      const bounds = markersGroup.getBounds();
+      if (bounds.isValid()) map.fitBounds(bounds, { padding: [35, 35] });
+    }
+
     function resetMapView() {
-      if (map && markersGroup) {
-        map.fitBounds(markersGroup.getBounds(), { padding: [35, 35] });
-      }
+      currentMapIndex = null;
+      if (map) map.closePopup();
+      fitAllPins();
       document.querySelectorAll('.map-chip').forEach(chip => {
         chip.classList.remove('active-chip');
       });
@@ -1879,6 +1882,7 @@
 
     function focusAndShowMap(index) {
       setView('places');
+      currentMapIndex = index;          // set before the rAF fit, so it is not overridden
       selectDestinationMap(index);
       const mapSection = document.getElementById('map-section');
       if (mapSection) {
@@ -2489,7 +2493,10 @@
         paintWeather();
         loadWeather();
       } else if (map) {
-        requestAnimationFrame(() => map.invalidateSize());
+        requestAnimationFrame(() => {
+          map.invalidateSize();
+          if (currentMapIndex === null) fitAllPins();
+        });
       }
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
