@@ -888,20 +888,20 @@
               <span class="text-xs font-semibold text-emerald-300 bg-emerald-950/60 px-2.5 py-0.5 rounded-md border border-emerald-800">מוזמן ✓</span>
             </div>
             <h4 class="text-base font-extrabold mt-1">אקסופולי (Exopoli), 730 08</h4>
-            <p class="text-[11px] font-mono text-slate-400 mt-1">35.373939, 24.246020</p>
+            <p class="text-[11px] text-slate-400 mt-1">הקישור של המארח — הוא המקור המדויק</p>
             <p class="text-xs text-slate-300 leading-relaxed mt-2">
               הכפר יושב על המדרון מעל גאורגיופוליס, מעט פנימה מהחוף — שקט יותר, ועם נוף.
             </p>
             <div class="grid grid-cols-2 gap-2 mt-3">
-              <a href="https://www.google.com/maps/search/?api=1&query=35.373939232780536%2C24.24601991225581"
+              <a href="https://maps.app.goo.gl/XrDqassHhNPQnmNq7"
                  target="_blank" rel="noopener noreferrer"
                  class="text-center text-xs font-bold bg-white text-slate-900 hover:bg-slate-100 py-2 px-3 rounded-xl transition">
-                📍 Google Maps
+                📍 המיקום המדויק
               </a>
-              <a href="https://waze.com/ul?ll=35.373939232780536,24.24601991225581&navigate=yes"
+              <a href="https://maps.app.goo.gl/XrDqassHhNPQnmNq7"
                  target="_blank" rel="noopener noreferrer"
                  class="text-center text-xs font-bold bg-sky-500 text-slate-950 hover:bg-sky-400 py-2 px-3 rounded-xl transition">
-                🚗 Waze
+                🚗 נווט
               </a>
             </div>
           </div>
@@ -964,7 +964,15 @@
 
   <script>
     // ===== Trip constants =====
-    const BASE = { lat: 35.373939, lng: 24.246020, name: 'אקסופולי (Exopoli)' };
+    // The Airbnb. `url` is the host's own Google Maps link and is authoritative
+    // for navigation; lat/lng only position the pin on our map and are still the
+    // approximate village coordinates until the exact ones are read off that link.
+    const BASE = {
+      lat: 35.373939, lng: 24.246020,
+      name: 'אקסופולי (Exopoli)',
+      url: 'https://maps.app.goo.gl/XrDqassHhNPQnmNq7',
+      approx: true
+    };
     const AIRPORT = { lat: 35.3397, lng: 25.1803, name: 'שדה הרקליון (HER)' };
 
     // ===== Geographic clusters — never mix two distant clusters in one day =====
@@ -1635,11 +1643,11 @@
           <div class="p-3.5 text-right">
             <div class="text-[10px] font-bold text-white bg-slate-900 px-2 py-0.5 rounded-md inline-block mb-1.5">🏠 הבית שלנו</div>
             <h4 class="font-extrabold text-slate-900 text-sm">אקסופולי (Exopoli), 730 08</h4>
-            <p class="text-[10px] font-mono text-slate-400 mt-0.5">35.373939, 24.246020</p>
+            <p class="text-[10px] text-amber-700 bg-amber-50 border border-amber-200 rounded px-1.5 py-0.5 inline-block mt-1">הסיכה מקורבת — הקישור מדויק</p>
             <p class="text-xs text-slate-600 mt-1 leading-relaxed">הכפר יושב על המדרון מעל גאורגיופוליס: 3 דק' לכנסייה שבים, 10 דק' לאגם קורנאס, 20 דק' לרתימנו וחיבור ישיר לכביש 90 ולירידות לקניוני הדרום.</p>
             <div class="mt-2.5 pt-2 border-t border-slate-100 flex items-center justify-between gap-2">
-              <a href="https://www.google.com/maps/search/?api=1&query=35.373939232780536%2C24.24601991225581" target="_blank" rel="noopener noreferrer" class="w-full text-center text-xs font-bold text-white bg-slate-900 hover:bg-slate-800 py-1.5 px-3 rounded-lg shadow-sm transition">
-                📍 פתח ב-Google Maps
+              <a href="${BASE.url}" target="_blank" rel="noopener noreferrer" class="w-full text-center text-xs font-bold text-white bg-slate-900 hover:bg-slate-800 py-1.5 px-3 rounded-lg shadow-sm transition">
+                📍 פתח את המיקום המדויק
               </a>
             </div>
           </div>
